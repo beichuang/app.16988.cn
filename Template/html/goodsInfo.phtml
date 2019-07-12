@@ -1,0 +1,371 @@
+<!doctype html>
+<html lang="zh">
+<head>
+{template public/WxShareJS}
+	<meta charset="UTF-8">
+	<title>宝贝详情</title>
+    <meta name="viewport" content="width=device-width,minimum-scale=1.00001,maximum-scale=1.00001,user-scalable=no,minimal-ui">
+	<link rel="stylesheet" href="{$CDN_BASE_URL_RES}/html/wz/css/global.css">
+	<link rel="stylesheet" href="{$CDN_BASE_URL_RES}/html/wz/css/aui.css">
+	<link rel="stylesheet" href="{$CDN_BASE_URL_RES}/html/wz/css/swiper.css">
+	<script src="{$CDN_BASE_URL_RES}/html/wz/js/setfontsize.js"></script>
+	<script src="https://s28.9956.cn/static/v3_1/js/jquery.min.js"></script>
+	<style>
+		.swiper-container{height: 4rem;}
+		.swiper-pagination-fraction{width: auto;right: 4%;left: auto;color: #fff;background: #2D272B;padding: 4px 10px;border-radius: 10px;}
+		.list li{text-align: center;}
+		.list li img{display: inline-block;width: 100%;}
+		.tab{margin-top: 4%;}
+		.tab ul{border-bottom: 0;margin-bottom: 0;}
+		.tab ul li{padding: 3% 0;}
+		.swiper-slide{text-align: center;}
+		.swiper-slide img{display: inline-block;height: 4rem;
+		    width: 100%;
+		    object-fit: cover;
+		    -moz-object-fit: cover;
+		    -webkit-object-fit: cover;
+		    -o-object-fit: cover;
+		    -ms-object-fit: cover;}
+		.cpinfo img{display: block;}
+		.PIC{text-align: center;}
+		.PIC img{margin-bottom: 2%;display: inline-block;} 
+		.jianjiee{    word-wrap: break-word;}
+		.zan-pic{padding: 4% 4% 0 4%;margin-top: -4%;}
+		.zhuangtai{margin-bottom: 4%;}
+		.shouji{padding: 3% 4%;font-size: .25rem;}
+		.shouji h3{font-weight: normal;font-size: .28rem;}
+		.fixed1 li img{width: 37%;}
+		.looks {padding: 0 2% 0 3%;}
+	</style>
+</head>
+<body>
+	<section class="container">
+	    <div class="swiper-container bgcf exc2">
+	        <div class="swiper-wrapper list">
+        		<!-- <div class="swiper-slide">
+	        		<a href="{$CDN_BASE_URL_RES}/html/wz/images/banner.jpg"><img src="{$CDN_BASE_URL_RES}/html/wz/images/banner.jpg"></a>
+	           	 </div>
+	           	 <div class="swiper-slide">
+	        		<a href="{$CDN_BASE_URL_RES}/html/wz/images/hdimg.jpg"><img src="{$CDN_BASE_URL_RES}/html/wz/images/hdimg.jpg"></a>
+	           	 </div> -->
+	        </div>
+	        <div class="swiper-pagination"></div>
+	    </div>
+	    <div class="bgcf zan">
+		    <div class="goods-tit">
+		    	
+		    </div>
+	    	<div class="zhuangtai">
+	            <dl>
+	                <dd><a href="http://a.app.qq.com/o/simple.jsp?pkgname=art.jupai.com.jupai"><img src="{$CDN_BASE_URL_RES}/html/wz/images/zan.png"><br>点赞</a></dd>
+	                <dd><a href="http://a.app.qq.com/o/simple.jsp?pkgname=art.jupai.com.jupai"><img src="{$CDN_BASE_URL_RES}/html/wz/images/quanzi_sc.png"><br>收藏</a></dd>
+	                <dd><a href="http://a.app.qq.com/o/simple.jsp?pkgname=art.jupai.com.jupai"><img src="{$CDN_BASE_URL_RES}/html/wz/images/fx.png"><br>分享</a></dd>
+	                <dd><a href="http://a.app.qq.com/o/simple.jsp?pkgname=art.jupai.com.jupai"><img src="{$CDN_BASE_URL_RES}/html/wz/images/zb.png"><br>装裱</a></dd>
+	            </dl>
+	        </div>
+	    </div>  
+  		<div class="guanzhu guanzhu01  bgcf clearfix">
+ 			
+ 		</div> 
+ 		<div class="bgcf">
+ 			<div class="tab">
+		        <ul  class="clearfix">
+		          <li class="active">商品详情</li>
+		          <li>作者简介</li>
+		        </ul>
+	        </div>
+	        <div class="tab-list cpinfo f-tac" style="display: block;">
+	        	<div class="PIC"></div> 
+				<div class="zhankai"><span><i>展开全部</i><br><img src="{$CDN_BASE_URL_RES}/html/wz/images/arrow.png" style="display: inline-block;"></span></div>
+			</div>
+			<div class="tab-list jianjiee">
+				
+			</div>	
+ 		</div>	
+ 		<div class="bgcf pingjia">
+        	<div class="pj-hd">
+	 			<h3 class="f-dib">商品评价</h3>
+	 			<a class="f-fr" href="http://a.app.qq.com/o/simple.jsp?pkgname=art.jupai.com.jupai">全部评价</a>
+	 		</div> 		
+ 		</div>
+ 		<div class="bgcf">
+ 			<div class="pj-hd">
+	 			<h3 class="f-dib">看了又看</h3>
+	 		</div>
+	 		<div class="looks">
+	 			<ul>
+	 				
+	 			</ul>
+	 		</div>
+ 		</div>
+ 		<div class="dixian">掌玩艺术一直有底线</div>
+	</section>
+	<div class="buy-btn fixed1">
+		<a href="http://a.app.qq.com/o/simple.jsp?pkgname=art.jupai.com.jupai">
+			<ul class="">
+	            <li class="item1"><img src="{$CDN_BASE_URL_RES}/html/wz/images/pl.png"><br>评论</li>
+	            <li class="item2"><img src="{$CDN_BASE_URL_RES}/html/wz/images/ta.png"><br>联系TA</li>
+	            <li class="item3">加入购物车</li>
+	            <li class="item4">立即购买</li>
+	        </ul>
+		</a>
+    </div>
+    <div style="height: 1.3rem;"></div>
+	<script src="{$CDN_BASE_URL_RES}/html/wz/js/touchTouch.jquery.js?128"></script> 
+	<script src="{$CDN_BASE_URL_RES}/html/wz/js/swiper.min.js"></script>
+<script language="javascript"> 
+    //获取用户uid
+    // if(typeof(HandPlay)!="undefined"){
+    //     var UID = HandPlay.getUserId();
+    //     console.log( UID);
+    //     //alert(UID);
+    // }else{
+    //     var UID = qiaoxuekui.getUU();
+    // } 
+
+	function GetQueryString(name)
+	{
+	     var reg = new RegExp("(^|&)"+ name +"=([^&]*)(&|$)");
+	     var r = window.location.search.substr(1).match(reg);
+	     if(r!=null)return  unescape(r[2]); return null;
+	}
+	console.log(GetQueryString("id"));
+	var uid = GetQueryString("id");
+ 
+	// var _touch =function(){
+ //    $(".exc2 .list").each(function(){
+ //        $(this).find("a").touchTouch();
+ //    });
+ //    }
+
+		var _lunbo = function(){
+			//图片放大事件
+		    $(".exc2 .list").each(function(){
+		        $(this).find("a").touchTouch();
+		    });
+		    var swiper = new Swiper('.swiper-container', {
+		        pagination: '.swiper-pagination',
+		        paginationType: 'fraction',
+		        //loop:true,
+		        autoHeight: true,
+		        autoplay : 3000,
+		    });
+		    $(".exc2 .list").each(function(){
+		        $(this).find("a").touchTouch();
+		    });
+		}
+ 
+	    //tab
+	    $(".tab li").click(function() {
+	      $(this).addClass('active').siblings().removeClass('active');
+	      var li_index = $(".tab li").index(this)
+	      $(".tab-list").eq(li_index).fadeIn().siblings('.tab-list').hide();
+	    });
+
+	//轮播
+	$.ajax({
+	    type:"POST",
+	    url:"/mall/goods/item/detail?id="+uid,
+	    dataType:"json",
+	    cache: false,
+	    error: function(){
+	        alert("未知错误");
+	    },
+	    success: function(msg){
+	        if(msg.error_code == 0){
+	            var lunbo = msg.data;
+	            //console.log(lunbo);
+	            //轮播图片
+	 			_lunb = '';
+	 			$.each( lunbo.itemImage, function(index, content0){
+					_lunb += '<div class="swiper-slide">';
+		        		_lunb += '<a href="'+content0.gi_img+'"><img src="'+content0.gi_img+'"></a>';
+		           	_lunb += '</div>';
+		           	
+				});
+	 			$(".list").prepend(_lunb);
+	 			$pic();
+	 			_lunbo();
+	 			
+				var __size=lunbo.item[0].g_width+"cmx"+lunbo.item[0].g_height+"cm";
+				if(lunbo.item[0].g_width == "0" || lunbo.item[0].g_height == "0" ){
+					for(var i = 0;i<lunbo.itemAttr.length;i++){
+							if(lunbo.itemAttr[i].ga_key == "尺寸"){
+								__size = lunbo.itemAttr[i].ga_value;
+									break;
+							}
+					}
+				}
+ 
+	            //产品信息
+	            var str2 =
+		    	'<h3>'+lunbo.item[0].g_name+'</h3>'+
+		    	'<p>'+lunbo.item[0].g_realname+' '+lunbo.item[0].categoryName+'/'+__size+'/'+lunbo.item[0].g_madeTime+'</p>'+
+		    	'<font>￥'+lunbo.item[0].g_price+'</font>';
+		    	$(".goods-tit").append(str2);
+
+		    	//已点赞用户头像
+		    	var _zan = '';
+		    	console.log(lunbo.itemLikes.list);
+			    _zan += '<div class="zan-pic">';
+		  			_zan += '<ul class="clearfix f-pr">';
+		  				_zan += '<i class="f-pa"></i>';
+	  					$.each(lunbo.itemLikes.list,function(indexI,contentI){
+	  						_zan += '<li><img src="'+contentI.gll_avatar+'"></li>';
+	  					});
+		  			_zan += '</ul>';
+		  		_zan += '</div> ';
+
+		  		$(".zan").after(_zan);
+
+		    	//个人信息
+		    	var str3 = ''
+	 			str3 += '<span class="f-fl">';
+	 			if(lunbo.item[0].g_avatar==''){
+	 				str3 += '<img src="//cdn.16988.cn/res/html/pc/images/morentouxiang.png">';
+	 			}else{
+	 				str3 += '<img src="'+lunbo.item[0].g_avatar+'">';
+	 			}
+
+	 			str3 += '</span>';
+	 			str3 += '<div class="f-pr">';
+	 				if(lunbo.item[0].g_realname==''){
+	 					str3 += '<span>'+lunbo.item[0].g_nickname+'</span>';
+	 				}else{
+	 					str3 += '<span>'+lunbo.item[0].g_realname+'</span>';
+	 				}
+	 				str3 += '<p>'+lunbo.item[0].saler_goodsNum+'件作品    &nbsp;&nbsp;'+lunbo.item[0].saler_fans+'位粉丝  &nbsp;&nbsp;'+lunbo.item[0].saler_certification+'次打赏</p>';
+	 				str3 += '<a href="http://a.app.qq.com/o/simple.jsp?pkgname=art.jupai.com.jupai" class="gz">+关注</a>';
+	 			str3 += '</div>';
+	 			$(".guanzhu01").append(str3);
+
+	 			//创作手记
+	 			var _shouji = ''
+	 			if(!lunbo.item[0].g_inspiration){
+	 				$(".shouji").hide();
+	 			}else{
+	 				_shouji += '<div class="shouji f-tal"><h3>创作手记</h3>'+lunbo.item[0].g_inspiration+'</div>';
+	 			}
+	 			
+	 			$(".cpinfo").prepend(_shouji);
+
+	 			//商品详情图片
+	 			_pic = '';
+	 			console.log(lunbo.itemImage);
+	 			$.each( lunbo.itemImage, function(index, content1){
+					_pic += '<img src="'+content1.gi_img+'">';
+
+				});
+				var pic_num = $(".PIC img").length
+	 		
+	 			$(".PIC").prepend(_pic);
+	 			$(".PIC img:gt(0)").hide();
+	 			$(".zhankai span").toggle(function(){
+	 				$(".PIC img:gt(0)").show();
+	 				$(".zhankai i").html("点击收起");
+	 				$(".zhankai span img").addClass("rotate");
+	 			},function(){
+	 				$(".PIC img:gt(0)").hide();
+	 				$(".zhankai i").html("点击展开");
+	 				$(".zhankai span img").removeClass("rotate");
+	 			});
+
+	 			//判断商品详情图片的个数，如果只有1个，就隐藏展开更多
+	 			var sp_num = $(".PIC img").length;
+	 			//console.log(sp_num);
+	 			if(sp_num==1){
+	 				$(".zhankai").hide();
+	 			}
+
+
+
+	 			//简介
+	 			_jianjie = ''
+	 			if(lunbo.item[0].gu_authorIntroduction==''){
+	 				_jianjie += '<p>这个人很忙，没来得及简介~</p>';
+	 			}else{
+	 				_jianjie += '<p>'+lunbo.item[0].gu_authorIntroduction+'</p>';
+	 			}
+	 			$(".jianjiee").append(_jianjie);
+	        }else{
+	            alert(msg.error_msg);
+	        };
+	    }
+	}); 
+
+	//评论
+	$.ajax({
+	    type: "POST",
+	    url: "/mall/goods/comment/lists?g_id="+uid, 
+	    dataType: "json",
+	    cache: false,
+	    error: function () {    
+	        alert("未知错误");
+	    },
+	    success: function(msg){
+	        if(msg.error_code == 0){ 
+	            var pinglun = msg.data.rows;
+	            var _num = msg.data.totalCount;
+	            //console.log(_num);
+	            if(pinglun.length > 0){
+	            	var str = ''
+	                $.each( pinglun, function(index, content)
+	                {
+						str += '<div class="pl-list">';
+					 		str += '<div class="guanzhu bgcf clearfix">';
+					 			str += '<span class="f-fl"><img src="'+content.u_avatar+'"></span>';
+					 			str += '<div class="f-pr">';
+					 				str += '<span>'+content.u_realname+'</span>';
+					 				str += '<p>'+content.gc_time+'</p>';
+					 				str += '<a href="http://a.app.qq.com/o/simple.jsp?pkgname=art.jupai.com.jupai"><img src="{$CDN_BASE_URL_RES}/html/wz/images/plicon.png" class="f-pa"></a>';
+					 			str += '</div>';
+					 		str += '</div>';
+					 		str += '<p class="txt">'+content.gc_content+'</p>';
+				 		str += '</div>';
+						$(".pingjia").append(str);
+	                });
+
+	            }
+	        }else{
+	            alert(msg.error_msg);
+	        };
+	    }
+	});
+
+
+	//看看了有看
+	$.ajax({
+	    type:"POST",
+	    url:"/home/home/handpickGoods",
+	    dataType:"json",
+	    cache: false,
+	    error: function(){
+	        alert("未知错误");
+	    },
+	    success: function(msg){
+	        if(msg.error_code == 0){
+	            var hotlist = msg.data.good_list;
+	            if(hotlist.length > 0){
+	                $.each( hotlist, function(index, content)
+	                {
+	                	if(index<4){
+	                    	var str = 
+		                    '<li>'+
+			 					'<a href="goodsInfo.html?id='+content.g_id+'">'+
+			 						'<span><img src="'+content.image[0].gi_img+'"></span>'+
+			 						'<h3>'+content.g_name+'</h3>'+
+			 						'<pre>￥'+content.g_price+'</pre>' +
+			 					'</a>'+
+			 				'</li>'; 
+			 			}	
+	                    $(".looks ul").append(str); 
+	                });
+	            }
+	        }else{
+	            alert(msg.error_msg);
+	        };
+	    }
+	}); 
+	</script>	
+</body>
+</html>

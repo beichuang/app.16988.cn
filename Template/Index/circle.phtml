@@ -1,0 +1,490 @@
+<!doctype html>
+<html lang="zh">
+<head>
+	<meta charset="UTF-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=Edge" />
+	<title>圈子</title>
+    <link rel="stylesheet" href="{$CDN_BASE_URL_RES}/html/pc/css/global.css?171201">
+	<link rel="stylesheet" href="{$CDN_BASE_URL_RES}/html/pc/css/zoom.css">
+	<script src="{$CDN_BASE_URL_RES}/html/js/jquery.min.js"></script>
+    <script src="{$CDN_BASE_URL_RES}/html/pc/js/zhangwan.js?180105"></script>
+	
+<style type="text/css">
+    .photo-mask {
+        position: fixed;
+        z-index: 10;
+        bottom: 0;
+        top: 0;
+        left: 0;
+        right: 0;
+        background: rgba(0, 0, 0, 0.8);
+        filter: alpha(opacity=20);
+        -moz-opacity: 0.8;
+        opacity: 0.8;
+        display: none;
+    }
+    
+    .photo-panel {
+        position: fixed;
+        display: none;
+        clear: both;
+        top: 0;
+        left: 0;
+        bottom: 0;
+        right: 0;
+        z-index: 10;
+    }
+    
+    .photo-panel .photo-div,
+    .photo-panel .photo-bar {
+        width: 100%;
+    }
+    
+    .photo-panel .photo-div {
+        width: 960px;
+        height: 560px;
+        z-index: 11;
+        margin: auto;
+        position: relative;
+    }
+    
+    .photo-panel .photo-close {
+        background: url(https://cdn.16988.cn/res/html/pc/images/close.png?22);
+        width: 50px;
+        height: 50px;
+        -webkit-background-size: 50px;
+        background-size: 50px;
+        position: absolute;
+        margin-left: 720px;
+    }
+    
+    
+    
+    .photo-panel .photo-bar-tip {
+        width: 700px;
+        height: 44px;
+        position: absolute;
+        margin-top: -64px;
+        padding: 10px;
+    }
+    
+    .photo-panel .photo-bar-tip:hover {
+        width: 700px;
+        height: 44px;
+        position: absolute;
+        margin-top: -64px;
+        background: #000;
+        filter: alpha(opacity=20);
+        -moz-opacity: 0.8;
+        opacity: 0.8;
+        color: #fff;
+        padding: 10px;
+    }
+    
+    .photo-panel .photo-img {
+        width: 720px;
+        float: left;
+        height: 560px;
+        background: #fff;
+    }
+    
+    .photo-panel .photo-view-w {
+        width: 720px;
+        height: 560px;
+        text-align: center;
+        vertical-align: middle;
+        display: table-cell;
+    }
+    
+    .photo-panel .photo-view-h {
+        width: 720px;
+        height: 560px;
+        text-align: center;
+        vertical-align: middle;
+    }
+    
+    .photo-panel .photo-view-w img {
+        max-width: 700px;
+        height: auto;
+        vertical-align: middle;
+        text-align: center;
+        max-height: 540px;
+        margin: 10px;
+        -moz-box-shadow: 5px 5px 5px #a6a6a6;
+        /* 老的 Firefox */
+        box-shadow: 5px 5px 5px #a6a6a6;
+        -webkit-animation: swing 1s .2s ease both;
+        -moz-animation: swing 1s .2s ease both;
+    }
+    
+    .photo-panel .photo-view-h img {
+        max-width: 700px;
+        height: 540px;
+        margin: 10px;
+        -moz-box-shadow: 5px 5px 5px #a6a6a6;
+        /* 老的 Firefox */
+        box-shadow: 5px 5px 5px #a6a6a6;
+        -webkit-animation: swing 1s .2s ease both;
+        -moz-animation: swing 1s .2s ease both;
+    }
+    
+    @-webkit-keyframes swing {
+        20%,
+        40%,
+        60%,
+        80%,
+        100% {
+            -webkit-transform-origin: top center
+        }
+        20% {
+            -webkit-transform: rotate(15deg)
+        }
+        40% {
+            -webkit-transform: rotate(-10deg)
+        }
+        60% {
+            -webkit-transform: rotate(5deg)
+        }
+        80% {
+            -webkit-transform: rotate(-5deg)
+        }
+        100% {
+            -webkit-transform: rotate(0deg)
+        }
+    }
+    
+    @-moz-keyframes swing {
+        20%,
+        40%,
+        60%,
+        80%,
+        100% {
+            -moz-transform-origin: top center
+        }
+        20% {
+            -moz-transform: rotate(15deg)
+        }
+        40% {
+            -moz-transform: rotate(-10deg)
+        }
+        60% {
+            -moz-transform: rotate(5deg)
+        }
+        80% {
+            -moz-transform: rotate(-5deg)
+        }
+        100% {
+            -moz-transform: rotate(0deg)
+        }
+    }
+    
+    .photo-panel .photo-left,
+    .photo-panel .photo-right {
+        width: 50px;
+        float: left;
+        margin-top: 220px;
+    }
+    
+    .photo-panel .arrow-prv {
+        background: url({$CDN_BASE_URL_RES}/html/pc/images/arrows.png);
+        width: 50px;
+        height: 50px;
+    }
+    
+     
+    
+    .photo-panel .arrow-next {
+        background: url({$CDN_BASE_URL_RES}/html/pc/images/arrows.png);
+        width: 50px;
+        height: 50px;
+        background-position: -50px 0;
+    }
+    
+     
+    
+    .demo {
+        width: 800px;
+        margin: 10px auto;
+    }
+    
+    .demo li {
+        width: 200px;
+        overflow: hidden;
+        height: 200px;
+        float: left;
+    }
+    
+    .demo li img {
+        width: 200px;
+        height: auto;
+    }
+</style>
+
+</head>
+<body>
+	<!-- nav -->
+	<div class="header bgc">
+		<div class="container nav">
+			<a href="index.html" class="f-fl logo"><img src="{$CDN_BASE_URL_RES}/html/pc/images/logo.png"></a>
+			<ul>
+				<li><a href="index.html">首页</a></li>
+				<li><a href="headlines.html">头条</a></li>
+				<li class="on"><a href="circle.html">圈子</a></li>
+				<li><a href="treasure.html">寻宝</a></li>
+				<li><a href="download.html">APP下载</a></li>
+				<li><a href="about.html">关于我们</a></li>
+			</ul>		
+			<div class="clearfix f-fr search-box">
+				<input type="text" placeholder="请输入关键词" class="search f-fl">
+				<button class="f-fr icon submit" type="button"></button>
+			</div>								
+		</div>
+	</div>
+	<div class="container f-pr clearfix layout ">
+		<div class="f-fl bgc quanzi ">
+			<div class="more-btn" value="">浏览更多</div>
+		</div>
+		<div class="f-fr bgc sidebar quanyou">
+			<div class="titlebar clearfix">
+				<h3 class="">活跃圈友</h3>
+			</div>
+			<!-- 显示6条 -->			 
+		</div>
+	</div>
+<div class="photo-mask"></div>
+<div class="photo-panel">
+    <div class="photo-div">
+        <div class="photo-left">
+            <div class="arrow-prv"></div>
+        </div>
+        <div class="photo-img">
+            <div class="photo-bar">
+                <div class="photo-close"></div>
+            </div>
+            <div class="photo-view-h">
+                <img src="" />
+            </div>
+        </div>
+        <div class="photo-right">
+            <div class="arrow-next"></div>
+        </div>
+    </div>
+</div>
+<script>
+var pic = function(){
+    var img_index = 0;
+    var img_src = "";
+    var zuoyongyu = null;//这个变量用来存放被点击图片所在的.demo对象每次点击只有一个
+    $(function() {
+        //计算居中位置
+        var mg_top = ((parseInt($(window).height()) - parseInt($(".photo-div").height())) / 2);
+
+        $(".photo-div").css({
+            "margin-top": "" + mg_top + "px"
+        });
+        //关闭
+        $(".photo-close").click(function() {
+            $(".photo-mask").hide();
+            $(".photo-panel").hide();
+        });
+        //下一张
+        $(".photo-panel .photo-div .arrow-next").click(function() {
+            img_index++;
+            /**
+             * 这里的下一张只被点击区域的.demo中 如果用原来选择器选的话会把页面所有的.demo都选出来
+             * 图片切换只在zuoyongyu.find('img')里面的img之间
+             */
+            if(img_index >= zuoyongyu.find('img').length) {
+                img_index = 0;
+            }
+            img_src = zuoyongyu.find('img').eq(img_index).attr("src");
+            photoView(zuoyongyu.find('img').eq(img_index));
+        });
+        //上一张
+        $(".photo-panel .photo-div .arrow-prv").click(function() {
+            img_index--;
+            /**
+             * 这里的下一张只被点击区域的.demo中 如果用原来选择器选的话会把页面所有的.demo都选出来
+             * 图片切换只在zuoyongyu.find('img')里面的img之间
+             */
+            if(img_index < 0) {
+                img_index = zuoyongyu.find('img').length - 1;
+            }
+            img_src = zuoyongyu.find('img').eq(img_index).attr("src");
+            photoView(zuoyongyu.find('img').eq(img_index));
+        });
+        //如何调用？
+        $(".demo li img").click(function() {
+            $(".photo-mask").show();
+            $(".photo-panel").show();
+            img_src = $(this).attr("src");
+            img_index = $(this).parents('li').index();//图片父级li的索引值 img没有兄弟元素索引一直都是0
+            photoView($(this));
+            zuoyongyu = $(this).parents('.demo');//把点击区域外层的.demo放进变量里
+        });
+
+    });
+    //自适应预览
+    function photoView(obj) {
+        if($(obj).width() >= $(obj).height()) {
+            $(".photo-panel .photo-div .photo-img .photo-view-h").attr("class", "photo-view-w");
+            $(".photo-panel .photo-div .photo-img .photo-view-w img").attr("src", img_src);
+        } else {
+            $(".photo-panel .photo-div .photo-img .photo-view-w").attr("class", "photo-view-h");
+            $(".photo-panel .photo-div .photo-img .photo-view-h img").attr("src", img_src);
+        }
+        //此处写调试日志
+        //console.log(img_index);
+    }
+}
+</script>
+	<script>
+		//关注的点击事件
+		var _gaunzhu = function(){
+	        $(".follow").click(function(){
+	        	$(".popup-box01").show();
+	        	$(".popup-box .popup p em").html("关注");
+	        });
+		}
+
+		var page = 1;
+		var pageSize = 6;
+        $(function () {
+            getLists(page, pageSize);
+        })
+
+		function getLists(page, pageSize){
+            //圈子
+            $.ajax({
+                type: "POST",
+                url: "/treasure/treasure/lists?type=4&page="+page+"&pageSize="+pageSize,
+                dataType: "json",
+                cache: false,
+                error: function () {
+                    alert("未知错误");
+                },
+                success: function(msg){
+                    if(msg.error_code == 0){
+                        var quanziList = msg.data;
+                        if(quanziList.length > 0){
+                            $.each( quanziList, function(index, content)
+                            {
+                                //console.log(content.displayTime);
+                                var str = ''
+                                    str +='<div class="quanzi-list">';
+                                    str +='<div class="suspend clearfix">';
+                                    str +='<div class="photo-box"><a href="javasrcipt:vodi(0);" class="photo">';
+                                    if((content.t_avatar=='')){
+                                        str+='<img src="{$CDN_BASE_URL_RES}/html/pc/images/morentouxiang.png">';
+                                    }else{
+                                        str+='<img src="'+content.t_avatar+'">';
+                                    }
+                                    
+                                    str +='</a></div>';
+                                    str +='<div class="suspend-info">';
+                                    str +='<h3>'+content.t_nickname+'</h3>';
+                                    str +='<p>'+content.displayTime+'</p>';
+                                    str +='</div>';
+                                    str +='</div>';
+                                    str +='<p class="txt">'+ content.t_desc +'</p>';
+                                    str +='<div class="quanzi-pic demo"><ol class="clearfix">';
+                                if((content.t_pictures[0])){
+                                    $.each( content.t_pictures, function(index1, content1){
+                                        if(index1<3){str += '<li><img src="'+content1.ti_img+'"></li>';}
+
+                                    });
+                                }
+                                    str += '</ol></div>'; 
+                                    str +='<ul class="foot clearfix">';
+                                    str +='<li>';
+                                    str +='<div class="praise1 praiseb">';
+                                    str +='<span class="praise"><img src="{$CDN_BASE_URL_RES}/html/pc/images/zan.png" class="praise-img animation"><i>点赞</i></span>';
+                                    str +='<span class="add-num" style="display: inline;"><em class="add-animation hover"></em></span>';
+                                    str +='</div>';
+                                    str +='</li>';
+                                    str +='<li class="popup-btn pl-btn"><i class="icon pl"></i>评论</li>';
+                                    str +='<li class="popup-btn cang-btn"><i class="icon cang"></i>收藏</li>';
+                                    str +='</ul>';
+                                    str +='</div>';
+
+                                if (page ==1){
+                                    $(".quanzi").prepend(str);
+                                }else {
+                                    $(".more-btn").before(str);
+                                }
+                                
+                            });
+                            
+                        }
+                        onQuanziClick && onQuanziClick();
+                        pic();
+
+                        page ++;
+                        $('.more-btn').val(page);
+                    }else{
+                        alert(msg.error_msg);
+                    };
+                }
+            });
+        }
+
+        //加载更多
+        $(".more-btn").click(function(){
+            getLists($('.more-btn').val(), pageSize);
+        });
+
+
+        //活跃圈友
+        $.ajax({
+            type: "POST",
+            url: "/treasure/treasure/activeTreasure",
+            dataType: "json",
+            cache: false,
+            error: function () {
+                alert("未知错误");
+            },
+            success: function(msg){
+                if(msg.error_code == 0){
+                    var quanziList = msg.data;
+                    if(quanziList.length > 0){
+                        $.each( quanziList, function(index, content)
+                        {
+                        	if(index<6){
+                        		//console.log(content.displayTime);
+	                        	var str = ''
+								str += '<div class="suspend clearfix quanyuan">';
+									str += '<div class="photo-box"><a href="javascript:void(0);" class="photo">';
+									if(content.t_avatar == ''){
+										str += '<img src="{$CDN_BASE_URL_RES}/html/pc/images/morentouxiang.png">';
+									}else{
+										str += '<img src="'+content.t_avatar+'">';
+									}
+									str += '</a></div>';
+									str += '<div class="suspend-info2">';
+										str += '<h3>';
+											str += '<a href="javascript:void(0);">'+content.t_nickname+'</a>';
+											str += '<a href="javascript:void(0);" class="f-fr follow">+关注</a>';
+										str += '</h3>';
+										str += '<p>';
+											str += '<span>'+content.attentionNum+'关注 </span>';
+											str += '<span>'+content.fansNum+'粉丝 </span>';
+											str += '<span>'+content.goodsNum+'作品</span>';
+										str += '</p>';
+									str += '</div>';
+								str += '</div>';								 
+								$(".quanyou").append(str);
+								_gaunzhu();
+							}
+                        });
+                    }
+                }else{
+                    alert(msg.error_msg);
+                };
+            }
+        });
+
+
+	</script>
+
+</body>
+</html>                                              

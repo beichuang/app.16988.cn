@@ -1,0 +1,170 @@
+<!doctype html>
+<html lang="en">
+<head>
+{template public/WxShareJS}
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <script src="{$CDN_BASE_URL_RES}/html/js/work/fontSize.min.js"></script>
+    <script src="//cdn.16988.cn/res/html/js/work/fontSize.min.js"></script>
+    <title>装裱</title>
+    <link rel="stylesheet" href="{$CDN_BASE_URL_RES}/html/css/public.min.css">
+    <link rel="stylesheet" href="{$CDN_BASE_URL_RES}/html/css/swiper.min.css">
+    <link rel="stylesheet" href="{$CDN_BASE_URL_RES}/html/css/mount.min.css?v=1.1">
+    <script src="{$CDN_BASE_URL_RES}/html/js/lib/require.js" data-main="{$CDN_BASE_URL_RES}/html/js/work/mount.min.js"></script>
+
+<!--     <link rel="stylesheet" href="//cdn.16988.cn/res/html/css/public.min.css">
+    <link rel="stylesheet" href="//cdn.16988.cn/res/html/css/swiper.min.css">
+    <link rel="stylesheet" href="//cdn.16988.cn/res/html/css/mount.min.css?v=1.1">
+    <script src="//cdn.16988.cn/res/html/js/lib/require.js" data-main="//cdn.16988.cn/res/html/js/work/mount.min.js"></script>
+    <script type="text/javascript" charset="utf-8" async="" data-requirecontext="_" data-requiremodule="mount.min" src="//cdn.16988.cn/res/html/js/work/mount.min.js"></script>
+    <script type="text/javascript" charset="utf-8" async="" data-requirecontext="_" data-requiremodule="common" src="//cdn.16988.cn/res/html/js/work/common.js"></script>
+    <script type="text/javascript" charset="utf-8" async="" data-requirecontext="_" data-requiremodule="jq" src="//cdn.16988.cn/res/html/js/work/../lib/jquery-1.12.4.min.js"></script>
+    <script type="text/javascript" charset="utf-8" async="" data-requirecontext="_" data-requiremodule="swiper" src="//cdn.16988.cn/res/html/js/work/../lib/swiper.min.js"></script>
+    <script type="text/javascript" charset="utf-8" async="" data-requirecontext="_" data-requiremodule="plugin" src="//cdn.16988.cn/res/html/js/work/plugin.min.js"></script> -->
+
+    <style>
+        .canvas-img {
+            display: block; 
+            width: 90%;
+            margin: 10% auto 0;
+        }
+        .canvas-img img{
+            display: block;
+        }
+        .canvas-img#border1,.canvas-img#border2,.canvas-img#border3,.canvas-img#border4,.canvas-img#border5{
+            background-image: none;padding: 0;
+        }
+        .canvas-img#border1 .top0{
+            background: url(https://cdn.16988.cn/res/html/images/bigBorder1_01.png)  no-repeat;
+            -webkit-background-size: 100%;
+            background-size: 100%;
+                padding: 5% 0 0 0;
+        }
+        .canvas-img#border1>p.top1{
+            background: url(https://cdn.16988.cn/res/html/images/bigBorder1_02.png) ;
+            -webkit-background-size: 100% 100%;
+            background-size: 100% 100%;
+            padding: 0 6% 0% 6%;
+        }
+        .canvas-img#border1>p.bottom2{
+            background: url(https://cdn.16988.cn/res/html/images/bigBorder1_03.png) no-repeat;
+            -webkit-background-size: 100%;
+            background-size: 100%;
+            text-indent: -9999px;
+            padding: 4%;
+        }
+
+        .canvas-img#border2 .top0{
+            background: url(https://cdn.16988.cn/res/html/images/bigBorder2_01.png)  no-repeat;
+            -webkit-background-size: 100%;
+            background-size: 100%;
+                padding: 2% 0 0 0;
+        }
+        .canvas-img#border2>p.top1{
+            background: url(https://cdn.16988.cn/res/html/images/bigBorder2_02.png) ;
+            -webkit-background-size: 100% 100%;
+            background-size: 100% 100%;
+            padding: 0 3% 0% 3%;
+        }
+        .canvas-img#border2>p.bottom2{
+            background: url(https://cdn.16988.cn/res/html/images/bigBorder2_03.png) no-repeat;
+            -webkit-background-size: 100%;
+            background-size: 100%;
+            text-indent: -9999px;
+            padding: 4%;
+        }
+
+        .canvas-img#border3 .top0{
+            background: url(https://cdn.16988.cn/res/html/images/bigBorder3_01.png)  no-repeat;
+            -webkit-background-size: 100%;
+            background-size: 100%;
+                padding: 5% 0 0 0;
+        }
+        .canvas-img#border3>p.top1{
+            background: url(https://cdn.16988.cn/res/html/images/bigBorder3_02.png) ;
+            -webkit-background-size: 100% 100%;
+            background-size: 100% 100%;
+            padding: 0 6% 0% 6%;
+        }
+        .canvas-img#border3>p.bottom2{
+            background: url(https://cdn.16988.cn/res/html/images/bigBorder3_03.png) no-repeat;
+            -webkit-background-size: 100%;
+            background-size: 100%;
+            text-indent: -9999px;
+            padding: 4%;
+        }
+
+        .canvas-img#border4 .top0{
+            background: url(https://cdn.16988.cn/res/html/images/bigBorder4_01.png)  no-repeat;
+            -webkit-background-size: 100%;
+            background-size: 100%;
+                padding: 6% 0 0 0;
+        }
+        .canvas-img#border4>p.top1{
+            background: url(https://cdn.16988.cn/res/html/images/bigBorder4_02.png) ;
+            -webkit-background-size: 100% 100%;
+            background-size: 100% 100%;
+            padding: 0 6% 0% 6%;
+        }
+        .canvas-img#border4>p.bottom2{
+            background: url(https://cdn.16988.cn/res/html/images/bigBorder4_03.png) no-repeat;
+            -webkit-background-size: 100%;
+            background-size: 100%;
+            text-indent: -9999px;
+            padding: 4%;
+        }
+
+        .canvas-img#border5 .top0{
+            background: url(https://cdn.16988.cn/res/html/images/bigBorder5_01.png)  no-repeat;
+            -webkit-background-size: 100%;
+            background-size: 100%;
+                padding: 5% 0 0 0;
+        }
+        .canvas-img#border5>p.top1{
+            background: url(https://cdn.16988.cn/res/html/images/bigBorder5_02.png) ;
+            -webkit-background-size: 100% 100%;
+            background-size: 100% 100%;
+            padding: 0 6% 0% 6%;
+        }
+        .canvas-img#border5>p.bottom2{
+            background: url(https://cdn.16988.cn/res/html/images/bigBorder5_03.png) no-repeat;
+            -webkit-background-size: 100%;
+            background-size: 100%;
+            text-indent: -9999px;
+            padding: 4%;
+        }
+    </style>
+</head>
+<body>
+    <div class="canvas-img clearfix" id="border">
+        <p class="top0"></p>
+        <p class="top1"><img src="" alt="作品名字" onload="loadImage()"></p>
+        <p class="bottom2"></p>
+        
+    </div>
+    <div class="swiper-container padding">
+        <div class="swiper-wrapper">
+            <div class="swiper-slide border0 active">无框</div>
+            <div class="swiper-slide border1"></div>
+            <div class="swiper-slide border2"></div>
+            <div class="swiper-slide border3"></div>
+            <div class="swiper-slide border4"></div>
+            <div class="swiper-slide border5"></div>
+        </div>
+    </div>
+    <script src="https://cdn.bootcss.com/jquery/3.2.1/jquery.min.js"></script>
+    <script>
+        function loadImage(){
+           
+            if($(".canvas-img img").height() >= $(window).height()){
+                $(".canvas-img").css("width","35%");  
+            }
+            else if($(".canvas-img img").height() <= $(window).height()){
+                $(".canvas-img").css("width","60%");
+            } 
+        }
+        
+    </script>
+</body>
+</html>

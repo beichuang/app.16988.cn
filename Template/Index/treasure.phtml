@@ -1,0 +1,164 @@
+<!doctype html>
+<html lang="zh">
+<head>
+	<meta charset="UTF-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=Edge" />
+	<title>寻宝</title>
+	<link rel="stylesheet" href="{$CDN_BASE_URL_RES}/html/pc/css/global.css?171201">
+	<script src="{$CDN_BASE_URL_RES}/html/js/jquery.min.js"></script>
+	<style>
+		.toutiao .tab li h3{font-size: 16px;}
+		.toutiao .tab{margin-top: 0;margin-left: 0;margin-bottom: 20px;}
+		.xunbao02 li{margin-bottom: 35px;margin-left: 44px;}
+        .sidebar .suspend-info2 p{margin-top: 5px;margin-bottom: 25px;}
+        .tuijian .suspend-info2 h3{margin-top: 10px;}  
+	</style>
+</head>
+<body>
+	<!-- nav -->
+	<div class="header bgc">
+		<div class="container nav">
+			<a href="/" class="f-fl logo"><img src="{$CDN_BASE_URL_RES}/html/pc/images/logo.png"></a>
+            <ul>
+                <li><a href="/">首页</a></li>
+                <li><a href="/Index/headlines.html">头条</a></li>
+                <li><a href="/Index/circle.html">圈子</a></li>
+                <li class="on"><a href="/Index/treasure.html">寻宝</a></li>
+                <li><a href="/Index/download.html">APP下载</a></li>
+                <li><a href="/Index/about.html">关于我们</a></li>
+            </ul>
+			<div class="clearfix f-fr search-box">
+				<input type="text" placeholder="请输入关键词" class="search f-fl">
+				<button class="f-fr icon submit" type="button"></button>
+			</div>								
+		</div>
+	</div>
+	<div class="container f-pr clearfix layout toutiao">
+		<div class="f-fl bgc xunbao-box bdc"> 
+			<div class="tab tab01 bgc">
+			<ul>
+			</ul>
+		</div>
+			<div class="tab-list-box">
+				<ul class="xunbao xunbao02"></ul>
+			</div>
+            <input type="hidden" id="current_type">
+			<div class="more-btn">浏览更多</div>
+		</div>
+		<div class="f-fr bgc sidebar tuijian bdc xunbaHot">
+			<div class="titlebar clearfix">
+				<h3 class="">精选推荐</h3>
+			</div>
+			<!-- 显示6条 -->
+		</div>
+	</div>
+	<script src="{$CDN_BASE_URL_RES}/html/pc/js/zhangwan.js?180305"></script>
+	<script>
+        var page=1;
+        var pageSize=6;
+
+		//寻宝分类
+		$.ajax({
+			type:"POST",
+			url:"/mall/goods/category/lists?id=0",
+			dataType:"json",
+			cache: false,
+			error: function(){
+				alert("未知错误");
+			},
+			success: function(msg){
+				if(msg.error_code == 0){
+		            var hot = msg.data.list;
+		            if(hot.length > 0){
+		            	console.log(hot);
+		                $.each( hot, function(index, content)
+		                {
+	                		var str = '<li class="news'+content.c_id+'" value="'+content.c_id+'">'+content.c_name+'</li>';
+		                	$(".tab ul").append(str);
+		                	$(".tab li").eq(0).addClass("active");
+
+                            var str2 = '<div class="tab-list '+content.c_id+'"></div>';
+                            $(".tab-list-box ul").append(str2);
+
+                            if (!index){
+                                $('#current_type').val(0);
+                                change(0, page, pageSize)
+                            }
+		                });
+
+		                $(".tab li").click(function() {
+                            $(this).addClass('active').siblings().removeClass('active');
+                            var li_index = $(".tab li").index(this)
+                            $(".tab-list").eq(li_index).fadeIn(0).siblings('.tab-list').hide();
+                            $('#current_type').val(this.value);
+                            change(this.value, page, pageSize);
+                        });
+		            }
+		        }else{
+		            alert(msg.error_msg);
+		        };
+			}
+		});
+
+        //加载更多
+        $(".more-btn").click(function(){
+            change($('#current_type').val(), $('.more-btn').val(), pageSize, 'more');
+        });
+
+
+        function change(type, page, pageSize, act=''){
+            $.ajax({
+                type:"POST",
+                url:"/mall/goods/item/query",
+                dataType:"json",
+                data:{categoryId:type, page:page, pageSize:pageSize},
+                cache: false,
+                error: function(){
+                    alert("未知错误");
+                },
+                success: function(msg){
+                    if (act == ''){
+                        $("."+type).html('');
+                    }
+
+                    if(msg.error_code == 0){
+                        var all = msg.data.list;
+                        if(all.length > 0){
+                            console.log(all);
+                            $.each( all, function(index, content)
+                            {
+                                var str = '';
+                                    str += '<li>';
+                                        str += '<a href="/Index/treasureinfo.html?id='+content.g_id+'">';
+                                            str += '<span><img src="'+content.image[0].gi_img+'"></span>';
+                                            str += '<h3>'+content.u_realname+' '+content.g_name+'</h3>';
+                                                str += '<p>'+content.categoryName+'  '+content.g_width+'x'+content.g_high+'cm</p>';
+                                            str += '<font>¥'+content.g_price+'</font>';
+                                        str += '</a>';
+                                    str += '</li>';
+
+                                if (page == 1){
+                                    $("."+type).append(str);
+                                    if (type == 0){
+                                        $(".0").css('display','block');
+                                    }
+                                }else {
+                                    $("."+type).append(str);
+                                }
+
+                            });
+                        }
+
+                        page ++;
+                        $('.more-btn').val(page);
+                    }else{
+                        alert(msg.error_msg);
+                    };
+                }
+            });
+        }
+        //精品推荐
+        _jingxuan();
+	</script>
+</body>
+</html>                                              

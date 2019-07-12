@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+{template public/WxShareJS}
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width,minimum-scale=1.00001,maximum-scale=1.00001,user-scalable=no,minimal-ui">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>匠心18</title>
+    <link rel="stylesheet" href="{$CDN_BASE_URL_RES}/html/css/global.css?171116">
+    <script src="https://s28.9956.cn/static/v3_1/js/jquery.min.js"></script>
+    <script src="{$CDN_BASE_URL_RES}/html/js/setfontsize.js"></script>
+</head>
+<style>
+    body{
+        background:#f6f6f6;
+        overflow-x: hidden;
+    }
+.active-img{
+    width:100%;
+}
+img{
+    width:100%;
+}
+.active-word{
+    background:#fff;
+    padding:20px 10px 20px 20px;
+    font-size: 14px;
+    margin-bottom: 10px;
+}
+.state{
+    padding:2px 5px;
+    float:right; 
+}
+.over{
+    background:#cccccc;
+    
+}
+.active{
+    background:#cea068;
+    color:#fff;
+}
+.active-title{
+    vertical-align: -webkit-baseline-middle;
+    display:inline-block;
+    width:3rem;
+    overflow: hidden;
+        text-overflow:ellipsis;
+        white-space: nowrap;
+}
+</style>
+<body>
+    <div>
+        <div class="active-list">
+
+        </div>
+        <!-- <div class="active-img">
+            <a href=""><img src="{$CDN_BASE_URL_RES}/html/images/h5/active_02.png" alt=""></a>
+        </div>
+        <div class="active-word">
+            <span class="active-title">明前国立茶 最贵的只给尊贵的</span>
+            <span class="over state">已结束</span>
+        </div>
+
+        <div class="active-img">
+            <a href=""><img src="{$CDN_BASE_URL_RES}/html/images/h5/active_02.png" alt=""></a>
+        </div>
+        <div class="active-word">
+            <span class="active-title">明前国立茶 最贵的只给尊贵的</span>
+            <span class="over state">已结束</span>
+        </div>
+        <div class="active-img">
+            <a href=""><img src="{$CDN_BASE_URL_RES}/html/images/h5/active_02.png" alt=""></a>
+        </div>
+        <div class="active-word">
+            <span class="active-title">明前国立茶 最贵的只给尊贵的</span>
+            <span class="over state">已结束</span>
+        </div> -->
+    </div>
+    
+</body>
+<script>
+    function getdate() {
+            var now = new Date(),
+                y = now.getFullYear(),
+                m = now.getMonth() + 1,
+                d = now.getDate();
+            return y + "-" + (m < 10 ? "0" + m : m) + "-" + (d < 10 ? "0" + d : d) + " " + now.toTimeString().substr(0, 8);
+        }
+    $.ajax({
+            type: "POST",
+                url: "/mall/activity/activity/lists?page=1&pageSize=20",
+                dataType: "json",
+                cache: false,
+                error: function () {
+                    alert("未知错误");
+                },
+                success: function (msg) {
+                    if(msg.error_code == 0){
+                    var activeData = msg.data.list;
+                if(activeData.length > 0){
+                    console.log(activeData);
+                    $.each(activeData, function(index, content){
+                        var deadline = content.activity_end_date;
+                        console.log(deadline);
+                        var nowDate = new Date().valueOf();
+                        console.log(getdate(nowDate)); 
+                        // var nowDate = new Date(nowDate).toLocaleDateString().replace(/\//g, "-") + " " + new Date(nowDate).toTimeString().substr(0, 8);
+                        var nowDate =  getdate(nowDate);
+                        if(deadline < nowDate){
+                            str_state = '<span class="over state">已结束</span>'
+                        }else{
+                            // str_state = '<span class="active state"></span>'
+                            str_state = ''
+                        }
+                        str = '<div class="active-img">\
+                        <a href="/html/apph5/scheme.html?aid='+content.activity_id+'">\
+                        <img onerror="imgExists(this)" src='+content.activity_banner+'></a>\
+                        </div>\
+                        <div class="active-word">\
+                        <span class="active-title">'+content.activity_title+'</span>\
+                        '+str_state+'\
+                        </div>'
+                        $(".active-list").append(str);
+                    });
+                }
+            }else{
+                alert(msg.error_msg);
+            };
+                }
+            })
+            function imgExists(e){
+                //默认图片
+                var imgUrl = "{$CDN_BASE_URL_RES}/html/images/h5/zw.png";
+                var img = new Image();
+                img.src=imgUrl;
+                img.style.width="100px";
+                img.style.margin="0 auto";
+                //判断图片大小是否大于0 或者 图片高度与宽度都大于0
+                if(img.filesize>0||(img.width>0&&img.height>0)){
+                    e.src = imgUrl;
+                    
+                }else{
+                    return false
+                }
+            }
+            
+</script>
+</html>

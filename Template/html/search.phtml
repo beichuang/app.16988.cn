@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html>
+<head>
+{template public/WxShareJS}
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width,minimum-scale=1.00001,maximum-scale=1.00001,user-scalable=no,minimal-ui">
+	<link rel="stylesheet" type="text/css" href="{$CDN_BASE_URL_RES}/html/css/css.css?20170427">
+	<script src="{$CDN_BASE_URL_RES}/html/js/jquery.min.js"></script>
+	<script src="{$CDN_BASE_URL_RES}/html/js/currency.js?20170427"></script>
+	<title></title>
+</head>
+<body>
+	<div class="search">
+		<input type="text" name="search_content" id="search_content">
+		<span id="search-button"><img src="{$CDN_BASE_URL_RES}/html/images/search.png"></span>
+	</div>
+	<ul class="list_box"></ul>
+	<script type="text/javascript">
+		var search = document.location.search;
+		search = search.replace("?","");
+		search = search.split("=");
+		if(search[0] == "name"){
+			$("#search_content").val(decodeURIComponent(search[1]));
+			document.title = "搜索结果"
+		}else if(search[0] == "categoryId"){
+			document.title = "拍品列表"
+		}else if(search[0] == "provinceCode"){
+			document.title = "附近的宝贝"
+		}
+		var data_search = {};
+		data_search.page = 1;
+		data_search.pageSize = 100;
+		data_search[search[0]] = decodeURIComponent(search[1]);
+        $.ajax({
+        	type: "POST",
+		    url: "/mall/goods/item/query",
+		    data: data_search,
+		    dataType: "json",
+		    cache: false,
+		    error: function () {
+		        alert("未知错误");
+		    },
+		    success: function(msg){
+		        if(msg.error_code == 0){
+		        	if(msg.data.list.length == 0){
+		        		$("body").append("<div class='kong'><img src='{$CDN_BASE_URL_RES}/html/images/kong.jpg'></div>")
+		        	}else{
+		        		fn_render_pic(msg.data.list,".list_box",CalculationImg);//渲染
+		        	}
+		        }else{
+		            alert(msg.error_msg);
+		        };
+		    }
+        });
+        //搜索
+        $("#search-button").click(function(){
+        	var search = $("#search_content").val();
+        	window.location = "/html/search.html?name="+search+"";
+        });
+		function alert(e){
+        	$("body").append("<div id='msg'><span>"+e+"</span></div>");
+        	clearmsg();
+        }
+        function clearmsg(){
+        	var t = setTimeout(function(){
+        		$("#msg").remove();
+        	},2000)
+        };
+	</script>
+</body>
+</html>

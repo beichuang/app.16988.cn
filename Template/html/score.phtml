@@ -1,0 +1,87 @@
+<!doctype html>
+<html lang="zh">
+<head>
+{template public/WxShareJS}
+    <meta charset="UTF-8">
+    <title>我的积分</title>
+    <meta name="viewport" content="width=device-width,minimum-scale=1.00001,maximum-scale=1.00001,user-scalable=no,minimal-ui">
+    <link rel="stylesheet" href="{$CDN_BASE_URL_RES}/html/css/global.css">
+    <script src="https://s28.9956.cn/static/v3_1/js/jquery.min.js"></script>
+    <script src="{$CDN_BASE_URL_RES}/html/js/setfontsize.js"></script>
+</head>
+<body>
+<section class="container score">
+    <div class="banner f-pr f-tac">
+        <img src="{$CDN_BASE_URL_RES}/html/images/sign/banner.jpg">
+        <div class="info f-pa">
+            <h3><i class="num"></i></h3>
+            <div class="score-tit f-tac"><img src="{$CDN_BASE_URL_RES}/html/images/sign/jifen-icon.png" class="">我的积分</div>
+        </div>
+    </div>
+    <div class="bgc score-box">
+        <div class="titlebar"><h3 class="">积分记录</h3></div>
+        <ul class="score-list"></ul>
+    </div>
+</section>
+<script>
+$(function(){
+
+    //获取用户uid
+    if(typeof(HandPlay)!="undefined"){
+        var UID = HandPlay.getUserId();
+        console.log( UID);
+        //alert(UID);
+    }else{
+        var UID = qiaoxuekui.getUU();
+    }  
+
+    //积分数量
+    $.ajax({
+        type:"POST",
+        url:"/user/sign/add?uid="+UID,
+        dataType:"json",
+        cache: false,
+        error: function(){
+            alert("未知错误");
+        },
+        success: function(msg){
+            if(msg.error_code == 0){
+                var num = msg.data;
+                $(".num").html(num.currentIntegral)
+            }    
+        }
+    });
+
+    //积分列表
+    $.ajax({
+        type:"POST",
+        url:"/user/common/integralLists?uid="+UID,
+        dataType:"json",
+        cache: false,
+        error: function(){
+            alert("未知错误");
+        },
+        success: function(msg){
+            if(msg.error_code == 0){
+                var jifen = msg.data.rows;
+                
+                    console.log(jifen);
+                    $.each( jifen, function(index, content)
+                    {
+                        var Txt = 
+                            '<li>'+
+                                '<div>'+content.uil_name+'<em><i>+</i>'+content.uil_change+'</em></div>'+
+                                '<span>'+content.uil_createDate+'</span>'+
+                            '</li>';                                     
+                        $(".score-list").append(Txt);
+                        if(content.uil_type==9){$(".score-list em i").html("-")};
+                    });
+            }else{
+                alert(msg.error_msg);
+            };   
+        }
+    });
+}) 
+</script>
+</body>
+</html>

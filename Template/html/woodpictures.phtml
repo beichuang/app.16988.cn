@@ -1,0 +1,149 @@
+<!doctype html>
+<html lang="zh">
+<head>
+{template public/WxShareJS}
+	<meta charset="UTF-8">
+	<title>朱仙镇木版年画</title>
+    <meta name="viewport" content="width=device-width,minimum-scale=1.00001,maximum-scale=1.00001,user-scalable=no,minimal-ui">
+	<link rel="stylesheet" href="{$CDN_BASE_URL_RES}/html/woodpictres/css/global.css?1213">
+	<script src="https://s28.9956.cn/static/v3_1/js/jquery.min.js"></script>
+	<script src="{$CDN_BASE_URL_RES}/html/woodpictres/js/setfontsize.js"></script>
+	<link rel="stylesheet" href="{$CDN_BASE_URL_RES}/html/woodpictres/bootstrap/css/bootstrap.css?1216">
+	<link rel="stylesheet" type="text/css" href="{$CDN_BASE_URL_RES}/html/woodpictres/css/willesPlay.css?1213"/>
+	<script src="{$CDN_BASE_URL_RES}/html/woodpictres/js/willesPlay.js" type="text/javascript" charset="utf-8"></script>
+	<style>
+		body,.list ul li a{color: #555;}
+		.box2 p{line-height: .55rem;}
+		.box2 .pic{margin-bottom: 4%;}
+		.list ul li{margin-bottom: 5%;}
+		a:hover{text-decoration: none;}
+	</style>
+</head>
+<body>
+	<section class="container">
+		<div class="box1 f-tac">
+			<div class="box">
+				<img src="{$CDN_BASE_URL_RES}/html/woodpictres/images/img1.png?1712201" class="img1">
+				<img src="{$CDN_BASE_URL_RES}/html/woodpictres/images/img2.png" class="img2">
+				<img src="{$CDN_BASE_URL_RES}/html/woodpictres/images/tit1.png?1712201" class="tit-img">
+				<div id="willesPlay">
+					<div class="playContent">
+						<video width="100%" height="100%" id="playVideo"  poster="{$CDN_BASE_URL_RES}/html/woodpictres/images/zhuxian.png?1712201" preload="auto">
+							<!-- <source src="http://zhangwan-prevideo.oss-cn-hangzhou.aliyuncs.com/%E6%9C%B1%E4%BB%99%E9%95%87%E6%9C%A8%E7%89%88%E5%B9%B4%E7%94%BB_%E8%B6%85%E6%B8%85.mp4"></source> -->
+							<source src="http://zhangwan-prevideo.oss-cn-hangzhou.aliyuncs.com/zjzs.mp4" type="video/mp4"></source>
+							当前浏览器不支持 video直接播放，点击这里下载视频： <a href="http://zhangwan-prevideo.oss-cn-hangzhou.aliyuncs.com/zjzs.mp4">下载视频</a>
+						</video>
+						<div class="playTip glyphicon glyphicon-play"></div>
+					</div>
+				</div>				
+			</div>
+		</div>
+
+		<div class="box2 f-tac">
+			<img src="{$CDN_BASE_URL_RES}/html/woodpictres/images/tit2.png?171220101" class="tit-img">
+			<img src="{$CDN_BASE_URL_RES}/html/woodpictres/images/img3.jpg" class="pic">
+			<p class="f-tal">开封朱仙镇木版年画是中国木版年画的鼻祖，构图饱满、色彩艳丽，与杨柳青年画、杨家埠木版年画、桃花坞年画并称中国四大年画。 2006年5月20日，经国务院批准列入第一批国家级非物质文化遗产名录。</p>
+			<img src="{$CDN_BASE_URL_RES}/html/woodpictres/images/tit3.png" class="tit-img">
+			<img src="{$CDN_BASE_URL_RES}/html/woodpictres/images/img4.jpg" class="pic">
+			<p class="f-tal" style="margin-bottom: 1%;">朱仙镇木版年画制作采用木版与镂版相结合，水印套色，用纸讲究，题材和内容大多取材于历史戏剧、民间传说。年画民间情趣强烈，具有独特的地方色彩和淳朴古老的民族风格。</p>
+		</div>
+
+		<div class="box2 f-tac box3">
+			<img src="{$CDN_BASE_URL_RES}/html/woodpictres/images/tit4.png" class="tit-img">
+			<img src="{$CDN_BASE_URL_RES}/html/woodpictres/images/img5.jpg" class="pic">
+			<p class="f-tal">张继中，河南开封人，现为开封朱仙镇木版年画社社长，河南省民协专家委员会委员，中国民间文艺家协会会员，河南省工艺美术大师，开封市民间文艺家协会副主席。开封市第二届拔尖人才，享受政府特殊津贴。 2006年5月20日，经国务院批准列入第一批国家级非物质文化遗产名录。</p>
+			<img src="{$CDN_BASE_URL_RES}/html/woodpictres/images/tit5.png" class="tit-img">
+			<div class="list">
+				<ul>
+					<li>
+						<a id="a1">
+							<img src="{$CDN_BASE_URL_RES}/html/woodpictres/images/l1.jpg">
+							<h3>【刘海戏金蟾】<em> ¥99</em></h3>
+							<span>尺寸：128x80cm </span>
+						</a>
+					</li>
+					<li>
+						<a id="a2">
+							<img src="{$CDN_BASE_URL_RES}/html/woodpictres/images/l2.jpg">
+							<h3>【马上鞭】 <em> ¥49</em></h3>
+							<span>尺寸：47x34cm </span>
+						</a>
+					</li>
+					<li>
+						<a id="a3">
+							<img src="{$CDN_BASE_URL_RES}/html/woodpictres/images/l3.jpg">
+							<h3>【柴王推车】  <em>¥99</em></h3>
+							<span>尺寸：115x62cm </span>
+						</a>
+					</li>
+					<li>
+						<a id="a4">
+							<img src="{$CDN_BASE_URL_RES}/html/woodpictres/images/l4.jpg">
+							<h3>【福禄寿三星】  <em>¥49</em></h3>
+							<span>尺寸：47x34cm </span>
+						</a>
+					</li>
+				</ul>
+			</div>
+		</div>
+	</section>
+	<div style="height: .15rem;"></div>
+	<script>
+	    //调取app分享按钮
+        var content_json = 
+        {
+            "title": "关于年的温暖记忆",
+            "content": "国家非物质文化遗产传承人张继中大师倾力巨作，朱仙镇手绘年画系列，珍藏版限量发售中。",
+            "image": "https://cdn.16988.cn/res//html/woodpictres/images/share.jpg?1220",
+            "url": '/html/woodpictures.html'
+        };
+        if (typeof (HandPlay) != "undefined") {
+            HandPlay.setShareInfo(JSON.stringify(content_json)); 
+            $('#a1').on('click',function () {
+		        var obj={"targetPage":"baby","gid":"3274"};
+		        HandPlay.execNative(JSON.stringify(obj));
+		    });
+		    $('#a2').on('click',function () {
+		        var obj={"targetPage":"baby","gid":"3271"};
+		        HandPlay.execNative(JSON.stringify(obj));
+		    });
+		    $('#a3').on('click',function () {
+		        var obj={"targetPage":"baby","gid":"3272"};
+		        HandPlay.execNative(JSON.stringify(obj));
+		    });
+		    $('#a4').on('click',function () {
+		        var obj={"targetPage":"baby","gid":"3269"};
+		        HandPlay.execNative(JSON.stringify(obj));
+		    });
+        }else{
+	        //分享到外部判断iso和安卓终端
+			var u = navigator.userAgent, app = navigator.appVersion;
+			var isAndroid = u.indexOf('Android') > -1 || u.indexOf('Linux') > -1; //android终端或者uc浏览器
+			var isiOS = !!u.match(/\(i[^;]+;( U;)? CPU.+Mac OS X/); //ios终端
+			// alert('是否是Android：'+isAndroid);
+			// alert('是否是iOS：'+isiOS);
+			if(isAndroid){
+				a_href();
+			}
+			if(isiOS){
+				a_href();
+			}
+			//分享到外部的链接
+			function a_href(){
+				$('#a1').click(function () {
+			        window.location.href="https://app.16988.cn//html/goodsInfo.html?id=3274";
+			    });
+			    $('#a2').click(function () {
+			        window.location.href="https://app.16988.cn//html/goodsInfo.html?id=3271";
+			    });
+			    $('#a3').click(function () {
+			        window.location.href="https://app.16988.cn//html/goodsInfo.html?id=3272";
+			    });
+			    $('#a4').click(function () {
+			        window.location.href="https://app.16988.cn//html/goodsInfo.html?id=3269";
+			    });
+			}        	 
+        }
+	</script>
+</body>
+</html>

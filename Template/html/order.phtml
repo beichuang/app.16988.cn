@@ -1,0 +1,638 @@
+<!DOCTYPE html>
+<html>
+<head>
+{template public/WxShareJS}
+	<meta charset="UTF-8">
+	<title>确定下单</title>
+	<meta name="viewport" content="width=device-width,minimum-scale=1.00001,maximum-scale=1.00001,user-scalable=no,minimal-ui">
+	<link rel="stylesheet" type="text/css" href="{$CDN_BASE_URL_RES}/html/css/css.css?20170407">
+	<script src="{$CDN_BASE_URL_RES}/html/js/jquery.min.js"></script>
+	<script src="{$CDN_BASE_URL_RES}/html/js/region.2.js"></script>
+</head>
+<body>
+<div class="loadimgBox">
+	<div class="mul15">
+		<div class="m15c m15c1"></div>
+		<div class="m15c m15c2"></div>
+		<div class="m15c m15c3"></div>
+		<div class="m15c m15c4"></div>
+		<div class="m15c m15c5"></div>
+		<div class="m15c m15c6"></div>
+		<div class="m15c m15c7"></div>
+		<div class="m15c m15c8"></div>
+	</div>
+</div>
+	<ul class="order">
+		
+	</ul>
+	<div class="order_money">订单金额：<strong>¥<span id="money">0.00</span></strong></div><div class="order_address">填写收货人信息</div>
+	<ul class="order_address_list">
+		<li>
+			<span>收货人：</span>
+			<div>
+				<input type="text" id="name" name="name">
+			</div>
+		</li>
+		<li>
+			<span>所在地区：</span>
+			<div class="region-select-app">
+				<p>
+					<select onchange="fn_region(this,1)"></select>
+					<img src="{$CDN_BASE_URL_RES}/html/images/sico01.gif">
+				</p>
+				<p>
+					<select onchange="fn_region(this,2)"></select>
+					<img src="{$CDN_BASE_URL_RES}/html/images/sico01.gif">
+				</p>
+				<p>
+					<select onchange="fn_region(this,3)"></select>
+					<img src="{$CDN_BASE_URL_RES}/html/images/sico01.gif">
+				</p>
+				<input type="hidden">
+			</div>
+		</li>
+		<li>
+			<span>详细地址：</span>
+			<div>
+				<input type="text" id="address" name="address">
+			</div>
+		</li>
+		<li>
+			<span>手机号：</span>
+			<div>
+				<input type="tell" id="phone" name="phone">
+			</div>
+		</li>
+	</ul>
+	<input type="hidden" id="dizhi_id" value="">
+	<input type="hidden" id="order_sn" value="">
+	<div class="red_box" data="0" id="submit">立即支付</div>
+
+<!--支付选择弹窗-->
+<div class="zifuTk">
+	<div class="box">
+		<p>支付宝支付</p>
+		<p>微信支付</p>
+	</div>
+</div>
+<script src="{$CDN_BASE_URL_RES}/html/js/currency.js"></script>
+<script type="text/javascript">
+var order={};
+order.moneyall=0;
+//计算金额
+function fn_computeMoney()
+{
+	var num=0;
+	$(".order li").each(function(index, el) {
+		var ind = $(this).find("input[type='number']").val();
+		var price = $(this).attr("money");
+		num+=ind*price;
+	});
+	order.moneyall = num.toFixed(2);
+	$("#money").html(order.moneyall);
+};
+function addClick()
+{
+	//加号
+	$(".jia").click(function(){
+		var number = $(this).parents(".caozuo").find("input").val();
+		var max = $(this).parents(".caozuo").find("input").attr("max");
+		number = parseInt(number);
+		if(number >= max){
+			alert("已超出最大库存");
+			return false;
+		}else{
+			number = number+1;
+			$(this).parents(".caozuo").find("input").val(number);
+			fn_computeMoney();
+			
+		};
+	});
+	//减号
+	$(".jian").click(function(){
+		var number = $(this).parents(".caozuo").find("input").val();
+		var min = $(this).parents(".caozuo").find("input").attr("min");
+		number = parseInt(number);
+		if(number <= min){
+			return false;
+		}else{
+			number = number-1;
+			$(this).parents(".caozuo").find("input").val(number);
+			fn_computeMoney();
+			
+		}
+	});
+};
+	
+
+//alert弹框
+function alert(e){
+	$("body").append("<div id='msg'><span>"+e+"</span></div>");
+	clearmsg();
+}
+function clearmsg(){
+	var t = setTimeout(function(){
+		$("#msg").remove();
+	},4000)
+};
+</script>
+<script>
+//生成订单opOrder;
+opOrder={};
+opOrder.a = false;
+opOrder.b = false;
+opOrder.id=getQuery().id;
+opOrder.num=getQuery().num;
+$(function(){
+	funcregionSelect();//加载地址选择组件
+	//fn_computeMoney();//计算金额
+	//读取商品信息
+	$.ajax({
+		type:"POST",
+		url:"/mall/goods/item/detail",
+		data:{"id":opOrder.id},
+		dataType:"json",
+		success:function(data)
+		{
+			if(data.error_code!=0)
+			{
+				$(".loadimgBox").fadeOut(100);
+				alert(data.error_msg);
+			}
+			else
+			{
+				fn_renderG(data.data);
+				//fn_renderInput(data.data[0]);
+			};
+		}
+	});
+	//获取默认地址
+	$.ajax({
+	    type: "POST",
+	    url: "/mall/user/address/lists",
+	    data: {"isDefault":0},
+	    dataType: "json",
+	    success: function(msg){
+	    	//console.log(msg);
+	    	//msg = data_dizhi;
+	    	if(msg.error_code!=0)
+			{
+				alert(msg.error_msg);
+			}
+			else
+			{
+				if(msg.data.length!=0)
+				{
+					fn_renderInput(msg.data);
+				};
+			};
+	    }
+	});
+	$(".zifuTk").click(function(event) {
+		$(".zifuTk").css("display","none");
+		//$("#submit").removeClass('on').html(order.thisBtnHtml);
+		$("#submit").attr("class",order.thisclassname).html(order.thisBtnHtml);
+	});
+	$(".zifuTk").find("p").click(function(event) {
+		if($(this).hasClass('disable')){return false;}
+		var dataThis = parseInt($(this).attr("data"));
+		fn_payment(dataThis,this);
+		return false;
+	});
+});
+//渲染收货信息
+function fn_renderInput(arr)
+{
+	//console.log(arr);
+	var obj="";
+	for(var i=0;i<arr.length;i++)
+	{
+		if(arr[i].a_isDefault == 1)
+		{
+			obj = arr[i];
+		};
+	};
+	if(arr.length!=0)
+	{
+		obj = arr[arr.length-1];
+	}else{
+		return;
+	};
+	$("#dizhi_id").val(obj.a_id);//地址id；
+	$("#name").val(obj.a_name);
+	var regi = obj.a_provinceCode+":"+obj.a_cityCode+":"+obj.a_areaCode;
+	$(".region-select-app").find("input").val(regi);
+	funcregionSelect();//加载地址选择组件
+	$("#address").val(obj.a_address);
+	$("#phone").val(obj.a_phone);
+};
+//渲染商品
+function fn_renderG(data)
+{
+	$(".loadimgBox").fadeOut(500);
+	var obj = $(".order");
+	var str="";
+	str += "<li money='"+data.item[0].g_price+"' g_id = '"+data.item[0].g_id+"'>";
+	str += 	'<img src="'+data.itemImage[0].gi_img+'" alt="加载失败">';
+	str += 	'<div>';
+	order.g_name = data.item[0].g_name;
+	str += 		'<p>'+data.item[0].g_name+'</p>';
+	str += 		'<span>¥'+data.item[0].g_price+'</span>';
+	str += 		'<div class="caozuo">';
+	str += 			'<img src="{$CDN_BASE_URL_RES}/html/images/jisuan02.png" class="jian">';
+	str += 			'<input type="number" disabled style="background:#fff;" max="'+data.item[0].g_stock+'" min="0" value="'+opOrder.num+'">';
+	str += 			'<img src="{$CDN_BASE_URL_RES}/html/images/jisuan01.png" class="jia">';
+	str += 		'</div>';
+	str += 	'</div>';
+	str += '</li>';
+	obj.html(str);
+	addClick();
+	fn_computeMoney();//计算金额
+};
+
+//提交
+$("#submit").click(function(event) {
+	if($(this).hasClass('on')){return;};
+	//验证
+	//地址对象
+	order.thisBtnHtml = $(this).html();
+	order.thisclassname = $(this).attr('class');
+	var a_dizhi={};
+	//总金额
+	//$(".order li").eq(0).find("input[type='number']").val();
+	//订单商品id个数
+	order.commodity = [];
+	$(".order li").each(function(){
+		var ind = $(this).find("input[type='number']").val();
+		if(ind>0)
+		{
+			var arr={};
+			arr.com_id = $(this).attr("comid");
+			arr.price = parseFloat($(this).attr("money"));
+			arr.num = ind;
+			order.commodity.push(arr);
+		};
+	});
+	if(order.commodity.length==0)
+	{
+		alert("您并没有实际选择商品,请选择");
+		return;
+	};
+	//订单收货人
+	order.name = $.trim($("#name").val());
+	a_dizhi.name = order.name;
+	if(order.name == "")
+	{
+		alert("请填写收货人姓名");
+		return;
+	};
+	
+	//订单收货人所在地区
+	order.region =$(".region-select-app").find("input[type='hidden']").val()+'';
+	var osele1 = $(".region-select-app").find("select").eq(0).val()+'';
+	var osele2 = $(".region-select-app").find("select").eq(1).val()+'';
+	if(osele1 == 10034 || osele1 == 10033)
+	{
+		if(osele2 == -1)
+		{
+			alert("请补充完收货人地区信息");
+			return;
+		};
+	}
+	else
+	{
+		if(order.region.indexOf("-1")!=-1 || order.region=="")
+		{
+			alert("请补充完收货人地区信息");
+			return;
+		};
+	};
+	a_dizhi.provinceCode = osele1;
+	a_dizhi.cityCode = osele2;
+	a_dizhi.areaCode = $(".region-select-app").find("select").eq(2).val()+'';
+
+
+	//订单收货人详细地址
+	order.address = $.trim($("#address").val());
+	if(order.address == "")
+	{
+		alert("请填写收货人详细地址");
+		return;
+	};
+	a_dizhi.address = order.address;
+	//订单收货人电话号码
+	order.phone = $.trim($("#phone").val());
+	if(order.phone == "")
+	{
+		alert("请填写收货人手机号");
+		return;
+	};
+	if(!(/^1[34578]\d{9}$/.test(order.phone)))
+	{
+		alert("请输入正确的手机号");
+		return;
+	};
+	a_dizhi.phone = order.phone;
+	var oval1 = $("#dizhi_id").val();
+	if(oval1!="")
+	{
+		a_dizhi.id = oval1;
+	};
+	$(this).addClass('on').html("请您稍等...");
+	//新增或修改地址
+	$.ajax({
+	    type: "POST",
+	    url: "/mall/user/address/post",
+	    data: a_dizhi,
+	    dataType: "json",
+	    success: function(msg){
+	    	//console.log(msg);
+	    	if(msg.error_code!=0)
+			{
+				alert(msg.error_msg);
+				$(".loadimgBox").fadeOut(100);
+				$("#submit").removeClass('on').html("立即支付");
+				return;
+			}
+			else
+			{
+				$("#dizhi_id").val(msg.data.aid);
+				fn_upOrder();
+			};
+	    }
+	});
+	//生成订单
+	function fn_upOrder()
+	{
+		var jsn = {};
+		var obj = $(".order li").eq(0);
+		jsn.gid = obj.attr("g_id");
+		jsn.num = obj.find(".caozuo input").val();
+		jsn.aid = $("#dizhi_id").val();
+		//生成订单
+		$.ajax({
+		    type: "POST",
+		    url: "/mall/order/buyer/add",
+		    data: jsn,
+		    dataType: "json",
+		    success: function(msg){
+		    	//console.log(msg);
+		    	if(msg.error_code!=0)
+				{
+					alert(msg.error_msg);
+					$(".loadimgBox").fadeOut(100);
+					$("#submit").removeClass('on').html("立即支付");
+					return;
+				}
+				else
+				{
+					$("#order_sn").val(msg.data.order_id);
+					order.o_sn = msg.data.order_id;
+					console.log("订单编号="+msg.data.order_id);
+					fn_removeG(jsn.gid);//从购物车中取消
+					fn_zhifu();
+				};
+		    }
+		});
+	};
+	return false;
+});
+function fn_zhifu()
+{
+	var arr={};
+	arr.tradeId = order.o_sn;
+	arr.subject = order.g_name;
+	arr.totalAmount = parseFloat(order.moneyall)*100;
+	arr.timeout = 24;
+	arr.from = 1;
+	//获取收银台信息
+	order.payChannel=[];
+	$.ajax({
+	    type: "POST",
+	    url: "/mall/order/pay/get",
+	    data: arr,
+	    dataType: "json",
+	    success: function(msg){
+	    	if(msg.error_code!=0)
+			{
+				alert(msg.error_msg);
+				$(".loadimgBox").fadeOut(100);
+				$("#submit").removeClass('on').html("立即支付");
+				return;
+			}
+			else
+			{
+				for(var i=0;i<msg.data.length;i++)
+				{
+					order.payChannel.push(msg.data[i].payChannel);
+				};
+				var zhifuObj = $(".zifuTk");
+				zhifuObj.css("display","block");
+				if(order.payChannel.indexOf("2")!=-1)
+				{
+					zhifuObj.find("p").eq(0).attr("data","2").removeClass('disable');
+				}else{
+					zhifuObj.find("p").eq(0).addClass('disable');
+				};
+				if(order.payChannel.indexOf("5")!=-1)
+				{
+					zhifuObj.find("p").eq(1).attr("data","5").removeClass('disable');
+				}else{
+					zhifuObj.find("p").eq(1).addClass('disable');
+				};
+			};
+	    }
+	});
+};
+//发起支付
+function fn_payment(num,obj)
+{
+	if($(obj).hasClass('disable')){return;};
+	$(obj).addClass('on');
+	$(".zifuTk").fadeOut(200);
+	$(".loadimgBox").fadeIn(100);
+	setTimeout(function(){
+		$(".zifuTk").find("p").removeClass('on');
+	},300);
+	console.log(num);
+	var jsn = {};
+	jsn.payChannel = num;//
+	jsn.tradeId = order.o_sn;
+	var str_1="";
+/////////////////////////////////
+	if(jsn.payChannel == 3)
+	{
+		//支付宝網頁支付ajax
+			$.ajax({
+			    type: "POST",
+			    url: "/mall/order/pay/init",
+			    data: jsn,
+			    dataType: "json",
+			    success: function(msg){
+			    	if(msg.error_code!=0)
+					{
+						alert(msg.error_msg);
+						$(".loadimgBox").fadeOut(100);
+						$("#submit").removeClass('on').html("立即支付");
+						return;
+					}
+					else
+					{
+						document.write(msg.data.payInfo)
+					};
+			    }
+			});
+	}else if(jsn.payChannel == 5)
+	{
+		//微信支付
+		$.ajax({
+		    type: "POST",
+		    url: "/mall/order/pay/init",
+		    data: jsn,
+		    dataType: "json",
+		    success: function(msg){
+		    	if(msg.error_code!=0)
+				{
+					alert(msg.error_msg);
+					$(".loadimgBox").fadeOut(100);
+					$("#submit").removeClass('on').html("立即支付");
+					return;
+				}
+				else
+				{
+					//获得微信支付数据
+					order.payInfo_weixin = msg.data.payInfo;
+					fn_weixin_app(order.payInfo_weixin);
+				};
+		    }
+		});
+	}else if(jsn.payChannel == 2){
+		//支付宝APP支付ajax
+		$.ajax({
+		    type: "POST",
+		    url: "/mall/order/pay/init",
+		    data: jsn,
+		    dataType: "json",
+		    success: function(msg){
+		    	if(msg.error_code!=0)
+				{
+					alert(msg.error_msg);
+					$(".loadimgBox").fadeOut(100);
+					$("#submit").removeClass('on').html("立即支付");
+					return;
+				}
+				else
+				{
+					//获得支付编码
+					order.payInfo = msg.data.payInfo;
+					fn_zhifu_app(order.payInfo);
+				};
+		    }
+		});
+	}else{
+		alert("未知错误，请稍后再试！");
+		$(".loadimgBox").fadeOut(100);
+		$(this).removeClass('on').html("立即支付");
+		return;
+	};
+///////////////////////////////
+};
+//与微信APP取得联系
+function fn_weixin_app(obj)
+{
+	var data = {"jump": 5,"orderId":JSON.stringify(obj)};
+	window.WebViewJavascriptBridge.callHandler(
+    	"submitFromWeb",
+        data
+        , function(responseData){
+        	var returNum = parseInt(responseData);
+		     switch(returNum)
+			{
+				case 0:
+					alert("已经支付成功，稍后为您跳转到订单详情页，或者您手动跳转到详情页");
+					 setTimeout(function(){
+					 	location.href="order_details.html?sn="+order.o_sn;
+					 },2000);
+				  break;
+				 case -1:
+					 alert("订单支付失败");
+					$(".loadimgBox").fadeOut(100);
+					$("#submit").removeClass('on').html("立即支付");
+				 break;
+				default:
+					$(".loadimgBox").fadeOut(100);
+					 $("#submit").removeClass('on').html("立即支付");
+			};
+        }
+	);
+};
+//与APP支付取得联系
+function fn_zhifu_app(str)
+{
+	console.log(str);
+	var data = {"jump": 4,"orderId":str};
+    window.WebViewJavascriptBridge.callHandler(
+    	"submitFromWeb",
+        data
+        , function(responseData){
+        var returNum = parseInt(responseData);
+		     switch(returNum)
+			{
+				case 9000:
+				 alert("已经支付成功，稍后为您跳转到订单详情页，或者您手动跳转到详情页");
+				 setTimeout(function(){
+				 	location.href="order_details.html?sn="+order.o_sn;
+				 },2000);
+				  break;
+				case 8000:
+				alert("正在处理中，支付结果未知,（有可能已经支付成功），请稍后再查询订单详情");
+				$(".loadimgBox").fadeOut(100);
+				$("#submit").addClass('on').html("暂时未知...");
+				  break;
+				case 4000:
+				alert("订单支付失败");
+				$(".loadimgBox").fadeOut(100);
+				$("#submit").removeClass('on').html("立即支付");
+				  break;
+				case 5000:
+				alert("重复请求,稍后为您跳转到订单详情页，或者您手动跳转到详情页");
+				 setTimeout(function(){
+				 	location.href="order_details.html?sn="+order.o_sn;
+				 },2000);
+				  break;
+				case 6001:
+				//用户取消支付
+				$(".loadimgBox").fadeOut(100);
+				 $("#submit").removeClass('on').html("立即支付");
+				  break;
+				case 6002:
+				alert("网络链接出错");
+				$(".loadimgBox").fadeOut(100);
+				 $("#submit").removeClass('on').html("立即支付");
+				  break;
+				default:
+				alert("支付结果未知,（有可能已经支付成功），请稍后再查询订单详情");
+				$(".loadimgBox").fadeOut(100);
+				$("#submit").addClass('on').html("暂时未知...");
+			}
+        }
+    );
+};
+//如果商品已经下单将在购物车中取消商品
+function fn_removeG(Gid)
+{
+	var removeid = Gid;
+	$.ajax({
+		type:"POST",
+		url:"/mall/user/cart/updateNum",
+		data:{"goodsNum":-1000,"g_id":removeid},
+		dataType:"json",
+		success:function(data)
+		{
+			
+		}
+	});
+};
+</script>
+</body>
+</html>

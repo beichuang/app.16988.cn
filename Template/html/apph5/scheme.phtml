@@ -1,0 +1,378 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+{template public/WxShareJS}
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width,minimum-scale=1.00001,maximum-scale=1.00001,user-scalable=no,minimal-ui">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>近期活动</title>
+    <link rel="stylesheet" href="{$CDN_BASE_URL_RES}/html/css/global.css?171116">
+    <script src="https://s28.9956.cn/static/v3_1/js/jquery.min.js"></script>
+    <script src="{$CDN_BASE_URL_RES}/html/js/setfontsize.js"></script>
+    <script src="https://res.wx.qq.com/open/js/jweixin-1.2.0.js"></script>
+</head>
+<style>
+    body{
+        font-size: 14px;
+        background: #f6f6f6;
+        overflow-x: hidden;
+    }
+    .banner{
+        width: 100%;
+    }
+    img{
+        width: 100%;
+    }
+    .top-word{
+        padding: 20px;
+        font-size: 14px;
+        background: #ffffff;
+    }
+    .content-list{
+        /* width: 100%;
+        overflow: hidden; */
+        display: -webkit-box;
+        display: -webkit-flex;
+        display: -ms-flexbox;
+        display: flex;
+        -ms-flex-wrap: wrap;
+        flex-wrap: wrap;
+        -ms-flex-pack: justify;
+        justify-content: space-between;
+        margin-top:10px;
+    }
+    .single-list{
+         width: 48.5%;
+        /*display: inline-block; */
+        margin-bottom: 10px;
+        /* height: 3.66rem; */
+        background-repeat: no-repeat;
+        background-size: cover;
+        background-position: 100% 100%;
+        background-size: cover;
+    }
+    .single-list:nth-child(2n){
+        float: right;
+    }
+    .list-word{
+        background: #fff;
+        padding: 20px 20px 10px 20px;
+        position: relative;
+    }
+    .price{
+        color: #dfc19d;
+    }
+    .size{
+        color: #e2e2e2;
+    }
+    .bottom{
+        color: #cbcbcb;
+        text-align: center;
+        padding: 20px 0;
+    }
+    .heart-btn{
+        display:inline-block;
+        width:22px;
+        position: absolute;
+        top:22px;
+        right:20px;
+    }
+    h3{
+        width:2rem;
+        overflow: hidden;
+        text-overflow:ellipsis;
+        white-space: nowrap;
+    }
+</style>
+<body>
+    <div class="banner">
+    </div>
+    
+    <div class="top-word">
+
+    </div>
+    <div class="content-list"></div>
+
+    <div class="bottom">
+        <p>掌玩艺术一直有底线</p>
+    </div>
+    <script>
+        (function ($) {
+            $.getUrlParam = function (name) {
+                var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)");
+                var r = window.location.search.substr(1).match(reg);
+                if (r != null) return unescape(r[2]); return null;
+            }
+        //--------------上拉加载更多---------------
+        //获取滚动条当前的位置 
+        function getScrollTop() {
+            var scrollTop = 0;
+            if(document.documentElement && document.documentElement.scrollTop) {
+                scrollTop = document.documentElement.scrollTop;
+            } else if(document.body) {
+                scrollTop = document.body.scrollTop;
+            }
+            return scrollTop;
+        }
+
+        //获取当前可视范围的高度 
+        function getClientHeight() {
+            var clientHeight = 0;
+            if(document.body.clientHeight && document.documentElement.clientHeight) {
+                clientHeight = Math.min(document.body.clientHeight, document.documentElement.clientHeight);
+            } else {
+                clientHeight = Math.max(document.body.clientHeight, document.documentElement.clientHeight);
+            }
+            return clientHeight;
+        }
+
+        //获取文档完整的高度 
+        function getScrollHeight() {
+            return Math.max(document.body.scrollHeight, document.documentElement.scrollHeight);
+        }
+        // 页数
+        var page = 1;
+        // 每页展示10个
+        var pageSize = 10;
+        page++;
+        console.log($.getUrlParam('aid'));
+        var aid = parseInt($.getUrlParam('aid'))
+        var url = '{$DOMAIN_APP}/html/apph5/scheme.html?aid='+aid
+        $.ajax({
+            type: "POST",
+                url: "/mall/activity/activity/details?aid="+aid+'&page=1',
+                dataType: "json",
+                cache: false,
+                error: function () {
+                    alert("未知错误");
+                },
+                success: function (msg) {
+                    console.log(msg)
+                    if(msg.error_code == 0){
+                        // app分享出去
+                        
+                        var content_json = {
+                            "title": msg.data.activity_title,
+                            "content": msg.data.activity_desc,
+                            "image": msg.data.activity_banner,
+                            "url": url
+                        };
+                        if (typeof (HandPlay) != "undefined") {
+                            HandPlay.setShareInfo(JSON.stringify(content_json)); 
+                        }
+                        $(document).attr("title",msg.data.activity_title);
+                        $.ajax({
+                            type: "POST",
+                                url: "/wx/wx/share",
+                                data: {url:location.href.split('#')[0]},
+                                dataType: "json",
+                                error: function () {
+                                    console.log("未知错误");
+                                },
+                                success: function (res) {
+                                    console.log(res);
+                                    wx.config({
+                                            debug: false,
+                                            appId: res.data.appId, // 和获取Ticke的必须一样------必填，公众号的唯一标识
+                                            timestamp: res.data.timestamp, // 必填，生成签名的时间戳
+                                            nonceStr: res.data.noncestr, // 必填，生成签名的随机串
+                                            signature: res.data.signature, // 必填，签名，见附录1
+                                            //需要分享的列表项:发送给朋友，分享到朋友圈
+                                            jsApiList: [
+                                                'onMenuShareAppMessage',
+                                                'onMenuShareTimeline'
+                                            ]
+                                    });
+                                    wx.ready(function() {
+                                    //分享到朋友圈
+                                    console.log("分享到朋友圈1");
+                                    console.log(msg);
+                                    console.log("分享到朋友圈2");
+                                    wx.onMenuShareTimeline({
+                                        title: msg.data.activity_title,
+                                        link: url, // 分享链接，该链接域名或路径必须与当前页面对应的公众号JS安全域名一致
+                                        imgUrl: msg.data.activity_banner, // 分享图标
+                                        success: function(res) {     
+                                            console.log("分享到朋友圈成功返回的信息为:", res);
+                                        },
+                                        cancel: function(res) {
+                                            // 用户取消分享后执行的回调函数
+                                            console.log("取消分享到朋友圈返回的信息为:", res);
+                                        }
+                                    });
+                                    //分享给朋友
+                                    wx.onMenuShareAppMessage({
+                                        title: msg.data.activity_title,
+                                        desc: msg.data.activity_desc,
+                                        link: url, // 分享链接，该链接域名或路径必须与当前页面对应的公众号JS安全域名一致
+                                        imgUrl: msg.data.activity_banner, // 分享图标
+                                        success: function(res) {
+                                            // 用户确认分享后执行的回调函数
+                                            console.log("分享到朋友圈成功返回的信息为:", res);
+                                        },
+                                        cancel: function(res) {
+                                            // 用户取消分享后执行的回调函数
+                                            console.log("取消分享到朋友圈返回的信息为:", res);
+                                            // that.$toast('分享失败 与2元优惠券擦肩而过');
+                                        }
+                                    });
+                                });
+                                }
+                                
+
+                        });
+                        
+                        var activeData = msg.data.activity_goods;
+                        if(activeData.length > 0){
+                            console.log(activeData);
+                            // 详情
+                            str_des = '<p>'+msg.data.activity_desc+'</p>'
+                            $(".top-word").append(str_des);
+                            // banner
+                            str_banner ='<img onerror="imgExists(this)" src='+msg.data.activity_banner+'>'
+                            $(".banner").append(str_banner);
+                            $.each(activeData, function(index, content){
+                                var itemAttr = content.itemAttr;
+                                console.log(content);
+                                if(content.itemCurrentUserLikeInfo){
+                                    var heart ='<span class="heart-btn"><img src="{$CDN_BASE_URL_RES}/html/images/h5/heart_shixin.png"></span>'
+                                }else{
+                                    var heart ='<span class="heart-btn"><img src="{$CDN_BASE_URL_RES}/html/images/h5/heart.png"></span>'
+                                }
+                                console.log(itemAttr);
+                                // $.each(itemAttr,function(index,item){
+                                //     item_str = item.ga_value+'cm';
+                                //     $(".size").append(item_str);
+                                // });
+                                // $.each(itemAttr,function(index,item){
+                                //     item_str = item.ga_value+'cm'
+                                    // $("#size").append(item_str);<img src='+content.g_surfaceImg.gi_img+'!c400 >\
+                                    
+                                    str = '<div class="single-list" id="'+content.g_id+'"><div style="height: 150px;overflow: hidden;">\
+                                        <img src='+content.g_surfaceImg.gi_img+'!c400 >\
+                                    </div>\
+                                    <div class="list-word">\
+                                        <h3>'+content.g_name+'</h3>\
+                                        <p class="size">'+content.categoryName+'</p>\
+                                        <span class="price">'+content.g_price+'</span></div></div>'
+                                // });
+                                $(".content-list").append(str);   
+                                // $.each(itemAttr,function(index,item){
+                                //     item_str = item.ga_value+'cm';
+                                //     $(".size").append(item_str);
+                                // });'+item.ga_value+'cm
+                                $('#'+content.g_id).click(function(){
+                                    console.log( $('#'+content.g_id))
+                                    if (typeof(HandPlay) != "undefined") { //在掌玩中
+                                        HandPlay.execNative('{"targetPage":"baby","gid":"' + content.g_id + '"}');
+                                    } else {
+                                        window.location.href='/wx/wx/auth?type=goods&id='+content.g_id;
+                                    }
+                                })
+                            });
+                            
+                        }
+                        
+                    }else{
+                        alert(msg.error_msg);
+                    };
+                }
+            })
+
+            window.onscroll = function() {
+                if(getScrollTop() + getClientHeight() == getScrollHeight()) {
+                    $.ajax({
+            type: "POST",
+                url: "/mall/activity/activity/details?aid="+aid+'&page='+page++,
+                dataType: "json",
+                cache: false,
+                error: function () {
+                    alert("未知错误");
+                },
+                success: function (msg) {
+                    console.log(msg)
+                    if(msg.error_code == 0){
+                        // app分享出去
+                        
+                        $(document).attr("title",msg.data.activity_title);
+
+                        
+                        var activeData = msg.data.activity_goods;
+                        if(activeData.length > 0){
+                            console.log(activeData);
+                            // 详情
+                            // str_des = '<p>'+msg.data.activity_desc+'</p>'
+                            // $(".top-word").append(str_des);
+                            // banner
+                            // str_banner ='<img onerror="imgExists(this)" src='+msg.data.activity_banner+'>'
+                            // $(".banner").append(str_banner);
+                            $.each(activeData, function(index, content){
+                                var itemAttr = content.itemAttr;
+                                console.log(content);
+                                if(content.itemCurrentUserLikeInfo){
+                                    var heart ='<span class="heart-btn"><img src="{$CDN_BASE_URL_RES}/html/images/h5/heart_shixin.png"></span>'
+                                }else{
+                                    var heart ='<span class="heart-btn"><img src="{$CDN_BASE_URL_RES}/html/images/h5/heart.png"></span>'
+                                }
+                                console.log(itemAttr);
+                                // $.each(itemAttr,function(index,item){
+                                //     item_str = item.ga_value+'cm';
+                                //     $(".size").append(item_str);
+                                // });
+                                // $.each(itemAttr,function(index,item){
+                                //     item_str = item.ga_value+'cm'
+                                    // $("#size").append(item_str);
+                                    
+                                    str = '<div class="single-list" id="'+content.g_id+'"><div style="height: 150px;overflow: hidden;">\
+                                        <img src='+content.g_surfaceImg.gi_img+'!c400   >\
+                                    </div>\
+                                    <div class="list-word">\
+                                        <h3>'+content.g_name+'</h3>\
+                                        <p class="size">'+content.categoryName+'</p>\
+                                        <span class="price">'+content.g_price+'</span></div></div>'
+                                // });
+                                $(".content-list").append(str);   
+                                // $.each(itemAttr,function(index,item){
+                                //     item_str = item.ga_value+'cm';
+                                //     $(".size").append(item_str);
+                                // });'+item.ga_value+'cm
+                                $('#'+content.g_id).click(function(){
+                                    console.log( $('#'+content.g_id))
+                                    if (typeof(HandPlay) != "undefined") { //在掌玩中
+                                        HandPlay.execNative('{"targetPage":"baby","gid":"' + content.g_id + '"}');
+                                    } else {
+                                        window.location.href='/wx/wx/auth?type=goods&id='+content.g_id;
+                                    }
+                                })
+                            });
+                            
+                        }
+                        
+                    }else{
+                        alert(msg.error_msg);
+                    };
+                }
+            })
+                }
+            }
+        })(jQuery);
+            function imgExists(e){
+                //默认图片
+                var imgUrl = "{$CDN_BASE_URL_RES}/html/images/h5/zw.png?v=1";
+                var img = new Image();
+                img.src=imgUrl;
+                img.style.width="100px";
+                img.style.margin="0 auto";
+                //判断图片大小是否大于0 或者 图片高度与宽度都大于0
+                if(img.filesize>0||(img.width>0&&img.height>0)){
+                    e.src = imgUrl;
+                    
+                }else{
+                    return false
+                }
+            }
+            
+    </script>
+    <script type="text/javascript" src="{$CDN_BASE_URL_RES}/html/js/baidu_stat.js"></script>
+</body>
+</html>

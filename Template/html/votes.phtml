@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=yes, minimum-scale=1, maximum-scale=1">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black">
+  <meta name="format-detection" content="telephone=no, email=no">
+  <meta name="renderer" content="webkit">
+  <meta name="force-rendering" content="webkit">
+  <title></title>
+  <script type="text/javascript">
+      !function (e) { var t = 750, n = e.document, i = n.documentElement, a = "orientationchange" in e ? "orientationchange" : "resize", d = function e() { var n = i.getBoundingClientRect().width; return i.style.fontSize = 5 * Math.max(Math.min(20 * (n / t), 11.2), 8.55) + "px", e }(); i.setAttribute("data-dpr", e.navigator.appVersion.match(/iphone/gi) ? e.devicePixelRatio : 1), /iP(hone|od|ad)/.test(e.navigator.userAgent) && (n.documentElement.classList.add("ios"), parseInt(e.navigator.appVersion.match(/OS (\d+)_(\d+)_?(\d+)?/)[1], 10) >= 8 && n.documentElement.classList.add("hairline")), n.addEventListener && (e.addEventListener(a, d, !1), n.addEventListener("DOMContentLoaded", d, !1)) }(window);
+  </script>
+  <link rel="stylesheet" type="text/css" href="{$CDN_BASE_URL_RES}/html/votes/css/style.css??v=03281830" />
+  <link rel="stylesheet" type="text/css" href="{$CDN_BASE_URL_RES}/html/votes/css/animate.css??v=03281810" />
+  <link rel="stylesheet" type="text/css" href="{$CDN_BASE_URL_RES}/html/votes/css/toast.css" />
+  
+</head>
+<body>
+<div class="wrap">
+    <img class="bg" src="{$CDN_BASE_URL_RES}/html/votes/img/bg.jpg" />
+    <div class="content">
+      <div class="time_box">
+      <!-- 距离投票结束 -->
+        <div class="time_end">
+          <img class="bg_box" src="{$CDN_BASE_URL_RES}/html/votes/img/vote_end.png" alt="">
+          <div class="time"></div>
+          <span class="day">0</span>
+          <span class="hour">0</span>
+          <span class="minutes"></span>
+          <span class="sec"></span>
+        </div>
+        <!-- 投票活动 -->
+        <div class="time_con">
+          <img class="bg_box" src="{$CDN_BASE_URL_RES}/html/votes/img/vote_info.png" alt="">
+          <p class="info">活动未开始</p>
+        </div>
+      </div>
+      <div class="list">
+        <img class="list_bg" src="{$CDN_BASE_URL_RES}/html/votes/img/bg_list.png" alt="">
+        <ul>
+        <li>
+            <div class="poster">
+              <img src="{$CDN_BASE_URL_RES}/html/votes/img/掌玩队.jpg" alt="">
+            </div>
+            <div class="des">
+              <p class="team_name">掌玩天团</p>
+              <div class="team_votes">
+                <div class="progress">
+                  <div class="progress_line val_zwtt"></div>
+                </div>
+                <div class="votes votes_zwtt"><span>0</span>票</div>
+              </div>
+              <span class="btn_vote" index="4"></span>
+            </div>
+          </li>
+          <li>
+            <div class="poster">
+              <img src="{$CDN_BASE_URL_RES}/html/votes/img/超级无敌队.jpg" alt="">
+            </div>
+            <div class="des">
+              <p class="team_name">超级无敌噼里啪啦英俊潇洒风流倜傥队历经层层筛选不懈努力必将取得来之不易的桂冠！</p>
+              <div class="team_votes">
+                <div class="progress">
+                  <div class="progress_line val_plpl"></div>
+                </div>
+                <div class="votes votes_plpl"><span>0</span>票</div>
+              </div>
+              <span class="btn_vote" index="5"></span>
+            </div>
+          </li>
+          <li>
+            <div class="poster">
+              <img src="{$CDN_BASE_URL_RES}/html/votes/img/仙女队.jpg" alt="">
+            </div>
+            <div class="des">
+              <p class="team_name">天女散花</p>
+              <div class="team_votes">
+                <div class="progress">
+                  <div class="progress_line val_xvsh"></div>
+                </div>
+                <div class="votes votes_xvsh"><span>0</span>票</div>
+              </div>
+              <span class="btn_vote" index="2"></span>
+            </div>
+          </li>
+          <li>
+            <div class="poster">
+              <img src="{$CDN_BASE_URL_RES}/html/votes/img/小虎队.jpg" alt="">
+            </div>
+            <div class="des">
+              <p class="team_name">小虎队</p>
+              <div class="team_votes">
+                <div class="progress">
+                  <div class="progress_line val_xhd"></div>
+                </div>
+                <div class="votes votes_xhd"><span>0</span>票</div>
+              </div>
+              <span class="btn_vote" index="3"></span>
+            </div>
+          </li>
+          <li>
+            <div class="poster">
+              <img src="{$CDN_BASE_URL_RES}/html/votes/img/F4.jpg" alt="">
+            </div>
+            <div class="des">
+              <p class="team_name">象聚F4</p>
+              <div class="team_votes">
+                <div class="progress">
+                  <div class="progress_line val_xjf4"></div>
+                </div>
+                <div class="votes votes_xjf4"><span>0</span>票</div>
+              </div>
+              <span class="btn_vote" index="1"></span>
+            </div>
+          </li>
+        </ul>
+      </div>
+      <div class="rules">
+        <h2 class="rule_title">微信投票规则</h2>
+        <p class="rule_note">每人需投3票（PS：不可重复投票）</p>
+        <div class="form">
+          <label class="label">工号*</label>
+          <input class="input" type="number" placeholder="例如：9612046">
+        </div>
+        <button class="btn_submit" id="submit">提 交</button>
+        <div class="endline">———— 象聚的世界 世界的象聚 ————</div>
+      </div>
+    </div>
+  </div>
+  <script src="https://s29.9956.cn/res/custom/js/jquery.min.js"></script>
+  <script type="text/javascript" src="{$CDN_BASE_URL_RES}/html/votes/js/toast.js?v=03281810"></script>
+  <script type="text/javascript" src="{$CDN_BASE_URL_RES}/html/votes/js/index.js?v=03290850"></script>
+</body>
+</html>

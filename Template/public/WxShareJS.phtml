@@ -1,0 +1,48 @@
+<script src="https://res.wx.qq.com/open/js/jweixin-1.2.0.js"></script>
+<script>
+    wx.config({
+        debug: false,
+        appId: "{$wxJsConfig['appId']}",
+        timestamp: "{$wxJsConfig['timestamp']}",
+        nonceStr: "{$wxJsConfig['noncestr']}",
+        signature: "{$wxJsConfig['signature']}",
+        jsApiList: [
+            // 所有要调用的 API 都要加到这个列表中
+            'onMenuShareTimeline',
+            'onMenuShareAppMessage'
+        ]
+    });
+    try {
+        wx.ready(function () {
+            // 分享到朋友圈
+            var titem = document.title==undefined?'掌玩APP——懂生活，有艺术！':document.title;
+            var desc = '专业的艺术品交易交流分享平台，让艺术融入生活，让生活充满艺术。';
+            var imgurl = 'http://pp.myapp.com/ma_icon/0/icon_52440266_1528191472/96';
+            wx.onMenuShareTimeline({
+                title: titem,
+                desc: desc,
+                link: window.location.href,
+                imgUrl: imgurl,
+                success: function (res) {
+                    // console.log('分享到朋友圈成功返回的信息为:', res);
+                },
+                cancel: function (res) {
+                    // console.log('取消分享到朋友圈返回的信息为:', res);
+                }
+            });
+            //分享给朋友
+            wx.onMenuShareAppMessage({
+                title: titem,
+                desc: desc,
+                link: window.location.href,
+                imgUrl: imgurl,
+                success: function (res) {
+                    // console.log('分享到朋友圈成功返回的信息为:', res);
+                },
+                cancel: function (res) {
+                    // console.log('取消分享到朋友圈返回的信息为:', res);
+                }
+            });
+        });
+    } catch (err) { }
+</script>

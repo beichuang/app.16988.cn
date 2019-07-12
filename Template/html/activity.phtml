@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+{template public/WxShareJS}
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=yes, minimum-scale=1, maximum-scale=1">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="format-detection" content="telephone=no, email=no">
+    <title>3.8女神节，不止做一天的女王！</title>
+    <script src="https://s29.9956.cn/res/custom/js/jquery.min.js"></script>
+    <style type="text/css">
+        @charset "utf-8";
+        /* CSS Document */
+        *{ 
+            margin:0; 
+            padding:0;
+            box-sizing: border-box;
+        }
+        ul li, ol li, dl dt, dl dd{ 
+            list-style:none;
+        }
+        html { 
+            font-size: 14px;
+        }
+        body{  
+            background: #fff; 
+            font-size: 1rem;  
+            font-family: 'Microsoft YaHei', '黑体', 'Tahoma', 'Helvetica Neue', Helvetica, Arial, sans-serif; 
+            color: #333333;
+        }
+        a[href]{ 
+            text-decoration:none;
+        }
+        img{
+            border:none; 
+            vertical-align:top;
+            width: 100%;
+        }
+        .img{
+            width: 50%;
+            float: left;
+        }
+        .box{
+            position: relative;
+        }
+        .i01{
+            position: absolute;
+            width: 18%;
+            top: 8%;
+            left: 10%;
+        }
+        .i02{
+            position: absolute;
+            width: 30%;
+            bottom: 15%;
+            left: 50%;
+        }
+        .i03{
+            position: absolute;
+            width: 30%;
+            top: 8%;
+            right: 16%;
+        }
+    </style>
+</head>
+<body>
+    <img src="{$CDN_BASE_URL_RES}/html/activity/a01.jpg">
+    <img src="{$CDN_BASE_URL_RES}/html/activity/a02.jpg">
+    <img src="{$CDN_BASE_URL_RES}/html/activity/a03.jpg">
+    <img src="{$CDN_BASE_URL_RES}/html/activity/a04.jpg" class="a">
+    <img src="{$CDN_BASE_URL_RES}/html/activity/a05.jpg">
+    <img src="{$CDN_BASE_URL_RES}/html/activity/a06.jpg">
+    <img src="{$CDN_BASE_URL_RES}/html/activity/a07.jpg">
+    <img src="{$CDN_BASE_URL_RES}/html/activity/a08.jpg">
+    <img src="{$CDN_BASE_URL_RES}/html/activity/a09.jpg">
+    <img src="{$CDN_BASE_URL_RES}/html/activity/a10.jpg" class="img a">
+    <img src="{$CDN_BASE_URL_RES}/html/activity/a11.jpg" class="img b">
+    <img src="{$CDN_BASE_URL_RES}/html/activity/a12.jpg">
+    <div class="box">
+        <img src="{$CDN_BASE_URL_RES}/html/activity/a13.jpg" class="b">
+        <img src="{$CDN_BASE_URL_RES}/html/activity/goumai.png" class="i01">
+    </div>
+    <div class="box" style=" width: 50%;float: left;">
+        <img src="{$CDN_BASE_URL_RES}/html/activity/a14.jpg" class="a">
+        <img src="{$CDN_BASE_URL_RES}/html/activity/goumai.png" class="i02">
+    </div>
+    <div class="box" style=" width: 50%;float: left;">
+        <img src="{$CDN_BASE_URL_RES}/html/activity/a15.jpg" class="c">
+        <img src="{$CDN_BASE_URL_RES}/html/activity/goumai.png" class="i03">
+    </div>
+    <script type="text/javascript">
+    var content_json ={
+        "title": "3.8女神节，不止做一天的女王！",
+        "content": "姑娘的礼物，仙女的必备! 愿你在素年锦时中，遇见最美的自己~",
+        "image": "https://cdn.16988.cn/res/html/activity/activity.jpg",
+        "url": 'https://app.16988.cn/html/activity.html'
+    };
+    var app = false;
+    if (typeof (HandPlay) != "undefined") {
+        HandPlay.setShareInfo(JSON.stringify(content_json));
+        app = true;
+    }
+    $(".a").click(function() {
+        if(app){
+            var obj={"targetPage":"baby","gid":"5216"};
+            HandPlay.execNative(JSON.stringify(obj));
+        }else{
+            window.location.href="/html/goodsInfo.html?id=5216";
+
+        }
+    })
+    $(".b").click(function() {
+        if(app){
+            var obj={"targetPage":"baby","gid":"5215"};
+            HandPlay.execNative(JSON.stringify(obj));
+        }else{
+            window.location.href="/html/goodsInfo.html?id=5215";
+
+        }
+    })
+    $(".c").click(function() {
+        if(app){
+            var obj={"targetPage":"baby","gid":"5217"};
+            HandPlay.execNative(JSON.stringify(obj));
+        }else{
+            window.location.href="/html/goodsInfo.html?id=5217";
+
+        }
+    })
+    </script>
+</body>
+</html>

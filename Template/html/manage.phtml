@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html>
+<head>
+{template public/WxShareJS}
+	<meta charset="UTF-8">
+	<title>管理藏品</title>
+	<meta name="viewport" content="width=device-width,minimum-scale=1.00001,maximum-scale=1.00001,user-scalable=no,minimal-ui">
+	<link rel="stylesheet" type="text/css" href="{$CDN_BASE_URL_RES}/html/css/css.css?20170508">
+	<script src="{$CDN_BASE_URL_RES}/html/js/jquery.min.js"></script>
+	<script src="{$CDN_BASE_URL_RES}/html/js/currency.js"></script>
+</head>
+<body>
+	<ul class="collection_list"></ul>
+	<div class="confirm">
+		<div>
+			<p></p>
+			<span class="sure">确定</span>
+			<span class="cancel">取消</span>
+		</div>
+	</div>
+	<script type="text/javascript">
+		var one = true;//设置一个全局变量
+		var page = 0;
+		//渲染页面
+		views();
+		function views(){
+			var data_page = {};
+			page = page + 1;
+			data_page.page = page;
+			data_page.pageSize = 20;
+			$.ajax({
+			    type: "POST",
+			    url: "/mall/goods/item/my",
+			    data: data_page,
+			    dataType: "json",
+			    cache: false,
+			    error: function () {
+			        alert("未知错误");
+			    },
+			    success: function(msg){
+			        if(msg.error_code == 0){
+			        	if(msg.data.list.count == "0"){
+							$("body").append("<div class='kong'><img src='{$CDN_BASE_URL_RES}/html/images/kong.jpg'></div>")
+			        	}else{
+			        		for(var i = 0; i < msg.data.list.length; i++){
+			        			var imgurl; 
+			        			if(msg.data.list[i].image == ""){
+			        				imgurl = "kong"
+			        			}else{
+			        				imgurl = msg.data.list[i].image[0].gi_img;
+			        			}
+			        			if(msg.data.list[i].g_status == 0){
+			        				$(".collection_list").append("<li g_id="+msg.data.list[i].g_id+" class='box'><img src="+imgurl+"><div><p>"+msg.data.list[i].g_name+"</p><p><i>"+msg.data.list[i].g_sn+"</i></p><span>¥"+msg.data.list[i].g_price+"</span><b><a class='bianji'><img src='{$CDN_BASE_URL_RES}/html/images/guanli01.png'>编辑</a><a class='up'><img src='{$CDN_BASE_URL_RES}/html/images/guanli02.png'>上架</a></b></div><span class='shenhe'><img src='{$CDN_BASE_URL_RES}/html/images/shenhe04.png'></span></li>");
+			        			}else if(msg.data.list[i].g_status == 1){
+			        				$(".collection_list").append("<li g_id="+msg.data.list[i].g_id+"  class='box'><img src="+imgurl+"><div><p>"+msg.data.list[i].g_name+"</p><p><i>"+msg.data.list[i].g_sn+"</i></p><span>¥"+msg.data.list[i].g_price+"</span><b><a class='bianji'><img src='{$CDN_BASE_URL_RES}/html/images/guanli01.png'>编辑</a></b></div><span class='shenhe'><img src='{$CDN_BASE_URL_RES}/html/images/shenhe02.png'></span></li>");
+			        			}else if(msg.data.list[i].g_status == 2){
+			        				$(".collection_list").append("<li g_id="+msg.data.list[i].g_id+" class='box'><img src="+imgurl+"><div><p>"+msg.data.list[i].g_name+"</p><p><i>"+msg.data.list[i].g_sn+"</i></p><span>¥"+msg.data.list[i].g_price+"</span><b><a class='bianji'><img src='{$CDN_BASE_URL_RES}/html/images/guanli01.png'>编辑</a><a class='up'><img src='{$CDN_BASE_URL_RES}/html/images/guanli02.png'>上架</a></b></div><span class='shenhe'><img src='{$CDN_BASE_URL_RES}/html/images/shenhe03.png'></span></li>");
+			        			}else if(msg.data.list[i].g_status == 3){
+			        				$(".collection_list").append("<li g_id="+msg.data.list[i].g_id+" class='box'><img src="+imgurl+"><div><p>"+msg.data.list[i].g_name+"</p><p><i>"+msg.data.list[i].g_sn+"</i></p><span>¥"+msg.data.list[i].g_price+"</span><b><a class='bianji'><img src='{$CDN_BASE_URL_RES}/html/images/guanli01.png'>编辑</a><a class='down'><img src='{$CDN_BASE_URL_RES}/html/images/guanli03.png'>下架</a></b></div><span class='shenhe'><img src='{$CDN_BASE_URL_RES}/html/images/shenhe01.png'></span></li>");
+			        			}
+			        			one = true;
+			        		}
+			        	}
+			        	change();
+			        }else{
+			            alert(msg.error_msg);
+			        };
+			    }
+			});
+		};
+		
+		$(window).scroll(function () {
+		    var hight = document.body.scrollHeight - document.body.scrollTop - window.screen.height;//
+		    hight = parseInt(hight);
+		    if(one){
+		    	if(hight < window.screen.height){
+		            one = false;
+		    	    views();    	    
+		    	}
+		    }
+		});
+		function change(){
+			$(".up").click(function(){
+				$(".confirm").show();
+				$(".confirm div p").html("是否确定上架？")
+				$(".sure").attr("val","1");
+				var g_id = $(this).parents(".box").attr("g_id");
+				$(".sure").attr("val","1");
+				$(".sure").attr("g_id",g_id);
+			});
+			$(".down").click(function(){
+				$(".confirm").show();
+				$(".confirm div p").html("是否确定下架？")
+				var g_id = $(this).parents(".box").attr("g_id");
+				$(".sure").attr("val","0");
+				$(".sure").attr("g_id",g_id);
+			});
+			$(".bianji").click(function(){
+				var g_id = $(this).parents(".box").attr("g_id");
+				var app = {};
+				app.jump = 1;
+				app.id = g_id;
+				//call native method
+				window.WebViewJavascriptBridge.callHandler(
+				    'submitFromWeb'
+				    , app
+				    , function(responseData) {
+				        //document.getElementById("show").innerHTML = "send get responseData from java, data = " + responseData
+				    }
+				);
+			});
+		};
+		var data_arr = {};
+		$(".sure").click(function(){
+			data_arr.status = $(this).attr("val");
+			data_arr.ids = $(this).attr("g_id");
+			$.ajax({
+		    	type: "POST",
+		    	url: "/mall/goods/item/updateStatus",
+		    	data: data_arr,
+		    	dataType: "json",
+		    	cache: false,
+		    	error: function () {
+		        	alert("未知错误");
+		    	},
+			    success: function(msg){
+			        if(msg.error_code == 0){
+			        	if($(".sure").attr("val") == "1"){
+			        		$(".confirm").hide();
+			        		alert("上架成功，正在审核中");
+			        		window.location.reload();
+			        	}else{
+			        		$(".confirm").hide();
+			        		alert("下架成功");
+			        		window.location.reload();
+			        	}
+			        }else{
+			            alert(msg.error_msg);
+			        };
+			    }
+			});
+		});
+		$(".cancel").click(function() {
+			$(".confirm").hide();
+		});
+ 		function alert(e){
+        	$("body").append("<div id='msg'><span>"+e+"</span></div>");
+        	clearmsg();
+        }
+        function clearmsg(){
+        	var t = setTimeout(function(){
+        		$("#msg").remove();
+        	},2000)
+        };
+	</script>
+</body>
+</html>

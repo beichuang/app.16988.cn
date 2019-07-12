@@ -1,0 +1,151 @@
+<!doctype html>
+<html lang="zh">
+
+<head>
+{template public/WxShareJS}
+    <meta charset="UTF-8">
+    <title>邀请成为掌门人</title>
+    <meta name="viewport" content="width=device-width,minimum-scale=1.00001,maximum-scale=1.00001,user-scalable=no,minimal-ui">
+    <link rel="stylesheet" href="//cdn.16988.cn/res/html/css/global.css?171116">
+    <!-- <script src="https://s28.9956.cn/static/v3_1/js/jquery.min.js"></script> -->
+    <script src="https://cdn.bootcss.com/jquery/1.8.2/jquery.js"></script>
+    <script src="{$CDN_BASE_URL_RES}/html/js/setfontsize.js"></script>
+    <style>
+        body {
+            overflow-x: hidden;
+            font-size: 14px;
+            background:#fff;
+        }
+
+        .top-tips {
+            width: 70%;
+            margin: 0 auto;
+        }
+        s{
+          color:#e9e9e9;
+        }
+        .btn {
+            padding: 20px
+        }
+        input{
+            width: 100%;
+            border: 1px solid #eee;
+            padding: 20px;
+            border-radius: 5px;
+        }
+        .btn p{
+            text-align: center;
+            background: #cea068;
+            padding: 20px 0;
+            border-radius: 5px;
+            color:#fff;
+        }
+        .slogin{
+            padding: 52px 70px 10px 70px;
+        }
+    </style>
+</head>
+
+<body>
+<div>
+    <div>
+        <img src="{$CDN_BASE_URL_RES}/html/images/h5/invite-beboss_02.png">
+        <img src="{$CDN_BASE_URL_RES}/html/images/h5/invite-beboss_03.jpg">
+    </div>
+    <div style="" class="slogin">
+        <img src="{$CDN_BASE_URL_RES}/html/images/h5/slogin.png">
+    </div>
+    <div style="padding:20px;">
+        <input type="text" placeholder="请输入手机号" id="tel">
+    </div>
+    <div class="btn">
+        <p>接受邀请</p>
+    </div>
+</div>
+
+    <div class="popup-box">
+        <div class="popup">
+            <div class="head clearfix">
+                <img src="{$CDN_BASE_URL_RES}/html/images/sign/close.jpg" class="close f-fr f-csp">
+            </div>
+            <p class="f-tac">成功接受邀请
+                <br>下载掌玩app，我的－我要分销，开启赚钱之旅。</p>
+            <!-- 您已经有掌玩的账号 去掌玩开启艺术之旅吧 -->
+            <div class="footer f-tac">
+                <span class="confirm">前往</span>
+            </div>
+        </div>
+    </div>
+
+    <script>
+
+        //popup-box
+        $(".close,.confirm").click(function () {
+            $(".popup-box").hide();
+        });
+
+        //获取网页的uid
+        (function ($) {
+            $.getUrlParam = function (name) {
+                var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)");
+                var r = window.location.search.substr(1).match(reg);
+                if (r != null) return unescape(r[2]); return null;
+            }
+        })(jQuery);
+        // alert($.getUrlParam('uid'))
+        console.log($.getUrlParam('uid'));
+
+        $(".btn").click(function () {
+            var tel = $("#tel").val();
+
+            var uId = $.getUrlParam('uid');
+            if (tel == '') {
+                alert("请输入手机号！")
+                return false;
+            }
+            // .test(this.phoneNum.replace(/\s*/g,''))
+            // regmobile = /^1[0-9]\d{9}$/;
+            regmobile = /^1[34578][0-9]{9}$/;
+            if (!regmobile.test(tel)) {
+                alert('请正确填写手机号码');
+                return false;
+            }
+            $.ajax({
+                type: "GET",
+                url: "/user/invite/add?uid=" + uId + "&phone=" + tel + "",
+                dataType: "json",
+                cache: false,
+                error: function () {
+                    alert("未知错误");
+                },
+                success: function (msg) {
+                    console.log(msg)
+                    if (!msg.error_code) {
+                        $(".popup-box").show();
+                    } else if(msg.error_msg == '已经被邀请') {
+                        $(".popup-box").show();
+                        $(".popup-box .popup p").html("").append('您已经有掌玩的账号' + "<br>" + '去掌玩开启艺术之旅吧')
+                    }else if(msg.error_msg == "已经注册过"){
+                        $(".popup-box").show();
+                        $(".popup-box .popup p").html("").append('您已经有掌玩的账号' + "<br>" + '去掌玩开启艺术之旅吧')
+                    }else{
+                        // $(".popup-box").show();
+                        alert(msg.error_msg)
+                    }
+                    $("#tel").val("");
+                    $(".close").click(function () {
+                        window.location = window.location;
+                    })
+                }
+            });
+
+            //提交成功后进入app下载链接
+            $(".confirm").click(function () {
+                window.location.href = "http://a.app.qq.com/o/simple.jsp?pkgname=art.jupai.com.jupai";
+            });
+        });
+
+    </script>
+</body>
+
+</html>

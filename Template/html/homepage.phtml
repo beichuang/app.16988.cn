@@ -1,0 +1,436 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+<title>个人主页</title>
+<link rel="stylesheet" type="text/css" href="{$CDN_BASE_URL_RES}/html/wz/css/global.css?1711207">
+<link rel="stylesheet" href="{$CDN_BASE_URL_RES}/html/wz/css/aui.css">
+<script src="{$CDN_BASE_URL_RES}/html/wz/js/setfontsize.js"></script>
+<script src="https://s28.9956.cn/static/v3_1/js/jquery.min.js"></script>
+<style>
+  .shouzhong li span{display: block;width: 3.1rem;height: 2.35rem;}
+  .shouzhong li span img{width: 3.1rem;height: 2.35rem;object-fit: cover;
+    -moz-object-fit: cover;
+    -webkit-object-fit: cover;
+    -o-object-fit: cover;
+    -ms-object-fit: cover;}   
+    .lucency-title .zuopinji{margin-bottom: -8%;} 
+    .lucency-title .zuopinji li dl dd img{width: 3rem;height: 2.8rem;}
+    .lucency-title .zuopinji li dl dd img,.lucency-title .zuopinji li dl dd{width: auto;height: auto;}
+    .geren-info .aui-card-list-user-info small span a{color: #CEA068;}
+    .shouzhong .null i{padding-bottom: 0;}
+    .lucency-title ul font small{width: 1.5rem;height: .5rem;overflow: hidden;white-space: nowrap;-ms-text-overflow: ellipsis;display: inline-block;text-overflow: ellipsis;vertical-align: top;font-size: .28rem;}
+    .jingli li{padding-bottom: .53rem;margin-bottom: 0;}
+    .jingli li:before{height: 100%;}
+    .aui-card-list-footer.guanzhu div{border-right:0}
+    .tith3 .aui-card-list-header h3:before {
+        left: -21%;
+    }
+    .tith3.quanzi .aui-card-list-header h3:before {
+        left: -21%;
+    }
+    .tith3.jianjie .aui-card-list-header h3:before {
+        left: -43%;
+    }
+    .gallerySlider .placeholder{background: none;}
+</style>
+
+</head>
+<body>
+  <section class="container">
+    <div class="header f-pr mb4">
+      <img src="{$CDN_BASE_URL_RES}/html/wz/images/banner.jpg">
+      <div class="aui-card-list-header aui-card-list-user bgcf geren-info">
+           
+      </div>
+      <div class="bgcf f-oh aui-card-list-footer guanzhu">
+           
+      </div>
+    </div>
+    <div class="aui-card-list m4 tith3 box-shadow clearfix jianjie">
+            <div class="aui-card-list-header">
+                <h3>简介<small></small></h3>
+            </div>
+            <div class="txt"></div>
+            <div class="more-btn"><i>展开更多</i><img src="{$CDN_BASE_URL_RES}/html/wz/images/arrow.jpg"></div>
+        </div>
+        <div class="aui-card-list m4 tith3 box-shadow zuopin">
+            <div class="aui-card-list-header">
+                <h3>作品<small> </small></h3>
+            </div>
+      <div class="tab">
+        <ul  class="clearfix">
+          <li class="active">出售中</li>
+          <li>作品集</li>
+        </ul>
+      </div>
+      <div class="lucency-title tab-list shouzhong" style="display: block;">
+        <ul>
+           
+        </ul>
+          <!-- <a href="zplist.html?uid='UID'" class="aui-btn">更多作品</a> -->
+      </div>
+      <div class="lucency-title tab-list zuopinJI">
+        <ol class="zuopinji clearfix">
+          
+        </ol>
+      </div>
+            <div style="height: .5rem;"></div>
+        </div>
+        <div class="aui-card-list m04 tith3 box-shadow jingli">
+            <div class="aui-card-list-header">
+                <h3>获奖经历<small> </small></h3>
+            </div>
+            <ul>
+               
+            </ul>
+        </div>
+        <div class="aui-card-list m04 tith3 box-shadow quanzi f-oh exc2">
+            <div class="aui-card-list-header">
+                <h3>我的圈子<small></small></h3>
+            </div>
+        </div>
+  </section>
+  <div style="height: .3rem;"></div>
+</body>
+<script src="{$CDN_BASE_URL_RES}/html/wz/js/touchTouch.jquery.js?1218"></script> 
+<script src="https://res.wx.qq.com/open/js/jweixin-1.2.0.js"></script>
+<script type="text/javascript">
+        wx.config({
+          debug: false,
+          appId: "{$wxJsConfig['appId']}",
+          timestamp: {$wxJsConfig['timestamp']},
+          nonceStr: "{$wxJsConfig['noncestr']}",
+          signature: "{$wxJsConfig['signature']}",
+          jsApiList: [
+            // 所有要调用的 API 都要加到这个列表中
+            'onMenuShareTimeline',
+            'onMenuShareAppMessage'
+          ]
+        });
+    </script>
+ 
+        
+    
+
+  <script>
+    // document.cookie="id="+id;
+    //获取用户uid
+    // if(typeof(HandPlay)!="undefined"){
+    //     var UID = HandPlay.getUserId();
+    //     console.log( UID);
+    //     //alert(UID);
+    // }else{
+    //     var UID = qiaoxuekui.getUU();
+    // } 
+
+    function GetQueryString(name)  
+    {
+        var reg = new RegExp("(^|&)"+ name +"=([^&]*)(&|$)");
+        var r = window.location.search.substr(1).match(reg);
+        if(r!=null)return  unescape(r[2]); return null;
+    }
+    console.log(GetQueryString("uid"));
+    var UID = GetQueryString("uid");
+
+    var _pic = function(){
+        $(".exc2 .list").each(function(){
+          $(this).find("a").touchTouch();
+      });
+    }
+
+    //tab
+    $(".tab li").click(function() {
+      $(this).addClass('active').siblings().removeClass('active');
+      var li_index = $(".tab li").index(this)
+      $(".tab-list").eq(li_index).fadeIn().siblings('.tab-list').hide();
+    });
+
+    var _more_btn = function(){
+      //高度/行高=文本行数
+      var rowNum=Math.round($(".txt").height()/parseFloat($(".txt").css('line-height')));
+      //alert("当前有"+rowNum+"行");
+      if(rowNum>4){
+        $(".more-btn").show().css("marginTop","-2%");
+        $(".txt").css("height","1.9rem");
+      }
+      $(".more-btn").toggle(function(){
+       $(".txt").css("height","auto");
+       $(".more-btn img").addClass("rotate");
+       $(".more-btn i").html("点击收起");
+      },function(){
+       $(".txt").css("height","1.9rem");
+       $(".more-btn img").removeClass("rotate");
+       $(".more-btn i").html("展开更多");
+      })
+    }
+
+      //个人信息为空
+      //这个人很忙，还没来得及写简介...
+      //暂无发表作品
+      //暂无获奖经历
+      //TA还没发过圈子
+      
+      var str_null1 = '<div class="null"><img src="{$CDN_BASE_URL_RES}/html/wz/images/null.jpg"><br><i>这个人很忙，还没来得及写简介...</i></div>'; 
+      var str_null2 = '<div class="null"><img src="{$CDN_BASE_URL_RES}/html/wz/images/null.jpg"><br><i>暂无发表作品</i></div>'; 
+      var str_null3 = '<div class="null"><img src="{$CDN_BASE_URL_RES}/html/wz/images/null.jpg"><br><i>暂无获奖经历</i></div>'; 
+      var str_null4 = '<div class="null"><img src="{$CDN_BASE_URL_RES}/html/wz/images/null.jpg"><br><i>TA还没发过圈子</i></div>'; 
+
+    // 用户基本信息
+    $.ajax({
+        type:"POST",
+        url:"/user/common/getCommonInfo?uid="+UID,
+        dataType:"json",
+        cache: false,
+        error: function(){
+            alert("未知错误");
+        },
+        success: function(msg){
+            if(msg.error_code == 0){
+                var grinfo = msg.data;
+                var str = '';
+                str += '<div class="aui-card-list-user-avatar">';
+                        if(grinfo.userInfo.u_avatar==''){
+                            str += '<img src="{$CDN_BASE_URL_RES}/html/wz/images/zhuye.png" class="">';
+
+                        }else{
+                            str += '<img src="'+grinfo.userInfo.u_avatar+'" class="">';
+
+                        }
+                  str += '</div>';
+                  str += '<div class="aui-card-list-user-info">';
+                    if(grinfo.userInfo.u_realname==''){
+                        str += '<div> <em>'+grinfo.userInfo.remark+'</em>';
+                    }else{
+                        str += '<div> <em>'+grinfo.userInfo.u_realname+'</em>';
+                    }
+                    
+                    if(grinfo.userInfo.u_cityName==''){
+                      $(".city").hide();
+                    }
+                    else{
+                      str += '<span class="city"><img src="{$CDN_BASE_URL_RES}/html/wz/images/icon1.png" class="f-dib"><i>'+grinfo.userInfo.u_cityName+'</i></span>';
+                    }
+                    
+                    str += '</div>';
+                      str += '<small>'+grinfo.userInfo.goodsNum+'件作品<span class=""><a href="http://a.app.qq.com/o/simple.jsp?pkgname=art.jupai.com.jupai">+关注</a></span><span class=""><a href="http://a.app.qq.com/o/simple.jsp?pkgname=art.jupai.com.jupai">私聊</a></span></small>';
+                str += '</div>';
+                $(".geren-info").append(str);
+                var str2 = 
+                '<div class="aui-col-xs-4 f-tac"><i class="">'+grinfo.attentionNum+'</i><br>关注</div>'+
+                '<div class="aui-col-xs-5 f-tac"><i class="">'+grinfo.fansNum+'</i><br>粉丝</div>'+
+                '<div class="aui-col-xs-4 f-tac"><i class="">'+grinfo.mutualFansNum+'</i><br>访客</div>';
+                $(".guanzhu").append(str2);
+
+                //个人简介
+                var text = grinfo.userInfo.user_setting_introduction;
+                //console.log(text);
+                var str3 = '';
+                if(text==''){
+                    $(".jianjie").append(str_null1); 
+                }else{
+                    str3 += '<p>'+grinfo.userInfo.user_setting_introduction+'</p>'; 
+                }
+               
+                $(".tith3 .txt").append(str3);
+                _more_btn();
+                wx.ready(function () {
+                    //分享到朋友圈
+                    var title = grinfo.userInfo.u_realname+ '的专属主页';
+                    var desc = grinfo.userInfo.user_setting_introduction?grinfo.userInfo.user_setting_introduction:'用心传承，精于创作，一个专注于艺术的匠人';
+                    var imgurl = grinfo.userInfo.u_avatar?grinfo.userInfo.u_avatar:'http://pp.myapp.com/ma_icon/0/icon_52440266_1528191472/96';
+                    wx.onMenuShareTimeline({
+                        title: title,
+                        desc: desc,
+                        link: window.location.href,
+                        imgUrl: imgurl,
+                        success: function (res) {
+                            // console.log('分享到朋友圈成功返回的信息为:', res);
+                        },
+                        cancel: function (res) {
+                            // console.log('取消分享到朋友圈返回的信息为:', res);
+                        }
+                    });
+                    //分享给朋友
+                    wx.onMenuShareAppMessage({
+                        title: titem,
+                        desc: desc,
+                        link: window.location.href,
+                        imgUrl: imgurl,
+                        success: function (res) {
+                            // console.log('分享到朋友圈成功返回的信息为:', res);
+                        },
+                        cancel: function (res) {
+                            // console.log('取消分享到朋友圈返回的信息为:', res);
+                        }
+                    });
+                });
+            }
+        }
+    });
+
+    //出售中作品
+    $.ajax({
+        type:"POST",
+        url:"/mall/goods/item/getNewGoodsList?salesId="+UID+'&pageSize=6',
+        dataType:"json",
+        cache: false,
+        error: function(){
+            alert("未知错误");
+        },
+        success: function(msg){
+            if(msg.error_code == 0){
+                var win = msg.data.list;
+                if(win==''){
+                    $(".shouzhong").append(str_null2);
+                     $(".aui-btn").hide();
+                }else{ 
+                    $.each( win, function(index, content)
+                    {
+                        var str = '';
+                        str += '<li>';
+                            str += '<a href="/wx/wx/auth?type=goods&id='+content.g_id+'">';
+                            str += '<span><img src="'+content.image[0].gi_img+'"></span>';
+                            str += '<font><small>'+content.g_name+'</small><i>¥'+content.g_price+'</i></font>';
+                            if(content.g_width==0||content.g_high==0){
+                                str += '<h3>'+content.categoryName+' </h3>';
+                            }else{
+                                str += '<h3>'+content.categoryName+' '+content.g_width+'cmx'+content.g_high+'cm</h3>';
+                            }
+                        
+
+                          str += '</a>';
+                        str += '</li>';
+                        $(".shouzhong ul").append(str); 
+                    });
+                    var _a = '<a href="zplist.html?uid='+UID+'" class="aui-btn">更多作品</a>';
+                    $(".shouzhong").append(_a);
+                }    
+                    
+            }
+                
+        }
+    });   
+
+    //作品集
+    $.ajax({
+        type:"POST",
+        url:"/mall/goods/item/boxGoods?salesId="+UID,
+        dataType:"json",
+        cache: false,
+        error: function(){
+            alert("未知错误");
+        },
+        success: function(msg){
+            if(msg.error_code == 0){
+                var win = msg.data;
+                $.each( win, function(index, content)
+                {
+                    
+                    var $num = content.goodList;
+                    console.log($num);
+                    var str = '';
+                    str += '<li>';
+                        str += '<a href="zpjlist.html?gb_id='+content.gb_id+'&salesId='+UID+'">';
+                          str += '<span>'+content.count+'个作品</span>';
+                          str += '<dl>';
+                            str += '<dd>';
+                            if($num==0){
+                                str += '<img src="{$CDN_BASE_URL_RES}/html/wz/images/zhuye.png" style="height: 2.6rem;width:100%;"></dd>'; 
+                            }else{
+                               str += '<img src="'+content.goodList[0].image[0].gi_img+'" style="height: 2.6rem;width:100%;"></dd>'; 
+                            }
+                          str += '</dl>';
+                          str += '<h3>'+content.gb_name+'</h3>';
+                        str += '</a>';
+                    str += '</li>';
+                    $(".zuopinji ").append(str);
+                });   
+            }
+        }
+    });
+    
+    // 获奖经历
+    $.ajax({
+        type:"POST",
+        url:"/user/award/lists?uid="+UID,
+        dataType:"json",
+        cache: false,
+        error: function(){
+            alert("未知错误");
+        },
+        success: function(msg){
+            if(msg.error_code == 0){
+                var win = msg.data;
+                //console.log(win);
+                if(!win.length){ 
+                    $(".jingli").append(str_null3);
+                }else{
+                    $.each( win, function(index, content)
+                    {
+                        var str = '';
+                        str += '<li>';
+                        str +='<img src="{$CDN_BASE_URL_RES}/html/wz/images/icon2.png">';
+                        str +='<span>'+content.uaw_time+'</span><br>';
+                        str +='<font>'+content.uaw_des+'</font>';
+                        str +='</li>';
+                        $(".jingli ul").append(str);
+                    });
+                }
+            }
+        }
+    });
+
+    // 圈子
+    $.ajax({
+        type:"POST",
+        url:"/treasure/treasure/lists?uid="+UID+'&page=1&type=1',
+        dataType:"json",
+        cache: false,
+        error: function(){
+            alert("未知错误");
+        },
+        success: function(msg){
+            if(msg.error_code == 0){
+                var quanzi = msg.data;
+                if(quanzi==''){
+                    $(".quanzi").append(str_null4);
+                }else{
+                    $.each( quanzi, function(index, content)
+                    {
+                        if(index<10){
+                            var str = '';
+                            str += '<div class="f-oh quanzi-list">';
+                                str += '<div class="suspend m4 clearfix">';
+                                  str += '<div class="photo-box f-fl"><span class="photo"><img src="'+content.t_avatar+'"></span></div>';
+                                  str += '<div class="suspend-info">';
+                                    str += '<span>'+content.t_nickname+'';
+                                    if(content.certification==1){
+                                        str += '<img src="{$CDN_BASE_URL_RES}/html/wz/images/v.png">';
+                                    }
+                                    str += '</span>';
+                                    str += '<p>'+content.displayTime+'</p>';
+                                  str += '</div>';
+                                str += '</div>';     
+                                str += '<p class="text">'+content.t_desc+'</p>';
+                                str += '<div class="list">';
+                                str += '<ul>';
+                                    $.each(content.t_pictures, function(index1,content1){
+                                        str += '<li><a><img src="'+content1.ti_img+'"></a></li>';
+                                    })
+                                str += '</ul>';
+                                str += '</div>'; 
+                            str += '</div>';
+                            $(".quanzi").append(str);
+                        }
+                    });
+                    // $pic();
+                    // _pic();
+                }
+            }
+        }
+    });
+  </script>
+</html>

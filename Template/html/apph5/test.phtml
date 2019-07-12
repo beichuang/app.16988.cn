@@ -1,0 +1,207 @@
+<!doctype html>
+<html lang="zh">
+
+<head>
+{template public/WxShareJS}
+    <meta charset="UTF-8">
+    <title>邀请好友</title>
+    <meta name="viewport" content="width=device-width,minimum-scale=1.00001,maximum-scale=1.00001,user-scalable=no,minimal-ui">
+    <link rel="stylesheet" href="//cdn.16988.cn/res/html/css/global.css?171116">
+    <script src="https://s28.9956.cn/static/v3_1/js/jquery.min.js"></script>
+    <script src="{$CDN_BASE_URL_RES}/html/js/setfontsize.js"></script>
+    <script src="{$CDN_BASE_URL_RES}/html/js/lib/vue.min.js"></script>
+    <script src="{$CDN_BASE_URL_RES}/html/js/lib/axios.min.js"></script>
+    <style>
+        body {
+            background: url(//cdn.16988.cn/res/html/images/sign/bg.jpg);
+            -webkit-background-size: 100%;
+            background-size: 100%;
+            overflow-x: hidden;
+            font-size: 14px;
+        }
+
+        .content-wrap {
+            margin: 10px;
+        }
+
+        .content-list {
+            width: 100%;
+            margin: 0 auto;
+            overflow: hidden;
+            padding: 10px;
+            background: #fff;
+        }
+
+        .single-list {
+            width: 47%;
+            display: inline-block;
+            margin-bottom: 10px;
+            vertical-align: top;
+            height: 235px;
+        }
+        .single-list:nth-child(2n){
+            margin-left:0.1rem;
+            float: right;
+        }
+        .list-word {
+            background: #fff;
+            padding: 20px 20px 10px 20px;
+        }
+        h3{
+            width:2rem;
+        overflow: hidden;
+        text-overflow:ellipsis;
+        white-space: nowrap;
+        }
+        .price {
+            color: #dfc19d;
+        }
+
+        #size {
+            color: #e2e2e2;
+            font-size: 12px;
+            margin: 0;
+        }
+
+        .bottom {
+            color: #cbcbcb;
+            text-align: center;
+            padding: 20px 0;
+        }
+
+        .single-img {
+            width: 100%;
+            height: 116px;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .min20 {
+            position: absolute;
+            bottom: 0;
+            color: #fff;
+            background: #d72232;
+            padding: 3px;
+        }
+
+        .downapp-btn {
+            display: inline-block;
+            width: 49%;
+        }
+
+        .top-tips {
+            width: 70%;
+            margin: 0 auto;
+        }
+        s{
+          color:#e9e9e9;
+        }
+    </style>
+</head>
+
+<body>
+    <section class="container Invitation-wap">
+        <div class="banner f-pr">
+            <img src="{$CDN_BASE_URL_RES}/html/images/sign/banner.png" style="margin-top: -14%;">
+            <div class="f-pa box-bg1">
+                <div class="box-bg2 bgc">
+                    <img src="{$CDN_BASE_URL_RES}/html/images/sign/logo.jpg" class="min-logo">
+                    <form action="">
+                        <input type="number" name="" id="tel" placeholder="请输入手机号">
+                        <button type="button" class="btn">
+                            <img src="{$CDN_BASE_URL_RES}/html/images/sign/btn.jpg">
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </div>
+        <div class="content-wrap">
+
+            <div class="content-list">
+                <div class="top-tips">
+                    <img src="{$CDN_BASE_URL_RES}/html/images/h5/tips_03.png" alt="">
+                </div>
+                <div class="single-list-wrapper" id="app">
+                <div class="single-list" v-for="result in results" :key="result.id">
+                    <div class="single-img">
+                            <div class="banner_img">
+                                <img src="{$CDN_BASE_URL_RES}/html/images/h5/list-01.png">
+                            </div>
+                                <span class="min20">立减20</span>
+                            </div>
+                            <div class="list-word">
+                                <h3>{{result.g_name}}</h3>
+                                <!-- <p id="size">result.categoryName <span v-for="item_str in result.itemArr">{{item_str.ga_value}}</span></p>
+                                <s>result.g_original_price</s>
+                                <span class="price">券后￥result.g_price</span> -->
+                            </div>
+                    </div>
+                </div>
+                <div class="downapp-btn">
+                    <div class="">
+                        <a href="http://a.app.qq.com/o/simple.jsp?pkgname=art.jupai.com.jupai">
+                            <img src="{$CDN_BASE_URL_RES}/html/images/h5/downapp-btn_03.png" alt="">
+                        </a>
+
+                    </div>
+
+                </div>
+            </div>
+        </div>
+
+        <img src="{$CDN_BASE_URL_RES}/html/images/sign/about.png" class="about">
+        <p>掌玩APP是河南九阳网络科技有限公司精心打造的集艺术品交易、拍卖、分享于一体的平台。平台汇集多品类艺术品，利用互联网优势进行分享式拍卖与交易，平台上汇聚众多接地气的艺术品，水墨、书法、玉石再到文玩，品类齐全，易被大众所接受和参与，让艺术融入更多普通家庭！平台与行业协会深度合作，推荐优质商家家和艺术家入驻，为藏家提供价格合理、质量有保证的艺术品。
+            掌玩----好货，好赚，好玩！
+        </p>
+    </section>
+
+    <div class="popup-box">
+        <div class="popup">
+            <div class="head clearfix">
+                <img src="{$CDN_BASE_URL_RES}/html/images/sign/close.jpg" class="close f-fr f-csp">
+            </div>
+            <p class="f-tac">您已成功接受邀请
+                <br>马上去掌玩App寻宝交好友吧</p>
+            <!-- 您已经有掌玩的账号 去掌玩开启艺术之旅吧 -->
+            <div class="footer f-tac">
+                <span class="confirm">确定</span>
+            </div>
+        </div>
+    </div>
+    
+    <script>
+     var app = new Vue({
+            el: '#app',
+            data: {
+                results: []
+            },
+            created:function(){
+                axios.post('/mall/goods/item/recommendGoods');
+                .then(function (response) {
+                    console.log(response.data.data);
+                    this.results = response.data.data.list;
+                    console.log(this.results);
+                })
+                .catch(function (error) {
+                    console.log(error);
+                });
+            }
+        });
+        //popup-box
+
+        //获取网页的uid
+        (function ($) {
+            $.getUrlParam = function (name) {
+                var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)");
+                var r = window.location.search.substr(1).match(reg);
+                if (r != null) return unescape(r[2]); return null;
+            }
+        })(jQuery);
+        // alert($.getUrlParam('uid'))
+        console.log($.getUrlParam('uid'));
+        
+
+    </script>
+</body>
+
+</html>

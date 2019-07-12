@@ -1,0 +1,230 @@
+<!doctype html>
+<html lang="zh">
+<head>
+{template public/WxShareJS}
+	<meta charset="UTF-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=Edge" />
+	<title>寻宝详情</title>
+	<link rel="stylesheet" href="{$CDN_BASE_URL_RES}/html/pc/css/global.css?171124">
+	<script src="{$CDN_BASE_URL_RES}/html/js/jquery.min.js"></script>
+	<script src="{$CDN_BASE_URL_RES}/html/pc/js/zhangwan.js?171124"></script> 
+	<style>
+		.sidebar .suspend-info2 p{margin-top: 5px;margin-bottom: 25px;}
+        .tuijian .suspend-info2 h3{margin-top: 10px;}  
+	</style>
+</head>
+<body class="tk2">
+	<!-- nav -->
+	<div class="header bgc">
+		<div class="container nav">
+			<a href="index.html" class="f-fl logo"><img src="{$CDN_BASE_URL_RES}/html/pc/images/logo.png"></a>
+			<ul>
+				<li><a href="index.html">首页</a></li>
+				<li><a href="headlines.html">头条</a></li>
+				<li><a href="circle.html">圈子</a></li>
+				<li class="on"><a href="treasure.html">寻宝</a></li>
+				<li><a href="download.html">APP下载</a></li>
+				<li><a href="about.html">关于我们</a></li>
+			</ul>		
+			<div class="clearfix f-fr search-box">
+				<input type="text" placeholder="请输入关键词" class="search f-fl">
+				<button class="f-fr icon submit" type="button"></button>
+			</div>								
+		</div>
+
+		<!-- <div id='test'></div> -->
+	</div>	
+	<div class="main">
+	</div>
+	<script>
+		$(function(){
+
+		//立即购买弹框
+		var _mai = function(){
+				$(".download-btn").click(function(){
+				$(".popup-box01").show();
+				$(".popup-box .popup p em").html("购买");
+			});
+			$(".close").click(function(){
+				$(".popup-box01").hide();
+			}); 
+		};
+
+       //获取网页的uid
+        (function ($) {
+            $.getUrlParam = function (name) {
+                var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)");
+                var r = window.location.search.substr(1).match(reg);
+                if (r != null) return unescape(r[2]); return null;
+            }
+        })(jQuery);
+        console.log($.getUrlParam('id'));
+        _uid = $.getUrlParam('id');
+
+
+		//寻宝详情内容
+		$.ajax({
+            type:"POST",
+            url:"/mall/goods/item/detail?id="+_uid,
+            dataType:"json",
+            cache: false,
+            error: function(){
+                alert("未知错误");
+            },
+            success: function(msg){
+                if(msg.error_code == 0){
+                    var info = msg.data;
+                        var str = ''
+							str += '<div class="container clearfix layout">';
+								str += '<div class="f-fl bgc xunbao-info bdc">';
+									str += '<div class="suspend clearfix">';
+										str += '<div class="photo-box"><a href="javascript:void(0);" class="photo">';
+					                    str+='<img src="'+info.itemImage[0].gi_img+'">';
+										str += '</a></div>';
+										str += '<div class="suspend-info">';
+											str += '<h3>'+info.item[0].g_name+'</h3>';
+											str += '<p>'+info.item[0].goodsBoxName+'/'+info.itemImage[0].gi_width+'*'+info.itemImage[0].gi_height+'CM/'+info.item[0].g_madeTime+'</p>';
+											str += '<font>¥'+info.item[0].g_price+'</font>';
+											str += '<div><img src="{$CDN_BASE_URL_RES}/html/pc/images/code.png" width="97"><br>下载掌玩购买</div>';
+											str += '<span class="download-btn">立刻购买</span>';
+										str += '</div>';
+									str += '</div>';
+								str += '</div>';
+								str += '<div class="f-fr sidebar bgc jianjie bdc">';
+									str += '<div class="titlebar clearfix">';
+										str += '<h3 class="">作者简介</h3>';
+									str += '</div>';
+									str += '<div class="suspend clearfix">';
+										str += '<div class="photo-box f-pr"><a href="javasrcipt:0;" class="photo">';
+										if(!info.item[0].g_avata){
+											str += '<img src="//cdn.16988.cn/res/html/pc/images/morentouxiang.png">';
+										}else{
+											str += '<img src="'+info.item[0].g_avatar+'">';
+										}
+										str += '</a><img src="{$CDN_BASE_URL_RES}/html/pc/images/v.png" class="f-pa"></div>';
+										str += '<div class="suspend-info">';
+											str += '<h3>'+info.item[0].g_realname+'</h3>';
+											str += '<ul>';
+												str += '<li>'+info.item[0].saler_goodsNum+'作品</li>';
+												str += '<li>'+info.item[0].saler_fans+'位粉丝</li>';
+												str += '<li>'+info.item[0].saler_certification+'次打赏</li>';
+											str += '</ul>';
+										str += '</div>';
+									str += '</div>';
+									str += '<div class="line"></div>';
+									if(!info.item[0].g_inspiration){
+										str += '<p class="jianjie-txt">这个人很忙，没来得及简介~</p>';
+									}else{
+										str += '<p class="jianjie-txt">'+info.item[0].g_inspiration+'</p>';
+									}
+									
+								str += '</div>';
+							str += '</div>';
+							str += '<div class="container layout clearfix">';
+								str += '<div class="f-fl bgc btc xunbao_info bdc">';
+									str += '<div class="tab tab03">';
+										str += '<ul>';
+											str += '<li class="active">商品详情</li>';
+											str += '<li>评论（<i id="pl"></i>）</li>';
+										str += '</ul>';
+									str += '</div>';
+									str += '<div class="line2"></div>';
+									str += '<div class="tab-list-box">';
+										str += '<div class="xunbao_info tab-list" style="display:block;">';
+										$.each( info.itemImage, function(index, content){
+											str += '<img src="'+content.gi_img+'">';
+										});
+											
+
+											//'<p>商品文字内容</p>'+
+											str += '<div style="height: 20px;"></div>';
+										str += '</div>';
+										str += '<div class="quanzi quanzi-xunbao tab-list"  id="quanzi-xunbao">';
+											// str += '<div class="quanzi-list">';
+											// 	str += '<div class="suspend clearfix">';
+											// 		str += '<div class="photo-box"><a href="javasrcipt:vodi(0);" class="photo"><img src="{$CDN_BASE_URL_RES}/html/pc/images/tx.jpg"></a></div>';
+											// 		str += '<div class="suspend-info">';
+											// 			str += '<h3>爱画画的老叟</h3>';
+											// 			str += '<p>2017-11-12 10:56:32</p>';
+											// 			str += '<div class="tx">话说近两年书画市场调整，90%的画廊生存</div>';
+											// 		str += '</div>';
+											// 	str += '</div>';
+											// str += '</div>';
+											// str += '<div class="quanzi-list">';
+											// 	str += '<div class="suspend clearfix">';
+											// 		str += '<div class="photo-box"><a href="javasrcipt:vodi(0);" class="photo"><img src="{$CDN_BASE_URL_RES}/html/pc/images/tx.jpg"></a></div>';
+											// 		str += '<div class="suspend-info">';
+											// 			str += '<h3>爱画画的老叟</h3>';
+											// 			str += '<p>2017-11-12 10:56:32</p>';
+											// 			str += '<div class="tx">话说近两年书画市场调整，90%的画廊生存</div>';
+											// 		str += '</div>';
+											// 	str += '</div>';
+											// str += '</div>';
+										str += '</div>';
+									str += '</div>';
+								str += '</div>';
+								str += '<div class="f-fr bgc btc sidebar tuijian xunbaHot">';
+									str += '<div class="titlebar clearfix">';
+										str += '<h3 class="">猜你喜欢</h3>';
+									str += '</div>';
+								str += '</div>';
+							str += '</div>';        
+
+                    $(".main").append(str);
+                    _jingxuan();
+                    _mai();
+                    _tab();
+                    ajaxPinhlun();
+                }else{
+                    alert(msg.error_msg);
+                };
+            }
+        });
+
+
+  		// //精品推荐
+  		_jingxuan();
+
+  		function ajaxPinhlun() {
+	  		//评论
+	  		$.ajax({
+	            type: "POST",
+	            url: "/mall/goods/comment/lists?g_id="+_uid,
+	            dataType: "json",
+	            cache: false,
+	            error: function () {    
+	                alert("未知错误");
+	            },
+	            success: function(msg){
+	                if(msg.error_code == 0){ 
+	                    var pinglun = msg.data.rows;
+	                    var _num = msg.data.totalCount;
+	                    console.log(_num);
+
+	                     
+	                    if(pinglun.length > 0){
+	                    	var str = ''
+	                        $.each( pinglun, function(index, content)
+	                        {
+								str += '<div class="quanzi-list"><div class="suspend clearfix"><div class="photo-box"><a href="javasrcipt:vodi(0);" class="photo">';
+								if((content.u_avatar=='')){
+									str += '<img src="//cdn.16988.cn/res/html/pc/images/morentouxiang.png">';
+								}else{
+									str += '<img src="'+content.u_avatar+'">';
+								}
+								str += '</a></div><div class="suspend-info"><h3>'+content.u_nickname+'</h3><p>'+content.gc_time+'</p><div class="tx">'+content.gc_content+'</div></div></div></div>';
+								$("#quanzi-xunbao").append(str);
+	                        });
+	                        $("#pl").append(_num);  
+	                    }
+	                }else{
+	                    alert(msg.error_msg);
+	                };
+	            }
+	        });
+  		}
+	})
+  		
+	</script>
+</body>
+</html>

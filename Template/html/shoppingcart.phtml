@@ -1,0 +1,287 @@
+<!DOCTYPE html>
+<html>
+<head>
+{template public/WxShareJS}
+	<meta charset="UTF-8">
+	<title>购物车</title>
+	<meta name="viewport" content="width=device-width,minimum-scale=1.00001,maximum-scale=1.00001,user-scalable=no,minimal-ui">
+	<link rel="stylesheet" type="text/css" href="{$CDN_BASE_URL_RES}/html/css/css.css?201703311742">
+	<script src="{$CDN_BASE_URL_RES}/html/js/jquery.min.js"></script>
+	<script src="{$CDN_BASE_URL_RES}/html/js/currency.js"></script>
+<style>
+.red_box2{background:#ccc;color:#333}
+</style>
+</head>
+<body>
+
+<div class="loadimgBox">
+	<div class="mul15">
+		<div class="m15c m15c1"></div>
+		<div class="m15c m15c2"></div>
+		<div class="m15c m15c3"></div>
+		<div class="m15c m15c4"></div>
+		<div class="m15c m15c5"></div>
+		<div class="m15c m15c6"></div>
+		<div class="m15c m15c7"></div>
+		<div class="m15c m15c8"></div>
+	</div>
+</div>
+<div class="list_kong_showBox">
+	<img src="{$CDN_BASE_URL_RES}/html/images/kong_img_1.gif">
+	<p class="p1">您的购物车空空的！</p>
+	<a href="index.html" class="kongBtn">去逛逛</a>
+</div>
+	<div class="list">
+	</div>
+	<div class="null">
+		
+	</div>
+	<div class="red_box red_box2" id="submit">去结算</div>
+	<div style="height:4rem;"></div>
+<div class="confirm">
+	<div>
+		<p>确定要删除此商品吗？</p>
+		<span class="sure">确定</span>
+		<span class="cancel">取消</span>
+	</div>
+</div>
+<script type="text/javascript">
+$(".cancel").click(function(){
+	$(".confirm").hide();
+});
+	function alert(e){
+    	$("body").append("<div id='msg'><span>"+e+"</span></div>");
+    	clearmsg();
+    }
+    function clearmsg(){
+    	var t = setTimeout(function(){
+    		$("#msg").remove();
+    	},2000)
+    };
+</script>
+<script type="text/javascript">
+function addEvent()
+{
+	$(".shopping_box .left img").click(function(){
+		var change = $(this).attr("val");
+		if(change == "no"){
+			$(".shopping_box .left img").attr("src","{$CDN_BASE_URL_RES}/html/images/xuanze01.png").attr("val","no");;
+			$(this).attr("src","{$CDN_BASE_URL_RES}/html/images/xuanze02.png");
+			$(this).attr("val","yes");
+		}else{
+			$(this).attr("src","{$CDN_BASE_URL_RES}/html/images/xuanze01.png");
+			$(this).attr("val","no");
+		};
+		var isTrue = false;
+		$(".shopping_box").each(function(index, el) {
+			var val = $(this).find(".left img").attr("val");
+			if(val == "yes")
+			{
+				isTrue = true;
+			};
+		});
+		if(isTrue)
+		{
+			$("#submit").removeClass('red_box2');
+		}else{
+			$("#submit").addClass('red_box2');
+		};
+	});
+	$(".jia").click(function(){
+		var number1 = $(this).parents(".caozuo").find("input").val();
+		var max1 = $(this).parents(".caozuo").find("input").attr("max");
+		var g_id = $(this).parents(".shopping_box").attr("gid");
+		number1 = parseInt(number1);
+		if(number1 >= max1){
+			alert("已超出最大库存");
+			return false;
+		}else{
+			number1 = number1+1;
+			$(this).parents(".caozuo").find("input").val(number1);
+			//更新数量
+			fn_upG(g_id,1);
+		};
+	});
+	$(".jian").click(function(){
+		var number = $(this).parents(".caozuo").find("input").val();
+		var min = $(this).parents(".caozuo").find("input").attr("min");
+		var g_id = $(this).parents(".shopping_box").attr("gid");
+		number = parseInt(number);
+		if(number <= min){
+			return false;
+		}else{
+			number = number-1;
+			$(this).parents(".caozuo").find("input").val(number);
+			fn_upG(g_id,-1);
+		};
+	});
+$(".delete").click(function(){
+	$(".confirm").show();
+	var ind1 = $(this).parents(".shopping_box").index();
+	$(".sure").attr("data",ind1);
+});
+$(".sure").click(function(event) {
+	var ind2 = parseInt($(this).attr("data"));
+	fn_removeG($(".shopping_box").eq(ind2));
+	$(".confirm").hide();
+});
+function fn_upG(gid,num)
+{
+	$.ajax({
+		type:"POST",
+		url:"/mall/user/cart/updateNum",
+		data:{"goodsNum":num,"g_id":gid},
+		dataType:"json",
+		success:function(data)
+		{
+			//console.log(data);
+			if(data.error_code!=0)
+			{
+				alert(data.error_msg);
+			}
+			else
+			{
+				
+			};
+		}
+	});
+};
+function fn_removeG(obj)
+{
+	_this = obj;
+	var removeid = _this.attr("gid");
+	$.ajax({
+		type:"POST",
+		url:"/mall/user/cart/updateNum",
+		data:{"goodsNum":-1000,"g_id":removeid},
+		dataType:"json",
+		success:function(data)
+		{
+			//console.log(data);
+			if(data.error_code!=0)
+			{
+				alert(data.error_msg);
+			}
+			else
+			{
+				_this.remove();
+				alert("商品已被删除");
+				if($(".list .shopping_box").length==0)
+				{
+					$(".list_kong_showBox").show();
+					$("#submit").hide();
+				};
+			};
+		}
+	});
+};
+	$("#submit").click(function(){
+		if($(this).hasClass('red_box2')){return;};
+		var g_id;
+		var g_num;
+		$(".shopping_box").each(function(index, el) {
+			var val = $(this).find(".left img").attr("val");
+			if(val == "yes")
+			{
+				g_id = $(this).attr("gid");
+				g_num = $(this).find("input[type='number']").val();
+			};
+		});
+		window.location = "/html/order.html?id="+g_id+"&num="+g_num;
+	});
+	function alert(e){
+    	$("body").append("<div id='msg'><span>"+e+"</span></div>");
+    	clearmsg();
+    }
+    function clearmsg(){
+    	var t = setTimeout(function(){
+    		$("#msg").remove();
+    	},2000)
+    };
+};
+</script>
+<script>
+$(function(){
+	$.ajax({
+		type:"POST",
+		url:"/mall/user/cart/queryByPage",
+		data:"",
+		dataType:"json",
+		success:function(data)
+		{
+			if(data.error_code!=0)
+			{
+				alert(data.error_msg);
+				$(".loadimgBox").fadeOut(500);
+			}
+			else
+			{
+				if(data.data.rows.length!=0)
+				{
+					fn_renderList(data.data.rows);
+				}
+				else
+				{
+					$(".loadimgBox").fadeOut(500);
+					$(".list_kong_showBox").show();
+					$("#submit").hide();
+				};
+			};
+		}
+	});
+});
+//渲染列表
+function fn_renderList(arr)
+{
+	$(".loadimgBox").fadeOut(500);
+	var str="";
+	for(var i=0;i<arr.length;i++)
+	{
+		str+='<div class="shopping_box" gid="'+arr[i].g_id+'">'
+		str+=	'<div class="left">';
+		str+=		'<img src="{$CDN_BASE_URL_RES}/html/images/xuanze01.png" val="no">';
+		str+=	'</div>';
+		str+=	'<div class="right">';
+		str+=		'<img class="gpic" src="" alt="稍等">';
+		str+=		'<div>';
+		str+=			'<p>'+arr[i].g_name+'</p>';
+		str+=			'<span>¥'+arr[i].ucart_goodsPrice+'</span>';
+		str+=			'<div class="caozuo">';
+		str+=				'<img src="{$CDN_BASE_URL_RES}/html/images/jisuan02.png" class="jian">';
+		str+=				'<input type="number" style="background:none;" disabled max="10" min="1" value="'+arr[i].ucart_goodsNum+'">';
+		str+=				'<img src="{$CDN_BASE_URL_RES}/html/images/jisuan01.png" class="jia">';
+		str+=				'<img src="{$CDN_BASE_URL_RES}/html/images/delete.png" class="delete">';
+		str+=			'</div>';
+		str+=		'</div>';
+		str+=	'</div>';
+		str+='</div>';
+		fn_renderImg(i,arr[i].g_id);
+	};
+	$(".list").html(str);
+	addEvent();
+};
+//获取商品详情
+function fn_renderImg(i,number)
+{
+	$.ajax({
+		type:"POST",
+		url:"/mall/goods/item/detail",
+		data:{"id":number},
+		dataType:"json",
+		success:function(data)
+		{
+			if(data.error_code!=0)
+			{
+				alert(data.error_msg);
+			}
+			else
+			{
+				$(".list .shopping_box").eq(i).find(".gpic").attr("src",data.data.itemImage[0].gi_img);
+				$(".list .shopping_box").eq(i).find("input[type='number']").attr("max",data.data.item[0].g_stock);
+			};
+		}
+	});
+};
+</script>
+</body>
+</html>

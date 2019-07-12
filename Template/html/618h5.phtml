@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <title>掌玩~传统文化守护</title>
+    <meta name="viewport" content="width=device-width,user-scalable=no,initial-scale=1, minimum-scale=1,maximum-scale=1,minimal-ui=true">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="format-detection" content="telephone=no">
+    <meta name="renderer" content="webkit">
+    <meta name="force-rendering" content="webkit">
+    <meta name="x5-page-mode" content="app">
+    <script type="text/javascript">
+      !function (e) { var t = 750, n = e.document, i = n.documentElement, a = "orientationchange" in e ? "orientationchange" : "resize", d = function e() { var n = i.getBoundingClientRect().width; return i.style.fontSize = 5 * Math.max(Math.min(20 * (n / t), 11.2), 8.55) + "px", e }(); i.setAttribute("data-dpr", e.navigator.appVersion.match(/iphone/gi) ? e.devicePixelRatio : 1), /iP(hone|od|ad)/.test(e.navigator.userAgent) && (n.documentElement.classList.add("ios"), parseInt(e.navigator.appVersion.match(/OS (\d+)_(\d+)_?(\d+)?/)[1], 10) >= 8 && n.documentElement.classList.add("hairline")), n.addEventListener && (e.addEventListener(a, d, !1), n.addEventListener("DOMContentLoaded", d, !1)) }(window);
+    </script>
+    <link rel="stylesheet" type="text/css" href="{$CDN_BASE_URL_RES}/html/618H5/css/style-index.css" />
+    <link rel="stylesheet" type="text/css" href="{$CDN_BASE_URL_RES}/html/618H5/css/swiper.min.css" />
+    <script src="https://res.wx.qq.com/open/js/jweixin-1.2.0.js"></script>
+    <script>
+        wx.config({
+          debug: false,
+          appId: "{$wxJsConfig['appId']}",
+          timestamp: {$wxJsConfig['timestamp']},
+          nonceStr: "{$wxJsConfig['noncestr']}",
+          signature: "{$wxJsConfig['signature']}",
+          jsApiList: [
+            // 所有要调用的 API 都要加到这个列表中
+            'onMenuShareTimeline',
+            'onMenuShareAppMessage'
+          ]
+        });
+    </script>
+  </head>
+
+  <body>
+  <div id="bodys">
+    <section id="box1">
+      <div class="bg1"></div>
+      <div class="lod-box">
+        <div class="progress-bar orange shine">
+          <span id="inLins" style="width:1px;"></span>
+        </div>
+      </div>
+    </section>
+
+    <section id="box2" class="none">
+      <div class="bg2"></div>
+      <div class="hb-box"></div>
+
+      <div class="xz-box">
+        <div class="x-box"></div>
+        <div class="z-box"></div>
+        <div class="xzb">
+          <div class="xzb-bg">
+            <span>当</span>
+            <span>我</span>
+            <span>们</span>
+            <span>提</span>
+            <span>起</span>
+            <span>传</span>
+            <span>统</span>
+            <span>文</span>
+            <span>化</span>
+            <span>时</span>
+            <span>你</span>
+            <span>想</span>
+            <span>起</span>
+            <span>了</span>
+            <span>什</span>
+            <span>么</span>
+            <span>？</span>
+          </div>
+        </div>
+      </div>
+
+    </section>
+
+    <section id="box3" class="none">
+      <div class="don-box">
+        <div class="donL"></div>
+        <div class="donR"></div>
+      </div>
+      <div class="bg3"></div>
+      <div class="donBtn"></div>
+      <div class="donHed"></div>
+    </section>
+
+    <section id="box4" class="opne">
+      <div class="swiper-box">
+        <div class="swiper-wrapper">
+          <div class="swiper-slide swiper-no-swiping">
+
+            <ul class="sel-box">
+              <li></li>
+              <li></li>
+              <li class="active"></li>
+              <li></li>
+              <li></li>
+              <li></li>
+              <li></li>
+              <li></li>
+              <li></li>
+              <li></li>
+              <li></li>
+            </ul>
+
+          </div>
+          <div class="swiper-slide">
+            <img src="{$CDN_BASE_URL_RES}/html/618H5/img/5_z.png" alt="">
+          </div>
+          <div class="swiper-slide">
+            <img src="{$CDN_BASE_URL_RES}/html/618H5/img/4_z.png" alt="">
+          </div>
+          <div class="swiper-slide">
+            <img src="{$CDN_BASE_URL_RES}/html/618H5/img/3_z.png" alt="">
+            <p class="getright">向上滑动 >></p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="box5" class="none">
+      <div class="bg4"></div>
+      <div class="hbs-box"></div>
+      <div class="msg-box">
+        <div class="box-text">
+          <img id="savImg" data-url="{$CDN_BASE_URL_RES}/html/618H5/img/" src="{$CDN_BASE_URL_RES}/html/618H5/img/8_06.png" alt="">
+          <p id="savTxt"></p>
+        </div>
+      </div>
+      <div class="txt-box">
+        <p class="t-cont">你是第<span id="userCont">－</span>位传统文化守护者</p>
+        <img class="t-logo" src="{$CDN_BASE_URL_RES}/html/618H5/img/7_em.png" alt="">
+        <p class="t-savimg">长按图片保存</p>
+        <div class="t-btn-box">
+          <div class="t-l-btn" onclick="alert('请点击右上角，分享好友吧')"></div>
+          <div class="t-r-btn" onclick="location.href = 'https://app.16988.cn/html/apph5/artist-intro.html';"></div>
+        </div>
+        <img class="t-b-logo" src="{$CDN_BASE_URL_RES}/html/618H5/img/7_lg.png" alt="">
+      </div>
+    </section>
+
+    <section id="box6" class="none">
+      <div class="mask-img mask2"></div>
+      <nav class="mask-btn"></nav>
+    </section>
+
+    <section id="box7" class="none">
+      <img src="{$CDN_BASE_URL_RES}/html/618H5/img/7_em.png" alt="">
+      <p>长按下面的图片保存后，分享朋友圈吧～</p>
+    </section>
+  </div>
+    <audio src="{$CDN_BASE_URL_RES}/html/618H5/mp3/gsls.mp3" controls="controls" preload="auto" autoplay id="gsMp3"></audio>
+    <audio src="{$CDN_BASE_URL_RES}/html/618H5/mp3/open.mp3" controls="controls" preload="auto" id="opMp3"></audio>
+    <script type="text/javascript" src="{$CDN_BASE_URL_RES}/html/618H5/js/swiper.min.js"></script>
+    <script type="text/javascript" src="{$CDN_BASE_URL_RES}/html/618H5/js/resLoader.js"></script>
+  </body>
+</html>

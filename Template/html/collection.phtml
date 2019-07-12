@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html>
+<head>
+{template public/WxShareJS}
+	<meta charset="UTF-8">
+	<title>我的收藏</title>
+	<meta name="viewport" content="width=device-width,minimum-scale=1.00001,maximum-scale=1.00001,user-scalable=no,minimal-ui">
+	<link rel="stylesheet" type="text/css" href="{$CDN_BASE_URL_RES}/html/css/css.css?201703311742">
+	<script src="{$CDN_BASE_URL_RES}/html/js/jquery.min.js"></script>
+	<script src="{$CDN_BASE_URL_RES}/html/js/currency.js"></script>
+</head>
+<body>
+	<ul class="collection_list"></ul>
+<script type="text/javascript">
+	var data = {"jump": 7};
+	console.log(data);
+// 	window.WebViewJavascriptBridge.callHandler(
+//     	"submitFromWeb",
+//         data
+//         , function(responseData){
+//         	alert(responseData);
+//         	$.ajaxSetup({
+//         	  	headers: {
+//         	  	    "action": responseData,
+//         	  	},
+//         	});
+//         }
+// 	);
+	
+	//删除
+	function dele(e){
+		var data_arr = {};
+		data_arr.ufav_id = e;
+		$.ajax({
+		    type: "POST",
+		    url: "/user/favorite/remove",
+		    data: data_arr,
+		    dataType: "json",
+		    cache: false,
+		    error: function () {
+		        alert("未知错误");
+		    },
+		    success: function(msg){
+		        if(msg.error_code == 0){
+		        	alert("删除成功")
+		        	setTimeout(function(){
+        	    		window.location.reload();
+        	    	},2000)
+		        }else{
+		            alert(msg.error_msg);
+		        };
+		    }
+		});
+	};
+	//购买
+	function buy(e){
+		window.location = "/html/order.html?id="+e+"&num=1"
+	}
+	$(document).ready(function(){
+		//渲染页面
+		var data_arr = {};
+		data_arr.page = 1;
+		data_arr.pageSize = 1000;
+		$.ajax({
+		    type: "POST",
+		    url: "/user/favorite/queryByPage",
+		    data: data_arr,
+		    dataType: "json",
+		    cache: false,
+		    error: function () {
+		        alert("未知错误");
+		    },
+		    success: function(msg){
+		        if(msg.error_code == 0){
+		        	if(msg.data.rows.length == 0){
+		        		$("body").append("<div class='kong'><img src='{$CDN_BASE_URL_RES}/html/images/kong.jpg'></div>");
+		        	}else{
+		        		for(var i = 0; i < msg.data.rows.length; i++){
+		        			var obj = jQuery.parseJSON(msg.data.rows[i].ufav_content);
+		        			$(".collection_list").append("<li><a href='/html/details.html?id="+msg.data.rows[i].ufav_objectKey+"'><img src="+obj.g_image+"><div><p>"+obj.g_name+"</p><span>¥"+obj.g_price+"</span><b><a onclick='dele("+msg.data.rows[i].ufav_id+")'>删除</a><a class='red' onclick='buy("+msg.data.rows[i].ufav_objectKey+")'>购买</a></b></div></a></li>")
+		        		}
+		        	}
+		        	//buy();
+		        }else{
+		            alert(msg.error_msg);
+		        };
+		    }
+		});
+	})
+	function alert(e){
+    	$("body").append("<div id='msg'><span>"+e+"</span></div>");
+    	clearmsg();
+    }
+    function clearmsg(){
+    	var t = setTimeout(function(){
+    		$("#msg").remove();
+    	},2000)
+    };
+</script>
+</body>
+</html>

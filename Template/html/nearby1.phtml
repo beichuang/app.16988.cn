@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html>
+<head>
+{template public/WxShareJS}
+	<meta charset="UTF-8">
+	<title>附近的市场</title>
+	<meta name="viewport" content="width=device-width,minimum-scale=1.00001,maximum-scale=1.00001,user-scalable=no,minimal-ui">
+	<link rel="stylesheet" type="text/css" href="{$CDN_BASE_URL_RES}/html/css/css.css?201703311742">
+	<script src="{$CDN_BASE_URL_RES}/html/js/jquery.min.js"></script>
+</head>
+<body>
+
+<!--
+<div class="loadimgBox">
+	<div class="mul15">
+		<div class="m15c m15c1"></div>
+		<div class="m15c m15c2"></div>
+		<div class="m15c m15c3"></div>
+		<div class="m15c m15c4"></div>
+		<div class="m15c m15c5"></div>
+		<div class="m15c m15c6"></div>
+		<div class="m15c m15c7"></div>
+		<div class="m15c m15c8"></div>
+	</div>
+</div>-->
+	<ul class="nearby">
+		<!-- <li>
+			<a href="">河南
+			<img src="{$CDN_BASE_URL_RES}/html/images/more.png">
+			</a>
+		</li> -->
+	</ul>
+	<script type="text/javascript">
+		function alert(e){
+        	$("body").append("<div id='msg'><span>"+e+"</span></div>");
+        	clearmsg();
+        }
+        function clearmsg(){
+        	var t = setTimeout(function(){
+        		$("#msg").remove();
+        	},2000)
+        };
+	</script>
+</body>
+<script src="{$CDN_BASE_URL_RES}/html/js/region.2.js"></script>
+<script>
+$(function(){
+	var regionSelectjsn1 = newdizhiregion.data;
+	var regionSelect1={};
+	regionSelect1.sheng={};
+	regionSelect1.shi={};
+	regionSelect1.qu={};
+	for(var p in regionSelectjsn1)
+	{
+		if(regionSelectjsn1[p].region_level==1)
+		{
+			regionSelect1.sheng[p]=(regionSelectjsn1[p]);
+		}else if(regionSelectjsn1[p].region_level==2)
+		{
+			regionSelect1.shi[p]=(regionSelectjsn1[p]);
+		}else if(regionSelectjsn1[p].region_level==3)
+		{
+			regionSelect1.qu[p]=(regionSelectjsn1[p]);
+		};
+	};
+	var url2 = "/html/nearby2.html";
+	var val = location.hash;
+	val=val.replace(/#/,"");
+	var str_1 = "";
+	$(".loadimgBox").fadeOut(500);
+	for(var p in regionSelect1.shi)
+	{
+		if(regionSelect1.shi[p].region_pcode == val)
+		{
+			str_1+="<li data="+p+">";
+			str_1+=	"<a>"+regionSelect1.shi[p].region_name;
+			str_1+=	"<img src='{$CDN_BASE_URL_RES}/html/images/more.png'>";
+			str_1+=	"</a>";
+			str_1+="</li>";
+		};
+	};
+	$(".nearby").html(str_1);
+	$(".nearby li").click(function(event) {
+		var val = parseInt($(this).attr("data"));
+		//市
+		location.href = url2+"#"+val;
+	});
+});
+</script>
+</html>

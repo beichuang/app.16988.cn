@@ -1,0 +1,556 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+{template public/WxShareJS}
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <!-- <script src="https://s3.ssl.qhres.com/!763e98a6/spritejs.min.js"></script> -->
+
+    <!-- <script src="https://cdn.bootcss.com/vue/2.5.17-beta.0/vue.min.js"></script> -->
+    <!-- <script src="https://cdn.jsdelivr.net/npm/vue@2.5.16/dist/vue.js"></script> -->
+    <!-- <script src="template-web.js"></script> -->
+    <!-- <script src="https://vadm.16988.cn/static/js/artTemplate.js"></script> -->
+    <script src="https://cdn.bootcss.com/jquery/1.8.2/jquery.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.5.2/animate.min.css">
+    <title>河南少儿书法大赛</title>
+</head>
+<style>
+    * {
+        margin: 0;
+        padding: 0;
+    }
+    
+    img {
+        vertical-align: middle;
+        width: 100%;
+    }
+    
+    .mask {
+        background: #eee;
+        position: absolute;
+        left: 0;
+        right: 0;
+        top: 120px;
+        height: 159px;
+        margin: 0 20px;
+    }
+    
+    .mask-ani {
+        animation: oneByOne 5s ease-in 0.2s forwards;
+    }
+    
+    .wrapper {
+        text-align: center;
+    }
+    
+    .list-wrapper {
+        position: relative;
+    }
+    
+    .list-item {
+        /* flex: 1; */
+        display: inline-block;
+        text-align: center;
+        margin: 10px 30px;
+    }
+    
+    .list-item p {
+        margin-top: -15px;
+        background: #f5a85f;
+        color: #b42122;
+        border-radius: 10px;
+    }
+    
+    #nameActive {
+        color: #fff;
+        background: #b42122;
+    }
+    
+    #numberActive {
+        background: linear-gradient(#ffd101 50%, #f5a85f 50%);
+        color: #b42122;
+    }
+    
+    .number-wrapper {
+        display: inline-block;
+        width: 100px;
+        height: 100px;
+        /* border: 1px solid #eee; */
+        border-radius: 50%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        background: #b42122;
+        color: #b42122;
+        font-size: 48px;
+    }
+    
+    @keyframes oneByOne {
+        0% {
+            width: 100%;
+        }
+        20% {
+            width: 80%;
+        }
+        40% {
+            width: 60%;
+        }
+        60% {
+            width: 40%;
+        }
+        80% {
+            width: 20%;
+        }
+        100% {
+            width: 0%;
+        }
+    }
+    
+    .bg-img {
+        background: url('{$CDN_BASE_URL_RES}/html/71h5/2.png');
+        background-size: contain;
+    }
+    
+    .bg-inner {
+        width: 80%;
+        margin: 0 auto;
+    }
+    
+    .bg1 {
+        position: relative;
+    }
+    
+    .top1 {
+        position: absolute;
+        width: 80px;
+        right: 80px;
+        bottom: -131px;
+        cursor: pointer;
+    }
+    
+    .btn-wrapper {
+        width: 400px;
+        margin: 0 auto;
+        margin-top: 20px;
+    }
+    
+    .btn-wrapper .start {
+        cursor: pointer;
+    }
+    
+    .bottom-tip {
+        width: 400px;
+        margin: 0 auto;
+        margin-top: 20px;
+    }
+    /* .list-item:nth-child(1) {
+        animation: oneByOne 0.2s ease-out 4.1s forwards;
+    } oncontextmenu="return false" onselectstart="return false"*/
+</style>
+
+<body>
+    <div class="wrapper" id="app">
+        <!-- <div class="list-wrapper" id="content">
+            <img src="{$CDN_BASE_URL_RES}/html/71h5/1.png" alt="">
+            <img src="{$CDN_BASE_URL_RES}/html/71h5/3.png" alt="">
+        </div> -->
+
+        <!-- <script id="test" type="text/html"> -->
+        <div class="list-wrapper" id="content">
+            <div class="bg1">
+                <img src="{$CDN_BASE_URL_RES}/html/71h5/1.png" alt="">
+                <div class="top1">
+                    <img class="topClass1" src="{$CDN_BASE_URL_RES}/html/71h5/top1.png" alt="">
+                    <img class="topClass2" style="display:none;" src="{$CDN_BASE_URL_RES}/html/71h5/top2.png" alt="">
+                </div>
+            </div>
+
+            <div class="bg-img">
+                <div class="bg-inner">
+                    <!-- {{each sub value index}} -->
+
+                    <!-- <div class="list-item">
+                            <div class="number-wrapper">
+                                <span>
+                                </span>
+                            </div>
+                            <p class="name-text">
+                            </p>
+                        </div> -->
+                    <!-- {{/each}} -->
+
+                </div>
+                <div class="btn-wrapper">
+                    <!-- <img class="start" src="{$CDN_BASE_URL_RES}/html/71h5/btn-start.png">
+                    <img class="starthard" style="display:none" src="{$CDN_BASE_URL_RES}/html/71h5/btn-start.png"> -->
+                    <!-- <img class="end" style="display:none" src="{$CDN_BASE_URL_RES}/html/71h5/btn-end.png"> -->
+                </div>
+                <div class="bottom-tip">
+                    <img src="{$CDN_BASE_URL_RES}/html/71h5/bottom-tip.png" alt="">
+                </div>
+            </div>
+
+            <!-- <img src="{$CDN_BASE_URL_RES}/html/71h5/2.png" alt=""> -->
+            <img src="{$CDN_BASE_URL_RES}/html/71h5/3.png" alt="">
+
+        </div>
+        <!-- </script> -->
+        <!-- <div class="mask"></div> -->
+        <!-- <button>开始抽奖</button> -->
+    </div>
+    <script>
+        (function($) {
+            
+            $.ajax({
+                type: "POST",
+                url: "/Activity/Index/usersNoSort180701",
+                dataType: "json",
+                cache: false,
+                error: function() {
+                    console.log("未知错误");
+                },
+                success: function(msg) {
+                    console.log(msg)
+                    if (msg.error_code == 0) {
+                        // console.log(msg.data);
+                        var data = msg.data[1].list
+                        var datalength1 = msg.data[1].list.length
+                        var datalength2 = msg.data[2].list.length
+                        window.softLength = datalength1;
+                        window.hardLength = datalength2;
+                        var sortData1 = msg.data[1].is_sort
+                        var sortData2 = msg.data[2].is_sort
+                        var dataHard = msg.data[2].list
+                        // document.getElementById('content').innerHTML = html;
+                        $(".bg-inner").html('')
+                        $.each(dataHard,function(index,content){
+                            window.arrHard = []
+                            arrData += content.user_id +','
+                            arrHard.push(arrData)
+                            arrHard.split(',').pop().distinct()
+                        })
+                        $.each(data, function(index, content) {
+                            //console.log(content.displayTime);
+                            window.arrSoft = []
+                            arrData += content.user_id +','
+                            arrSoft.push(arrData)
+                            arrSoft.split(',').pop().distinct()
+                            // arrSoft.push(content.user_id)
+                            if (sortData1 == 0) {
+                                var str = ''
+                                str += '<div class="list-item">\
+                                        <div class="number-wrapper">\
+                                            <span>' + content.ac_offlineNo + '</span>\
+                                        </div>\
+                                        <p class="name-text" >' + content.name + ' </p>\
+                                    </div>';
+                                $(".bg-inner").append(str);
+                            } else if (sortData1 == 1) {
+                                var str = ''
+                                str += '<div class="list-item">\
+                                        <div class="number-wrapper" id="numberActive">\
+                                            <span>' + content.ac_offlineNo + '</span>\
+                                        </div>\
+                                        <p class="name-text" id="nameActive">' + content.name + ' </p>\
+                                    </div>';
+                                $(".bg-inner").append(str);
+                            }
+                        });
+                        if (sortData1 == 0) {
+                            var img = '<img class="start"  src="{$CDN_BASE_URL_RES}/html/71h5/btn-start.png">'
+                            // $('.btn-wrapper').html('')
+                            $('.btn-wrapper').append(img)
+                        } else if (sortData1 == 1) {
+                            var img = '<img class="end" src="{$CDN_BASE_URL_RES}/html/71h5/btn-end.png">'
+                            // $('.btn-wrapper').html('')
+                            $('.btn-wrapper').append(img)
+                        }else if (sortData2 == 0) {
+                            var img = '<img class="starthard" src="{$CDN_BASE_URL_RES}/html/71h5/btn-end.png">'
+                            // $('.btn-wrapper').html('')
+                            $('.btn-wrapper').append(img)
+                        }else if (sortData2 == 1) {
+                            var img = '<img class="end" src="{$CDN_BASE_URL_RES}/html/71h5/btn-end.png">'
+                            // $('.btn-wrapper').html('')
+                            $('.btn-wrapper').append(img)
+                        }
+                    }
+                }
+            })
+
+
+
+            $(".topClass1").click(function() {
+                $(".topClass2").show();
+                $(".topClass1").hide();
+                $('.topClass2').addClass('animated flipInY');
+                $(".bg-inner").removeClass('animated bounce')
+                $(".bg-inner").addClass('animated bounce')
+                $(".btn-wrapper").html('<img class="starthard"  src="{$CDN_BASE_URL_RES}/html/71h5/btn-start.png">')
+                $.ajax({
+                    type: "POST",
+                    url: "/Activity/Index/usersNoSort180701",
+                    dataType: "json",
+                    cache: false,
+                    error: function() {
+                        console.log("未知错误");
+                    },
+                    success: function(msg) {
+                        console.log(msg)
+                        if (msg.error_code == 0) {
+                            // console.log(msg.data);
+                            var data = msg.data[2].list
+                            var dataSoft = msg.data[1].list;
+                            var dataHard = msg.data[2].list;
+                            var sortData = msg.data[2].is_sort
+                                // var html = template('test', testData);
+                                // $("#content").html(template("test",{sub:dataSoft}));
+                                // console.log($("#content").html(template("test",{sub:testData})))
+                            var showbi = true;
+                            var showc = false;
+                            // document.getElementById('content').innerHTML = html;
+                            $(".bg-inner").html('')
+
+                            $.each(data, function(index, content) {
+                                //console.log(content.displayTime);
+                                if (sortData == 0) {
+                                    var str = ''
+                                    str += '<div class="list-item">\
+                                        <div class="number-wrapper">\
+                                            <span>' + content.ac_offlineNo + '</span>\
+                                        </div>\
+                                        <p class="name-text" >' + content.name + ' </p>\
+                                    </div>';
+                                    $(".bg-inner").append(str);
+                                } else if (sortData == 1) {
+                                    var str = ''
+                                    str += '<div class="list-item">\
+                                        <div class="number-wrapper" id="numberActive">\
+                                            <span>' + content.ac_offlineNo + '</span>\
+                                        </div>\
+                                        <p class="name-text" id="nameActive">' + content.name + ' </p>\
+                                    </div>';
+                                    $(".bg-inner").append(str);
+                                }
+                            });
+                            if (sortData == 0) {
+                                var img = '<img class="starthard"  src="{$CDN_BASE_URL_RES}/html/71h5/btn-start.png">'
+                                $('.btn-wrapper').html('')
+                                $('.btn-wrapper').append(img)
+                            } else if (sortData == 1) {
+                                var img = '<img class="end" src="{$CDN_BASE_URL_RES}/html/71h5/btn-end.png">'
+                                $('.btn-wrapper').html('')
+                                $('.btn-wrapper').append(img)
+                            }
+                        }
+                    }
+                })
+
+            });
+            $(".topClass2").click(function() {
+                $(".topClass1").show();
+                $(".topClass2").hide();
+                $('.topClass1').addClass('animated flipInX');
+                $(".bg-inner").removeClass('animated bounce')
+                $(".bg-inner").addClass('animated bounce')
+                $(".btn-wrapper").html('<img class="start"  src="{$CDN_BASE_URL_RES}/html/71h5/btn-start.png">')
+                $.ajax({
+                    type: "POST",
+                    url: "/Activity/Index/usersNoSort180701",
+                    dataType: "json",
+                    cache: false,
+                    error: function() {
+                        console.log("未知错误");
+                    },
+                    success: function(msg) {
+                        console.log(msg)
+                        if (msg.error_code == 0) {
+                            // console.log(msg.data);
+                            var data = msg.data
+                            var dataSoft = msg.data[1].list;
+                            var dataHard = msg.data[1].list;
+                            var sortData = msg.data[1].is_sort
+                                // var html = template('test', testData);
+                                // $("#content").html(template("test",{sub:dataSoft}));
+                                // console.log($("#content").html(template("test",{sub:testData})))
+                            var showbi = true;
+                            var showc = false;
+                            // document.getElementById('content').innerHTML = html;
+                            $(".bg-inner").html('')
+
+                            $.each(dataHard, function(index, content) {
+                                //console.log(content.displayTime);
+                                if (sortData == 0) {
+                                    var str = ''
+                                    str += '<div class="list-item">\
+                                        <div class="number-wrapper" >\
+                                            <span>' + content.ac_offlineNo + '</span>\
+                                        </div>\
+                                        <p class="name-text" >' + content.name + ' </p>\
+                                    </div>';
+                                    $(".bg-inner").append(str);
+                                } else if (sortData == 1) {
+                                    var str = ''
+                                    str += '<div class="list-item">\
+                                        <div class="number-wrapper" id="numberActive">\
+                                            <span>' + content.ac_offlineNo + '</span>\
+                                        </div>\
+                                        <p class="name-text" id="nameActive">' + content.name + ' </p>\
+                                    </div>';
+                                    $(".bg-inner").append(str);
+                                }
+
+
+                            });
+                            if (sortData == 0) {
+                                $('.btn-wrapper').html('')
+                                var img = '<img class="start"  src="{$CDN_BASE_URL_RES}/html/71h5/btn-start.png">'
+                                $('.btn-wrapper').append(img)
+                            } else if (sortData == 1) {
+                                var img = '<img class="end" src="{$CDN_BASE_URL_RES}/html/71h5/btn-end.png">'
+                                $('.btn-wrapper').html('')
+                                $('.btn-wrapper').append(img)
+                            }
+                        }
+                    }
+                })
+
+            });
+            
+            $(".bg-img").on('click','.start',function(){
+                $(".btn-wrapper").html('<img class="end" src="{$CDN_BASE_URL_RES}/html/71h5/btn-end.png">')
+                console.log('start')
+                var data = JSON.stringify(data)
+                // var user_ids = JSON.stringify(createRandom(window.softLength))
+                var user_ids = window.arrSoft.sort(randomSort)
+                $.ajax({
+                    type: "POST",
+                    url: "/Activity/Index/sortUsers180701?user_ids="+user_ids+'&category=1',
+                    // data: data,
+                    dataType: "json",
+                    cache: false,
+                    error: function() {
+                        console.log("未知错误");
+                    },
+                    success: function(msg) {
+                        if (msg.error_code == 0) {
+                            console.log(msg.data);
+                            // var testData = msg.data
+                        }
+                    }
+                })
+                
+                $('.number-wrapper').attr('id', 'numberActive');
+                $('.name-text').attr('id', 'nameActive');
+                $(".number-wrapper").addClass('animated rubberBand');
+                $('.name-text').addClass('animated rubberBand');
+                window.location.reload()
+            })
+            // $(".bg-img").find(".start").click(function() {
+            //     // $(".start").hide();
+            //     // $(".end").show();
+                
+            // });
+            $(".bg-img").on('click',".starthard",function() {
+                // $(".start").hide();
+                // $(".end").show();
+                $(".btn-wrapper").html('<img class="end" src="{$CDN_BASE_URL_RES}/html/71h5/btn-end.png">')
+                console.log('startend')
+                
+                var data = JSON.stringify(data)
+                // var user_ids = JSON.stringify(createRandom(window.hardLength))
+                var user_ids = window.arrHard.sort(randomSort)
+                $.ajax({
+                    type: "POST",
+                    url: "/Activity/Index/sortUsers180701?user_ids="+user_ids+'&category=2',
+                    // data: data,
+                    dataType: "json",
+                    cache: false,
+                    error: function() {
+                        console.log("未知错误");
+                    },
+                    success: function(msg) {
+                        if (msg.error_code == 0) {
+                            console.log(msg.data);
+                            // var testData = msg.data
+                        }
+                    }
+                })
+                $('.number-wrapper').attr('id', 'numberActive');
+                $('.name-text').attr('id', 'nameActive');
+                $(".number-wrapper").addClass('animated rubberBand');
+                $('.name-text').addClass('animated rubberBand');
+                window.location.reload()
+            })
+
+        })(jQuery);
+
+
+        // var data = {
+        //     title: "artTemplate",
+        //     isTemplate: "true",
+        //     list: [
+        //         '读书', '听歌', '摄影', '旅行', '跑步', '爬山', '骑行', '读书', '听歌', '摄影', '旅行', '跑步', '爬山', '骑行', '读书', '听歌',
+        //         '摄影', '旅行', '跑步', '爬山', '骑行'
+        //     ],
+        //     num: [26, 30, 18, 13, 17, 25, 15, 20, 1, 5, 3, 21, 14, 6, 8, 27, 2, 11, 19, 10, 22, 29, 23, 24, 12, 7, 4, 9, 28, 16],
+        // };
+
+        // var html = template('test', data);
+        // var showbi = true;
+        // var showc = false;
+        // document.getElementById('content').innerHTML = html;
+            function randomSort(){
+                return Math.random() > 0.5?-1:1
+            }
+            // quchong
+            Array.prototype.distinct = function(){
+                var arr = this,
+                result = [],
+                i,
+                j,
+                len = arr.length;
+                for(i = 0; i < len; i++){
+                for(j = i + 1; j < len; j++){
+                if(arr[i] === arr[j]){
+                    j = ++i;
+                }
+                }
+                result.push(arr[i]);
+                }
+                return result;
+                }
+        function createRandom(count) {
+            var originalArray = new Array; //原数组 
+            //给原数组originalArray赋值 
+            for (var i = 0; i < count; i++) {
+                originalArray[i] = i + 1;
+            }
+            originalArray.sort(function() {
+                return 0.5 - Math.random();
+            });
+            // for (var i = 0; i < count; i++) {
+            // console.log(originalArray[i] + " , ");
+            // }
+            // console.log(originalArray)
+            return originalArray
+        }
+        console.log(createRandom(30))
+            // $(".topClass1").click(function() {
+            //     $("#content").html(template("test",{sub:dataHard}));
+            //     $(".topClass2").show();
+            //     $(".topClass1").hide();
+            //     $('.topClass2').addClass('animated flipInY');
+            // })
+            // $(".topClass2").click(function() {
+            //     $("#content").html(template("test",{sub:dataSoft}));
+            //     $(".topClass1").show();
+            //     $(".topClass2").hide();
+            //     $('.topClass1').addClass('animated flipInX');
+            // })
+    </script>
+</body>
+
+
+</html>

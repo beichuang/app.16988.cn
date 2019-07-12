@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en" style="overflow-x: hidden;">
+<head>
+{template public/WxShareJS}
+  <meta charset="UTF-8">
+  <meta name="viewport" content="initial-scale=1.0,maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width">
+  <meta name="format-detection" content="telephone=no">
+  <meta name="format-detection" content="email=no">
+  <title>掌玩助力免费拿</title>
+  <!-- CSS引用 -->
+  <!-- <link rel="stylesheet" href="https://app.16988.cn/res/html/cutdownPrice/index.min.css?v=17" type="text/css"/> -->
+  <link rel="stylesheet" href="{$DOMAIN_APP}/res/html/cutdownPrice/index.min.css?v=21" type="text/css"/>
+  <!-- <link rel="stylesheet" href="http://dev-cdn.zhangwan.shop/res/html/cutdownPrice/index.min.css?v=11" type="text/css"/> -->
+  <!-- JS引用 -->
+  <script type="text/javascript" src="https://s29.9956.cn/res/crowdsource/lib/vue.min.js?v=17"></script>
+  <!-- <script src="https://cdn.bootcss.com/vue/2.5.0/vue.js"></script> -->
+  <script src="https://res.wx.qq.com/open/js/jweixin-1.2.0.js"></script>
+  <script type="text/javascript">
+    //静态资源设置路径
+    // window.resourceBaseUrl = 'http://dev-cdn.zhangwan.shop/res/html/'; //测试环境路径
+    // window.resourceBaseUrl = 'https://app.16988.cn/res/html/';//线上环境路径
+    window.resourceBaseUrl = '{$DOMAIN_APP}/res/html/';
+  </script>
+  </head>
+  <body style="overflow-x: hidden;">
+    <div id="app"></div>
+    <!-- <script type="text/javascript" src="http://dev-cdn.zhangwan.shop/res/html/cutdownPrice/index.min.js?v=11"></script> -->
+    <!-- <script type="text/javascript" src="https://app.16988.cn/res/html/cutdownPrice/index.min.js?v=16"></script> -->
+    <script type="text/javascript" src="{$DOMAIN_APP}/res/html/cutdownPrice/index.min.js?v=21"></script>
+    <script type="text/javascript" src="{$CDN_BASE_URL_RES}/html/js/baidu_stat.js"></script>
+  </body>
+  <style>
+  html,body{
+    height: 100%;
+  }
+  </style>
+</html>

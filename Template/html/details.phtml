@@ -1,0 +1,407 @@
+<!DOCTYPE html>
+<html>
+<head>
+{template public/WxShareJS}
+	<meta charset="UTF-8">
+	<title>商品详情</title>
+	<meta name="viewport" content="width=device-width,minimum-scale=1.00001,maximum-scale=1.00001,user-scalable=no,minimal-ui">
+	<link rel="stylesheet" type="text/css" href="{$CDN_BASE_URL_RES}/html/css/css.css?201704270427">
+	<script src="{$CDN_BASE_URL_RES}/html/js/jquery.min.js"></script>
+	<script src="{$CDN_BASE_URL_RES}/html/js/currency.js?20170427"></script>
+	<style>
+	
+	</style>
+</head>
+<body>
+	<div class="detailsPicBox">
+		<img src="" class="kuan lookImg" style="visibility: hidden;">
+	</div>
+	<div class="details_box">
+		<p></p>
+		<div>
+			<img src="{$CDN_BASE_URL_RES}/html/images/shoucang02.png" val="no" id="shoucang"><br>
+			收藏
+		</div>
+		<span style="clear: both; display: block"></span>
+		<span class="money">¥<font></font></span>
+		<ul>
+			
+		</ul>
+		<i>该商品已被浏览<span id="browseTimes"></span>次<span style="width:2em; display:inline-block"></span>评论<span id="favoriteTimes"></span>次</i>
+	</div>
+	<ul class="details_ul">
+		<li>
+			<img src="{$CDN_BASE_URL_RES}/html/images/index01.png">
+			个人认证
+		</li>
+		<li>
+			<img src="{$CDN_BASE_URL_RES}/html/images/index02.png">
+			担保交易
+		</li>
+		<li>
+			<img src="{$CDN_BASE_URL_RES}/html/images/index03.png">
+			卖家包邮
+		</li>
+	</ul>
+	<div class="explain">
+		<h4>艺术家简介：</h4>
+		<p></p>
+	</div>
+	<div class="explain2">
+		<h4>商品详情：</h4>
+		<p></p>
+	</div>
+	<ul class="tab">
+		<li class="click" id="details_img">商品详情</li>
+		<li id="details_comment">商品评论</li>
+	</ul>
+	<div class="details_img"></div>
+	<div class="details_comment">
+		<ul></ul>
+	</div>
+	<div class="tuijian_box">
+		<h2>
+			<img src="{$CDN_BASE_URL_RES}/html/images/jian.png">推荐藏品
+			<a href="/html/search.html" class="more">更多></a>
+		</h2>
+		<ul class="list_box"></ul>
+		<input type="hidden" id="categoryId">
+	</div>
+	<div class="bottom">
+		<div class="lianxi">
+			<img src="{$CDN_BASE_URL_RES}/html/images/lianxi.png"><br>
+			联系卖家
+		</div>
+		<div class="jiaru">
+			加入购物车
+		</div>
+		<div class="buy">
+			立即购买
+		</div>
+	</div>
+	<script type="text/javascript">
+		var data = {"jump": 7};
+		console.log(data);
+// 		window.WebViewJavascriptBridge.callHandler(
+// 	    	"submitFromWeb",
+// 	        data
+// 	        , function(responseData){
+// 	        	alert(responseData);
+// 	        	$.ajaxSetup({
+// 	        	  	headers: {
+// 	        	  	    "action": responseData,
+// 	        	  	},
+// 	        	});
+// 	        }
+// 		);
+function addEventLookImg()
+{
+	$(".lookImg").click(function(event) {
+		//window.location = "/html/imgBig.html?url="+$(this).attr("src");
+		var arr1 = [];
+		$(".lookImg").each(function(index, el) {
+			if(index>0)
+			{
+				arr1.push($(this).attr("src"));
+			};
+		});
+		var ind1 = parseInt($(this).index(".lookImg"))-1<0?0:parseInt($(this).index(".lookImg"))-1;
+		var data = {"jump": 6,data:JSON.stringify({"urls":arr1,ind:ind1})};
+		console.log(data);
+		window.WebViewJavascriptBridge.callHandler(
+	    	"submitFromWeb",
+	        data
+	        , function(responseData){
+	        }
+		);
+	});
+	
+};
+		//渲染页面
+		var url = window.location.search;
+		url = url.replace(/.+id\=/g,"");
+		var data_arr = {};
+		data_arr.id = url;
+		data_arr.g_id = url;
+		$("#shoucang").attr("g_id",url);
+		$.ajax({
+		    type: "POST",
+		    url: "/mall/goods/item/detail",
+		    data: data_arr,
+		    dataType: "json",
+		    cache: false,
+		    error: function () {
+		        alert("未知错误");
+		    },
+		    success: function(msg){
+		        if(msg.error_code == 0){
+		        	$(".kuan").attr("src",msg.data.itemImage[0].gi_img);
+		        	$("#browseTimes").html(msg.data.item[0].g_browseTimes);
+		        	var str_1 = "";
+		        	for(var i=0;i<msg.data.itemImage.length;i++){
+		        		str_1+='<div class="detailsPicBoxBottom">';
+		        		str_1+='<img class="lookImg" src='+msg.data.itemImage[i].gi_img+'>';
+		        		str_1+='</div>';
+		        		
+		        	};
+		        	$(".details_img").append(str_1);
+		        	var str_2=0;
+		        	$(".detailsPicBox img").load(function() {
+		        		CalculationImg($(this));
+		        	});
+		        	addEventLookImg();
+		        	$(".details_box>p").html(msg.data.item[0].g_name);
+		        	document.title=msg.data.item[0].g_name;
+		        	$(".money font").html(msg.data.item[0].g_price);
+		        	for(var a=0;a<msg.data.itemAttr.length;a++){
+		        		$(".details_box ul").append("<li><span>"+msg.data.itemAttr[a].ga_key+"</span><p>"+msg.data.itemAttr[a].ga_value+"</p></li>")
+		        	};
+		        	for(var b=0;b<msg.data.itemDesc.length;b++){
+		        		if(msg.data.itemDesc[b].gd_type == "0"){
+		        			$(".explain").append("<p>"+msg.data.itemDesc[b].gd_desc+"</p>")
+		        		}else if(msg.data.itemDesc[b].gd_type == "1"){
+		        			$(".explain2").append("<p>"+msg.data.itemDesc[b].gd_desc+"</p>")
+		        		}
+		        	}
+		        	if(msg.data.itemCurrentUserFavoiteInfo){
+		        		$("#shoucang").attr("val","yes");
+		        		$("#shoucang").attr("src","{$CDN_BASE_URL_RES}/html/images/shoucang01.png")
+		        		$("#shoucang").attr("ufav_id",msg.data.itemCurrentUserFavoiteInfo.ufav_id);
+		        	}else{
+		        		$("#shoucang").attr("val","no");
+		        		$("#shoucang").attr("src","{$CDN_BASE_URL_RES}/html/images/shoucang02.png")
+		        	}
+		        	$(".lianxi").attr("g_salesId",msg.data.item[0].g_salesId);
+		        	$("#categoryId").val(msg.data.item[0].g_categoryId);
+		        	recommend();
+		        }else{
+		            alert(msg.error_msg);
+		        };
+		    }
+		});
+		//渲染评论
+		var pinglun = {};
+		pinglun.g_id = url;
+		$.ajax({
+		    type: "POST",
+		    url: "/mall/goods/comment/lists",
+		    data: pinglun,
+		    dataType: "json",
+		    cache: false,
+		    error: function () {
+		        alert("未知错误");
+		    },
+		    success: function(msg){
+		        if(msg.error_code == 0){
+		        	$("#favoriteTimes").html(msg.data.totalCount);
+		        	if(msg.data.rows.length == 0){
+
+		        	}else{
+		        		for(i=0;i<msg.data.rows.length;i++){
+		        			if(msg.data.rows[i].isCurrentUserLiked == 1){
+		        				$(".details_comment ul").append("<li class='gc_box'><div><img  class='photo' src="+msg.data.rows[i].u_avatar+"><font>"+msg.data.rows[i].u_nickname+"<br><span>"+msg.data.rows[i].u_provinceName+msg.data.rows[i].u_cityName+"</span></font><i>"+msg.data.rows[i].gc_time+"</i></div><p>"+msg.data.rows[i].gc_content+"</p><img src='{$CDN_BASE_URL_RES}/html/images/zan01.png' class='zan' val='no' id="+msg.data.rows[i].gc_id+"></li>")
+		        			}else{
+		        				$(".details_comment ul").append("<li class='gc_box'><div><img  class='photo' src="+msg.data.rows[i].u_avatar+"><font>"+msg.data.rows[i].u_nickname+"<br><span>"+msg.data.rows[i].u_provinceName+msg.data.rows[i].u_cityName+"</span></font><i>"+msg.data.rows[i].gc_time+"</i></div><p>"+msg.data.rows[i].gc_content+"</p><img src='{$CDN_BASE_URL_RES}/html/images/zan02.png' class='zan' val='no' id="+msg.data.rows[i].gc_id+"></li>")
+		        			}
+		        			
+		        		}
+		        	}
+		        }else{
+		            alert(msg.error_msg);
+		        };
+		        zan();
+		    }
+		});
+		//渲染推荐拍品
+		function recommend(){
+			var commodity = {};
+			commodity.pageSize = 4;
+			commodity.page = 1;
+			commodity.categoryId = $("#categoryId").val();
+	        $.ajax({
+	        	type: "POST",
+			    url: "/mall/goods/item/query",
+			    data: commodity,
+			    dataType: "json",
+			    cache: false,
+			    error: function () {
+			        alert("未知错误");
+			    },
+			    success: function(msg){
+			        if(msg.error_code == 0){
+			        	if(msg.data.list.length == 0){
+			        		$("body").append("<div class='kong'><img src='{$CDN_BASE_URL_RES}/html/images/kong.jpg'></div>")
+			        	}else{
+			        		fn_render_pic(msg.data.list,".list_box",CalculationImg);//渲染
+			        	}
+			        }else{
+			            alert(msg.error_msg);
+			        };
+			    }
+	        });
+	        $(".more").attr("href","/html/search.html?categoryId="+commodity.categoryId+"");
+		}
+		//评论点赞
+		function zan(){
+			$(".zan").click(function(){
+				var change = $(this).attr("val");
+				var data_arr = {};
+				var gc_id = $(this).attr("id");
+				data_arr.gc_id = gc_id;
+				if(change == "no"){
+					$.ajax({
+					    type: "POST",
+					    url: "/mall/goods/comment/like",
+					    data: data_arr,
+					    dataType: "json",
+					    cache: false,
+					    error: function () {
+					        alert("未知错误");
+					    },
+					    success: function(msg){
+					        if(msg.error_code == 0){
+					        	$("#"+gc_id).attr("src","{$CDN_BASE_URL_RES}/html/images/zan01.png");
+					        	$("#"+gc_id).attr("val","yes");
+					        	alert("点赞成功")
+					        }else{
+					            alert(msg.error_msg);
+					        };
+					    }
+					});
+				}else{
+					$.ajax({
+					    type: "POST",
+					    url: "/mall/goods/comment/unlike",
+					    data: data_arr,
+					    dataType: "json",
+					    cache: false,
+					    error: function () {
+					        alert("未知错误");
+					    },
+					    success: function(msg){
+					        if(msg.error_code == 0){
+					        	$(this).attr("src","{$CDN_BASE_URL_RES}/html/images/zan02.png");
+					        	$(this).attr("val","no");
+					        }else{
+					            alert(msg.error_msg);
+					        };
+					    }
+					});
+				}
+			});
+		}
+		//商品详情，评论切换
+		$("#details_img").click(function(){
+			$(".details_img").show();
+			$(".details_comment").hide();
+			$(this).addClass("click");
+			$("#details_comment").removeClass("click");
+		});
+		$("#details_comment").click(function(){
+			$(".details_comment").show();
+			$(".details_img").hide();
+			$(this).addClass("click");
+			$("#details_img").removeClass("click");
+		});
+		//收藏
+		$("#shoucang").click(function(){
+			var change = $(this).attr("val");
+			if(change == "no"){
+				data_arr.type = 0;
+				data_arr.content = url;
+				$.ajax({
+				    type: "POST",
+				    url: "/user/favorite/add",
+				    data: data_arr,
+				    dataType: "json",
+				    cache: false,
+				    error: function () {
+				        alert("未知错误");
+				    },
+				    success: function(msg){
+				        if(msg.error_code == 0){
+				        	$("#shoucang").attr("src","{$CDN_BASE_URL_RES}/html/images/shoucang01.png");
+				        	$("#shoucang").attr("val","yes");
+				        	$("#shoucang").attr("ufav_id",msg.data.favorite_id);
+				        	alert("收藏成功");
+				        }else{
+				            alert(msg.error_msg);
+				        };
+				    }
+				});
+			}else{
+				var remove ={};
+				remove.ufav_id = $("#shoucang").attr("ufav_id");
+				$.ajax({
+				    type: "POST",
+				    url: "/user/favorite/remove",
+				    data: remove,
+				    dataType: "json",
+				    cache: false,
+				    error: function () {
+				        alert("未知错误");
+				    },
+				    success: function(msg){
+				        if(msg.error_code == 0){
+				        	$("#shoucang").attr("src","{$CDN_BASE_URL_RES}/html/images/shoucang02.png");
+							$("#shoucang").attr("val","no");
+				        	alert("取消收藏");
+				        }else{
+				            alert(msg.error_msg);
+				        };
+				    }
+				});
+			}
+		});
+		//加入购物车
+		$(".jiaru").click(function(){
+			data_arr.goodsNum = 1;
+			$.ajax({
+			    type: "POST",
+			    url: "/mall/user/cart/add",
+			    data: data_arr,
+			    dataType: "json",
+			    cache: false,
+			    error: function () {
+			        alert("未知错误");
+			    },
+			    success: function(msg){
+			        if(msg.error_code == 0){
+			        	alert("已加入购物车");
+			        }else{
+			            alert(msg.error_msg);
+			        };
+			    }
+			});
+		});
+		//购买
+		$(".buy").click(function(){
+			window.location = "/html/order.html?id="+url+"&num=1"
+		});
+		//联系卖家
+		$(".lianxi").click(function(){
+			var g_salesId = $(this).attr("g_salesId");//卖家id
+			var app = {};
+        	app.jump = 0;
+        	app.g_salesid = g_salesId;
+            //call native method
+            window.WebViewJavascriptBridge.callHandler(
+                'submitFromWeb'
+                , app
+                , function(responseData) {
+                    //document.getElementById("show").innerHTML = "send get responseData from java, data = " + responseData
+                }
+            );
+		});
+		function alert(e){
+        	$("body").append("<div id='msg'><span>"+e+"</span></div>");
+        	clearmsg();
+        }
+        function clearmsg(){
+        	var t = setTimeout(function(){
+        		$("#msg").remove();
+        	},2000)
+        };
+	</script>
+</body>
+</html>

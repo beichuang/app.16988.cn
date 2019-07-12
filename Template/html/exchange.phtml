@@ -1,0 +1,214 @@
+<!doctype html>
+<html lang="zh">
+<head>
+{template public/WxShareJS}
+    <meta charset="UTF-8">
+    <title>积分兑换</title>
+    <meta name="viewport" content="width=device-width,minimum-scale=1.00001,maximum-scale=1.00001,user-scalable=no,minimal-ui">
+    <link rel="stylesheet" href="{$CDN_BASE_URL_RES}/html/css/global.css?17121901">
+    <script src="https://s28.9956.cn/static/v3_1/js/jquery.min.js"></script>
+    <script src="{$CDN_BASE_URL_RES}/html/js/setfontsize.js"></script>
+    <style>
+        .exchange-list li a.exchange-btn-on{background-color: #E7E4DD;}
+    </style>
+</head>
+<body>
+<section class="container score">
+    <div class="banner f-pr f-tac">
+        <img src="{$CDN_BASE_URL_RES}/html/images/sign/banner.jpg">
+        <div class="info f-pa">
+            <h3><i class="num"></i></h3>
+            <div class="score-tit f-tac"><img src="{$CDN_BASE_URL_RES}/html/images/sign/jifen-icon.png" class="">我的积分</div>
+        </div>
+    </div>
+    <div class="bgc score-box exchange">
+        <div class="titlebar"><h3 class="">好物兑换</h3></div>
+        <ul class="exchange-list">
+            <li>
+                <span class="pic"><img style="border-radius: 7px;" src="{$CDN_BASE_URL_RES}/html/images/sign/huacha.jpg"></span>
+                <div>
+                    <header>手工艺彩绘花插</header>
+                    <font>纯手工制作，干花的最佳伴侣</font>
+                    <footer>500积分</footer>
+                </div>
+                <span class="exchange-btn" id="exchange-btn1" onclick="btn(6);">去兑换</span>
+            </li>
+            <li>
+                <span class="pic"><img src="{$CDN_BASE_URL_RES}/html/images/sign/dui1.jpg"></span>
+                <div>
+                    <header>太行崖柏素竹手串</header>
+                    <font>改善失眠，有益身心</font>
+                    <footer>1000积分</footer>
+                </div>
+                <span class="exchange-btn" id="exchange-btn1" onclick="btn(1);">去兑换</span>
+            </li>
+            <!-- <li>
+                <span class="pic"><img src="{$CDN_BASE_URL_RES}/html/images/sign/dui2.jpg"></span>
+                <div>
+                    <header>名家书画一幅</header>
+                    <font>原创手绘甄选佳作</font>
+                    <footer>3000积分</footer>
+                </div>
+                <span class="exchange-btn" onclick="btn(2);">去兑换</span>
+            </li> -->
+            <li>
+                <span class="pic"><img src="{$CDN_BASE_URL_RES}/html/images/sign/dui3.jpg"></span>
+                <div>
+                    <header>私人定制钧瓷杯</header>
+                    <font>大师手笔专属制作</font>
+                    <footer>2000积分</footer>
+                </div>
+                <span class="exchange-btn" onclick="btn(3);">去兑换</span>
+            </li>
+            <li>
+                <span class="pic"><img src="{$CDN_BASE_URL_RES}/html/images/sign/dui5.jpg"></span>
+                <div>
+                    <header>茗丰堂汝窑功夫茶具一套  </header>
+                    <font>汝窑茶具，五大名窑之首</font>
+                    <footer>3000积分</footer>
+                </div>
+                <span class="exchange-btn" onclick="btn(5);">去兑换</span>
+            </li>
+            <li>
+                <span class="pic"><img src="{$CDN_BASE_URL_RES}/html/images/sign/dui4.jpg"></span>
+                <div>
+                    <header>法国原瓶进口红酒1瓶  </header>
+                    <font>古法酿制，口感馥郁芬芳</font>
+                    <footer>5000积分</footer>
+                </div>
+                <span class="exchange-btn" onclick="btn(4);">去兑换</span>
+            </li>
+            
+        </ul>
+    </div>
+    <div class="bgc score-box exchange renwu">
+        <div class="titlebar"><h3 class="">做任务 赚积分</h3></div>
+        <ul class="exchange-list">
+            <li>
+                <span class="pic"><img src="{$CDN_BASE_URL_RES}/html/images/sign/ren1.jpg"></span>
+                <div>
+                    <header>实名认证</header>
+                    <footer>认证奖励+20积分</footer>
+                </div>
+                <a class="exchange-btn renzheng-btn">去认证</a>
+            </li>
+            <li>
+                <span class="pic"><img src="{$CDN_BASE_URL_RES}/html/images/sign/ren2.jpg"></span>
+                <div>
+                    <header>邀请好友下载注册</header>
+                    <footer>奖励+30积分</footer>
+                </div>
+                <a href="/html/invite.html" class="exchange-btn Invitem-btn">去邀请</a>
+            </li>
+        </ul>
+    </div>
+    <ul class="txt">
+        <li>1、本商品可使用积分兑换</li>
+        <li>2、如您兑换本商品即视为您完全认可该规则</li>
+        <li>3、兑奖物品以实物为准，本活动最终解释权归掌玩所有</li>
+    </ul>
+</section>
+<div class="popup-box">
+    <div class="popup">
+        <div class="head clearfix">
+            <img src="{$CDN_BASE_URL_RES}/html/images/sign/close.jpg" class="close f-fr f-csp">
+        </div>
+        <img src="{$CDN_BASE_URL_RES}/html/images/sign/icon1.jpg" class="icon">
+        <p class="f-tac">恭喜您成功兑换礼品<br>稍后会有客服人员联系</p>
+        <!-- <p class="f-tac">您的积分不足<br>去做任务赚积分</p> -->
+        <div class="footer f-tac"><span class="confirm">完成兑换</span></div>
+        <!-- <div class="footer f-tac"><span class="confirm">确定</span></div> -->
+    </div>
+</div>
+ 
+<script>
+    $(".renzheng-btn").click(function(){
+        var json={"targetPage":"identification"};
+        HandPlay.execNative(JSON.stringify(json))
+    });
+
+    //获取用户uid
+    if(typeof(HandPlay)!="undefined"){
+        var UID = HandPlay.getUserId();
+        console.log( UID);
+        //alert(UID);
+    }else{
+        var UID = qiaoxuekui.getUU();
+    } 
+    
+    //兑换物品
+    function btn(type){
+        $.ajax({
+            type:"POST",
+            url:"/user/common/integralExchange?uid="+UID,
+            dataType:"json",
+            cache: false,
+            error: function(){
+                alert("未知错误");
+            },
+            success: function(msg){
+                if(msg.error_code == 0){
+                   $(".popup-box").show();
+                }else if(msg.error_code == 1){
+                   $(".popup-box").show();
+                   $(".popup-box .popup .icon").attr("src","//cdn.16988.cn/res/html/images/sign/icon01.jpg")
+                   $(".popup-box p.f-tac").html("");
+                   $(".popup-box p.f-tac").append("您的积分不足<br>去做任务赚积分");
+                   $(".popup-box .footer .confirm").html("确定");
+                }
+                
+            }
+        });
+    }
+
+  
+        //popup-box
+        $(".popup-btn").click(function(){
+            $(".popup-box").show();
+        });
+        $(".close,.confirm").click(function(){
+            $(".popup-box").hide();
+        });
+
+        //积分数量
+        $.ajax({
+            type:"POST",
+            url:"/user/sign/add?uid="+UID,
+            dataType:"json",
+            cache: false,
+            error: function(){
+                alert("未知错误");
+            },
+            success: function(msg){
+                if(msg.error_code == 0){
+                    var num = msg.data;
+                    $(".num").html(num.currentIntegral)
+                }    
+            }
+        });
+
+        //认证状态
+        $.ajax({
+            type:"POST",
+            url:"/user/certification/query?uid="+UID,
+            dataType:"json",
+            cache: false,
+            error: function(){
+                alert("未知错误");
+            },
+            success: function(msg){
+                if(msg.error_code == 0){
+                   var renzheng = msg.data.info.uce_status;
+                   //0:认证中，1认证通过，2认证不通过
+                   if(renzheng == 1){
+                        $(".renzheng-btn").addClass("exchange-btn-on");
+                        $(".renzheng-btn").html("已认证");
+                   }
+                }
+                
+            }
+        });
+     
+</script>
+</body>
+</html>

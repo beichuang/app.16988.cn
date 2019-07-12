@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html>
+<head>
+{template public/WxShareJS}
+	<meta charset="UTF-8">
+	<title>图片详情</title>
+	<meta name="viewport" content="width=device-width,minimum-scale=1.00001,maximum-scale=1.00001,user-scalable=no,minimal-ui">
+	<script src="{$CDN_BASE_URL_RES}/html/js/jquery.min.js"></script>
+	<script src="{$CDN_BASE_URL_RES}/html/js/underscore.js"></script>
+	<script src="{$CDN_BASE_URL_RES}/html/js/pinchzoom.js?20170413"></script>
+<style>
+html,body{margin:0;padding:0;height:100%;position:relative;width:100%;background:#333;}
+div.pinch-zoom,div.pinch-zoom img{
+    width: 100%;
+    -webkit-user-drag: none;
+}
+div.pinch-zoom{
+    min-height:100%;
+    text-align:center;
+}
+div.pinch-zoom img{
+    display:inline-block;
+    border:0;
+    margin:0;
+    padding:0;
+    max-width:100%;
+    max-height:100%;
+    vertical-align:middle;
+}
+</style>
+</head>
+<body>
+<div class="pinch-zoom">
+	<img id="imgLook" src="" alt="无图片" />
+</div>
+<script type="text/javascript">
+function getQuery(){
+    var args = {};
+    var query = window.location.search.substring(1);
+    var pairs = query.split("&");
+    for(var i = 0; i < pairs.length; i++) {
+        var pos = pairs[i].indexOf('=');
+        if (pos == -1) continue;
+        var argname = pairs[i].substring(0, pos);
+        var value = pairs[i].substring(pos+1);
+        value = decodeURIComponent(value);
+        args[argname] = value;
+    }
+    return args;
+};
+var Ourl = getQuery().url;
+$("#imgLook").attr("src",Ourl);
+$(".pinch-zoom").css("line-height",$(document).height()+"px");
+$(function () {
+	$('div.pinch-zoom').each(function () {
+		new RTP.PinchZoom($(this), {});
+	});
+})
+</script>
+</body>
+</html>

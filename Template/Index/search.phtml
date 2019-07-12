@@ -1,0 +1,112 @@
+<!doctype html>
+<html lang="zh">
+<head>
+	<meta charset="UTF-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=Edge" />
+	<title>搜索结果</title>
+	<link rel="stylesheet" href="{$CDN_BASE_URL_RES}/html/pc/css/global.css?171201">
+	<script src="{$CDN_BASE_URL_RES}/html/js/jquery.min.js"></script>
+	<style>
+		.search-tit{margin-bottom: 45px;margin-left: -25px;} 
+		.search-tit i{color: #D1A570;}
+		.xunbao02 li{margin-left: 44px;margin-bottom: 35px;}
+	</style>
+</head>
+<body>
+	<!-- nav -->
+	<div class="header bgc">
+		<div class="container nav">
+			<a href="/" class="f-fl logo"><img src="{$CDN_BASE_URL_RES}/html/pc/images/logo.png"></a>
+            <ul>
+                <li><a href="/">首页</a></li>
+                <li><a href="/Index/headlines.html">头条</a></li>
+                <li><a href="/Index/circle.html">圈子</a></li>
+                <li><a href="/Index/treasure.html">寻宝</a></li>
+                <li><a href="/Index/download.html">APP下载</a></li>
+                <li><a href="/Index/about.html">关于我们</a></li>
+            </ul>
+			<div class="clearfix f-fr search-box">
+				<input type="text" placeholder="请输入关键词" class="search f-fl">
+				<span class="f-fr icon submit"></span>
+			</div>									
+		</div>
+	</div>
+	<div class="container f-pr clearfix layout ">
+		<div class="f-fl bgc xunbao-box bdc">
+			<div class="titlebar clearfix search-tit">
+				<h3 class="">搜索：<i id="search_name"></i>找到<em>0</em>个相关内容</h3>
+			</div>
+			<div class="tab-list-box">
+				<div class="tab-list" style="display:block;">
+					<ul class="xunbao xunbao02">
+					</ul>
+				</div>
+			</div>			
+		</div>
+		<div class="f-fr bgc sidebar tuijian bdc xunbaHot">
+			<div class="titlebar clearfix">
+				<h3 class="">精选推荐</h3>
+			</div>
+			<!-- 显示6条 -->
+		</div>
+	</div>
+	<script src="{$CDN_BASE_URL_RES}/html/pc/js/zhangwan.js?180305"></script>
+	<script>
+		//获取搜索name值
+		$(function(){
+			$.getUrlParam = function (name) {
+	            var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)");
+	            var r = window.location.search.substr(1).match(reg);
+	            if (r != null) return decodeURI(r[2]);
+	        }
+
+	        var name = $.getUrlParam('name');
+			$('#search_name').html(name+'，');
+            search(name);
+		}) 
+
+        function search(_name){
+            //搜索结果
+            $.ajax({
+                type: "POST",
+                url: "/mall/goods/item/query?name="+_name,
+                dataType: "json",
+                cache: false,
+                error: function () {
+                    alert("未知错误");
+                },
+                success: function(msg){
+                    if(msg.error_code == 0){
+                        var search_info = msg.data.list;
+                        if(search_info.length > 0){
+                            //console.log(search_info);
+                            //搜索结果个数
+                            console.log(msg.data.count);
+                            $(".search-tit em").html(msg.data.count);
+                            $.each( search_info, function(index, content)
+                            {
+                                var str =
+                                '<li>'+
+                                    '<a href="/Index/treasureinfo.html?id='+content.g_id+'">'+
+                                        '<span><img src="'+content.image[0].gi_img+'"></span>'+
+                                        '<h3>'+content.g_name+' '+content.goodsBoxName+'</h3>'+
+                                        '<p>'+content.categoryName+'  '+content.image[0].gi_width+'x'+content.image[0].gi_height+'cm</p>'+
+                                        '<font>¥'+content.g_price+'</font>'+
+                                    '</a>'+
+                                '</li>';
+                               $(".xunbao02").append(str);
+
+                            });
+                        }
+                    }else{
+                        alert(msg.error_msg);
+                    };
+
+                }
+            });
+        }
+	//精品推荐
+        _jingxuan();
+	</script>
+</body>
+</html>                                              

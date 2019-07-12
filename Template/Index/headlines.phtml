@@ -1,0 +1,181 @@
+<!doctype html>
+<html lang="zh">
+<head>
+	<meta charset="UTF-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=Edge" />
+	<title>头条</title>
+	<link rel="stylesheet" href="{$CDN_BASE_URL_RES}/html/pc/css/global.css?171201">
+	<script src="{$CDN_BASE_URL_RES}/html/js/jquery.min.js"></script>
+	<script src="{$CDN_BASE_URL_RES}/html/pc/js/zhangwan.js?180305"></script>
+    <script src="//s29.9956.cn/res/bxd365/product/js/amazeui.min.js"></script>
+	<style>
+		.sidebar .suspend-info2 a{height: 38px;}
+        .am-sticky {
+            position: fixed !important;
+            z-index: 1010;
+            -webkit-transform-origin: 0 0;
+            -ms-transform-origin: 0 0;
+            transform-origin: 0 0;
+            background-color: #fff;
+        }
+        .sidebar{padding-bottom: 25px;}
+	</style>
+   
+</head>
+<body>
+	<!-- nav -->
+	<div class="header bgc">
+		<div class="container nav">
+			<a href="/" class="f-fl logo"><img src="{$CDN_BASE_URL_RES}/html/pc/images/logo.png"></a>
+            <ul>
+                <li><a href="/">首页</a></li>
+                <li class="on"><a href="/Index/headlines.html">头条</a></li>
+                <li><a href="/Index/circle.html">圈子</a></li>
+                <li><a href="/Index/treasure.html">寻宝</a></li>
+                <li><a href="/Index/download.html">APP下载</a></li>
+                <li><a href="/Index/about.html">关于我们</a></li>
+            </ul>
+			<div class="clearfix f-fr search-box">
+				<input type="text" placeholder="请输入关键词" class="search f-fl">
+				<button class="f-fr icon submit" type="button"></button>
+			</div>								
+		</div>
+	</div>
+	<div class="container clearfix layout toutiao">
+		<div class="f-fl bgc fl bdc">
+			<div class="tab tab01">
+				<ul>
+					
+				</ul>
+			</div>
+			<div class="tab-list-box">
+
+			</div>
+            <input type="hidden" id="current_type">
+			<div class="more-btn" value="">浏览更多</div>
+		</div>
+        
+		<div class="f-fr bdc bgc sidebar hot-headlines">
+            <div id="my-sticky" class="bgc">
+    			<div class="titlebar clearfix">
+    				<h3 class="">热门头条</h3>
+    			</div>
+            </div>
+			<!-- 显示6条 -->
+		</div>
+	</div>
+
+	<script>
+        var page=1;
+        var pageSize=6;
+
+		//头条分类
+		$.ajax({
+			type:"POST",
+			url:"/news/category/lists",
+			dataType:"json",
+			cache: false,
+			error: function(){
+				alert("未知错误");
+			},
+			success: function(msg){
+				if(msg.error_code == 0){
+		            var hot = msg.data.list;
+		            if(hot.length > 0){
+		            	//console.log(hot);
+		                $.each( hot, function(index, content)
+		                {
+	                		var str = '<li class="news'+content.nc_id+'" value="'+content.nc_id+'">'+content.nc_name+'</li>';
+		                	$(".tab ul").append(str);
+		                	$(".tab li").eq(0).addClass("active");
+
+                            var str2 = '<div class="tab-list '+content.nc_id+'"></div>';
+                            $(".tab-list-box").append(str2);
+
+                            if (!index){
+                                $('#current_type').val(0);
+                                change(0, page, pageSize)
+                            }
+		                });
+
+		                $(".tab li").click(function() {
+                            $(this).addClass('active').siblings().removeClass('active');
+                            var li_index = $(".tab li").index(this)
+                            $(".tab-list").eq(li_index).fadeIn(0).siblings('.tab-list').hide();
+                            $('#current_type').val(this.value);
+                            change(this.value, page, pageSize);
+                        });
+		            }
+		        }else{
+		            alert(msg.error_msg);
+		        };
+			}
+		});
+
+
+        //加载更多
+        $(".more-btn").click(function(){
+            change($('#current_type').val(), $('.more-btn').val(), pageSize, 'more');
+        });
+
+		function change(type, page, pageSize, act=''){
+            $.ajax({
+                type:"POST",
+                url:"/news/news/query",
+                dataType:"json",
+                data:{n_type:type, page:page, pageSize:pageSize},
+                cache: false,
+                error: function(){
+                    alert("未知错误");
+                },
+                success: function(msg){
+                    if (act == ''){
+                        $("."+type).html('');
+                    }
+
+                    if(msg.error_code == 0){
+                        var all = msg.data.list;
+                        if(all.length > 0){
+                            //console.log(all);
+                            $.each( all, function(index, content)
+                            {
+                                var str =
+                                    '<div class="suspend clearfix">'+
+                                    '<div class="photo-box"><a href="/Index/headlinesinfo.html?id='+content.n_id+'" class="photo"><img src="'+content.img[0].ni_img+'"></a></div>'+   
+                                    '<div class="suspend-info">'+
+                                    '<h3><a href="/Index/headlinesinfo.html?id='+content.n_id+'">'+content.n_title+'</a></h3>'+
+                                    '<p>'+content.n_subtitle+'</p>'+
+                                    '<ul class="zhuangtai">'+
+                                    '<li><i class="icon name"></i>'+content.n_anthor+'</li>'+
+                                    '<li>'+content.displayTime+'</li>'+
+                                    '<li><i class="icon pl"></i>'+content.n_type+'评论</li>'+
+                                    '</ul>'+
+                                    '</div>'+
+                                    '</div>';
+                                if (page == 1){
+                                    $("."+type).append(str);
+                                    if (type == 0){
+                                        $(".0").css('display','block');
+                                    }
+                                }else {
+                                    $("."+type).append(str);
+                                    //$(".more-btn").before(str);
+                                }
+
+                            });
+                        }
+
+                        page ++;
+                        $('.more-btn').val(page);
+                    }else{
+                        alert(msg.error_msg);
+                    };
+                }
+            });
+        }
+
+        //热门头条
+        _hotbar();
+	</script>
+</body>
+</html>                                              

@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+{template public/WxShareJS}
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>掌门人特权</title>
+</head>
+<style>
+    html,body,p{
+        margin:0;
+        padding:0;
+        color: #000;
+    }
+    h2,
+    p {
+        color: #000;
+    }
+    h2{
+        font-size:16px; 
+    }
+    p{
+        font-size:14px; 
+    }
+    /* .black-bg{
+        width:100%;
+        height:40px;
+        background:#000;
+    } */
+    .common-img-wrapper{
+        display:inline-block;
+        background:#d5bb8d;
+        border-radius: 50%;
+        vertical-align: middle;
+    }
+    img{
+        width:35px;
+        padding:15px;
+    }
+    .common-single{
+        margin-bottom: 20px;
+        /* border-radius: 10px; */
+        padding-left: 10px;
+        /* box-shadow: 2px 2px 1px #EEF */
+    }
+    .common-word{
+        display:inline-block;
+        width: 70%;
+        vertical-align: middle;
+        padding: 15px 5px;
+    }
+    /* .vip1{
+        background:#e6b272;
+    }
+    .vip2{
+        background:#e79a1e;
+    }
+    .vip3{
+        background:#cd9858;
+    } */
+    .ReadedNotice{
+        position:fixed;
+        bottom:0;
+        left:0;
+        right:0
+    }
+    .ReadedNotice p{
+        color:#fff;
+        padding:20px;
+        background: #d5bb8d;
+        text-align: center;
+    }
+</style>
+
+<body>
+    <div>
+        <div class="black-bg"></div>
+    </div>
+    <!-- style="z-index:1;position:fixed;top:2px;" -->
+    <div >
+        <div style="padding:20px;">
+            <div class="common-single vip1">
+                <div class="common-img-wrapper">
+                    <img src="{$CDN_BASE_URL_RES}/html/images/h5/vip1.png" alt="">
+                </div>
+                <div class="common-word">
+                    <h2>智者千虑，不如一试</h2>
+                    <p>品质货源、诚信店铺，一件代发，担 保交易。高人指点，您的首选！</p>
+                </div>
+            </div>
+
+            <!--  0元投入，无需任何资金周转，货品成 交即享分成。足不出户，钱袋满满！-->
+            <div class="common-single vip2">
+                <div class="common-img-wrapper">
+                    <img style="height: 32px;" src="{$CDN_BASE_URL_RES}/html/images/h5/vip2.png" alt="">
+                </div>
+                <div  class="common-word">
+                    <h2>海量赏金等你瓜分</h2>
+                    <p>完善的分成体系，海量卖家订单，笔 笔皆有分成。超高回报，一试便知！</p>
+                </div>
+            </div>
+
+            <!--  -->
+            <div class="common-single vip3">
+                <div class="common-img-wrapper" > 
+                    <img src="{$CDN_BASE_URL_RES}/html/images/h5/vipgift.png" alt="">
+                </div>
+                <div  class="common-word">
+                    <h2>0元入会，坐享其成</h2>
+                    <p>0元投入，无需任何资金周转，货品成 交即享分成。足不出户，钱袋满满！</p>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="ReadedNotice"><p >我已阅读</p></div>
+</body>
+<script src="https://s28.9956.cn/static/v3_1/js/jquery.min.js"></script>
+<script>
+        if(typeof(HandPlay)!="undefined"){
+            var hasReadedNotice = HandPlay.hasReadedNotice();
+            // alert(hasReadedNotice)
+            if(hasReadedNotice){
+                $(".ReadedNotice").hide()
+            }else{
+                $(".ReadedNotice").show()
+            }
+            console.log(hasReadedNotice);
+        }else{
+            var hasReadedNotice = HandPlay.hasReadedNotice();
+            // alert(hasReadedNotice)            
+            if(hasReadedNotice){
+                $(".ReadedNotice").hide()
+            }else{
+                $(".ReadedNotice").show()
+            }
+        }
+        $(".ReadedNotice").click(function(){
+            var a = {
+                "targetPage":"distribution"
+            }
+            var b = JSON.stringify(a)
+            if(typeof(HandPlay)!="undefined"){
+                HandPlay.execNative(b)
+                // alert(b)
+            }else{
+                HandPlay.execNative(b)
+                // alert(b)
+            }
+        })
+        
+
+</script>
+</html>

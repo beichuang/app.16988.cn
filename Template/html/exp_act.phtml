@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no, minimum-scale=1, maximum-scale=1">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black">
+  <meta name="format-detection" content="telephone=no, email=no">
+  <meta name="renderer" content="webkit">
+  <meta name="force-rendering" content="webkit">
+  <title>寻找掌玩好物体验官</title>
+  <script type="text/javascript" src="{$CDN_BASE_URL_RES}/html/js/flexible.js?"></script>
+  <link rel="stylesheet" type="text/css" href="{$CDN_BASE_URL_RES}/html/expActivity/css/style.css?" />
+  
+</head>
+<body>
+<div class="wrap1">
+    <div class="form">
+      <div class="form_cell">
+        <input id="u_name" type="text" placeholder="请输入您的姓名">
+      </div>
+      <div class="form_cell">
+        <input id="u_phone" type="number" maxlength="11" placeholder="请输入您的电话">
+      </div>
+      <div class="form_cell cell_code">
+        <input id="u_code" type="number" maxlength="6" placeholder="验证码">
+        <button id="get_code" class="btn_getcode">获取验证码</button>
+      </div>
+      <div class="form_cell">
+        <input id="u_addr" type="text" placeholder="请输入您的收货地址">
+      </div>
+    </div>
+    <div class="sign_btn" id="signup"></div>
+  </div>
+  <div class="wrap2" style="display:none;">
+    <div class="info_box">
+      <div class="info_cell">
+        <span>姓名</span>
+        <span id="info_name"></span>
+      </div>
+      <div class="info_cell">
+        <span>电话</span>
+        <span id="info_phone"></span>
+      </div>
+      <div class="info_cell">
+        <span>试用码</span>
+        <span id="info_code"></span>
+      </div>
+    </div>
+  </div>
+  <span id="tip" class="toast"></span>
+  <script src="https://s29.9956.cn/res/custom/js/jquery.min.js"></script>
+  <script type="text/javascript" src="{$CDN_BASE_URL_RES}/html/expActivity/js/md5.js"></script>
+  <script type="text/javascript" src="{$CDN_BASE_URL_RES}/html/expActivity/js/index.js"></script>
+</body>
+</html>

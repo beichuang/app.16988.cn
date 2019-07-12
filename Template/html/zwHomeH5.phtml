@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+    <meta name="viewport" content="initial-scale=1.0,maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width">
+    <meta name="format-detection" content="telephone=no">
+    <meta name="format-detection" content="email=no">
+    <title>掌玩—懂生活，有艺术！</title>
+    <script src="https://res.wx.qq.com/open/js/jweixin-1.2.0.js"></script>
+    <script type="text/javascript">
+    !function (e) { var t = 750, n = e.document, i = n.documentElement, a = "orientationchange" in e ? "orientationchange" : "resize", d = function e() { var n = i.getBoundingClientRect().width; return i.style.fontSize = 5 * Math.max(Math.min(20 * (n / t), 11.2), 8.55) + "px", e }(); i.setAttribute("data-dpr", e.navigator.appVersion.match(/iphone/gi) ? e.devicePixelRatio : 1), /iP(hone|od|ad)/.test(e.navigator.userAgent) && (n.documentElement.classList.add("ios"), parseInt(e.navigator.appVersion.match(/OS (\d+)_(\d+)_?(\d+)?/)[1], 10) >= 8 && n.documentElement.classList.add("hairline")), n.addEventListener && (e.addEventListener(a, d, !1), n.addEventListener("DOMContentLoaded", d, !1)) }(window);
+	</script>
+    <link type="text/css" rel="stylesheet" href="{$CDN_BASE_URL_RES}/html/zwHomeH5/index.min.css?v=37" />
+    <script src="{$CDN_BASE_URL_RES}/html/js/lib/vue/vue.min.js"></script>
+    <script>
+        window.resourceBaseUrl = '{$DOMAIN_APP}/res/html/';
+    </script>
+</head>
+<style>
+    body,html{
+        -webkit-overflow-scrolling: touch;
+    }
+</style>
+<body>
+<div id="app"></div>
+<script type="text/javascript" src="{$CDN_BASE_URL_RES}/html/zwHomeH5/index.min.js?v=37"></script>
+<script type="text/javascript" src="{$CDN_BASE_URL_RES}/html/js/baidu_stat.js"></script>
+
+<script>
+    try {
+        wx.ready(function () {
+            //分享到朋友圈
+            var titem = '掌玩—懂生活，有艺术！';
+            var desc = '专业的艺术品交易交流分享平台，让艺术融入生活，让生活充满艺术。';
+            var imgurl = 'http://pp.myapp.com/ma_icon/0/icon_52440266_1528191472/96';
+            wx.onMenuShareTimeline({
+                title: titem,
+                desc: desc,
+                link: window.location.href,
+                imgUrl: imgurl,
+                success: function (res) {
+                    // console.log('分享到朋友圈成功返回的信息为:', res);
+                },
+                cancel: function (res) {
+                    // console.log('取消分享到朋友圈返回的信息为:', res);
+                }
+            });
+            //分享给朋友
+            wx.onMenuShareAppMessage({
+                title: titem,
+                desc: desc,
+                link: window.location.href,
+                imgUrl: imgurl,
+                success: function (res) {
+                    // console.log('分享到朋友圈成功返回的信息为:', res);
+                },
+                cancel: function (res) {
+                    // console.log('取消分享到朋友圈返回的信息为:', res);
+                }
+            });
+        });
+    } catch (err) { }
+</script>
+</body>
+</html>

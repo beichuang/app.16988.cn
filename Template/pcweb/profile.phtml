@@ -1,0 +1,82 @@
+<!doctype html>
+<html lang="zh">
+<head>
+	<meta charset="UTF-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=Edge" />
+	<title>我的个人简介</title>
+	<link rel="stylesheet" href="{$CDN_BASE_URL_RES}/html/pcweb/css/global.css?9">
+	<script src="https://libs.baidu.com/jquery/1.8.3/jquery.min.js"></script>
+	<script src="{$CDN_BASE_URL_RES}/html/pcweb/js/masonry-docs.min.js"></script>
+	<script src="{$CDN_BASE_URL_RES}/html/pcweb/js/web.js?6"></script>
+	<script src="{$CDN_BASE_URL_RES}/html/pcweb/js/pinyin.js"></script>
+		<script>
+        $(window).on('load',function(){
+            $(window).scrollTop(640);
+            console.log($(window).scrollTop())
+        }); 
+	</script>
+</head>
+<body>
+	<div class="banner f-tac f-pr">
+		<div class="container f-pa">
+			<div class="hd-img"></div>
+			<h3 class="name"></h3>
+			<pre class="pinyin"></pre>
+			<div class="region"></div>
+			<div class="state">
+				<ul></ul>
+			</div>
+			<img src="{$CDN_BASE_URL_RES}/html/pcweb/images/arrow.png">
+		</div>
+	</div>
+
+	<div class="nav bgc">
+		<div class="container f-tac">
+			<ul>
+				<li><a href="index.html?uid=">首页</a></li>
+				<li class="on"><a href="profile.html?uid=">简介</a></li>
+				<li><a href="works.html?uid=">作品</a></li>
+				<li><a href="experience.html?uid=">获奖经历</a></li>
+				<li><a href="circle.html?uid=">我的圈子</a></li>
+			</ul>
+		</div>
+	</div>
+
+	<div class="container layoyt clearfix index">
+		<div class="f-fl sidebar bgc jianjie border-radius-6 _profile">
+			<div class="titlebar clearfix"><h3 class="">简介<em>ABOUT ME</em></h3></div>
+			<!-- <div class="profile-info"><span><img src="{$CDN_BASE_URL_RES}/html/pcweb/images/l2.jpg"></span><p><em>李彦宏</em>张云振，男，汉族，1969年11月出生，张云振，男，汉族，1969年11月出生，河南社旗人，现为社旗兰亭书社副社长，南阳市书协会员，社旗县老年书协副主席，北京华夏兰亭书画院院士，曾多次参加全国书画展并获奖。2017年10月，为庆祝中国人民解放军建军九十周年，迎接党的十九大胜利召开，作品荣获全国第十七届“庐山杯”书画大赛银奖。</p></div>  -->
+		</div>
+		 
+		<div class="f-fr bgc sidebar jianjie mb20 border-radius-6 jingli">
+			<div class="titlebar clearfix"><h3 class="">获奖经历<em>HONOR</em></h3></div>
+			<div class="HJJL">
+				<ul>
+		             
+		        </ul> 
+	        </div>
+		</div>
+	</div>
+ 
+	<div class="photo-mask"></div>
+	<div class="photo-panel">
+	    <div class="photo-div">
+	        <div class="photo-left">
+	            <div class="arrow-prv"></div>
+	        </div>
+	        <div class="photo-img">
+	            <div class="photo-bar">
+	                <div class="photo-close"></div>
+	            </div>
+	            <div class="photo-view-h">
+	                <img src="" />
+	            </div>
+	        </div>
+	        <div class="photo-right">
+	            <div class="arrow-next"></div>
+	        </div>
+	    </div>
+	</div>
+
+</body>
+</html>

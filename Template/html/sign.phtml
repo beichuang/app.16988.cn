@@ -1,0 +1,136 @@
+<!doctype html>
+<html lang="zh">
+<head>
+{template public/WxShareJS}
+    <meta charset="UTF-8">
+    <title>每日签到</title>
+    <meta name="viewport" content="width=device-width,minimum-scale=1.00001,maximum-scale=1.00001,user-scalable=no,minimal-ui">
+    <link rel="stylesheet" href="{$CDN_BASE_URL_RES}/html/css/global.css?17117">
+    <link rel="stylesheet" href="{$CDN_BASE_URL_RES}/html/css/animate.min.css">
+    <script src="https://s28.9956.cn/static/v3_1/js/jquery.min.js"></script>
+    <script src="{$CDN_BASE_URL_RES}/html/js/setfontsize.js"></script>
+    <script src="{$CDN_BASE_URL_RES}/html/js/wow.min.js"></script>
+    <style>
+        .banner .Sign-icon{background: #D1A570;border-radius: 50%;}
+        .banner .Sign-icon:before{position: absolute;content: "";border: 2px solid #AE8B62;width: 84%;
+        height: 84%;border-radius: 50%;top: 50%;margin-top: -44.5%;left: 50%;margin-left: -44.5%;}
+        .banner .Sign-icon .qd-bg{z-index: 1;}
+        .banner .Sign-icon .wow{position: absolute; z-index: 2;left: 50%;margin-left: -32%;top: 35%;}
+    </style>
+</head>
+<body>
+<section class="container">
+    <div class="banner f-pr f-tac">
+        <img src="{$CDN_BASE_URL_RES}/html/images/sign/banner.jpg">
+        <div class="info f-pa">
+            <h3>您今天已获得<i class="wow flash">+1</i>积分</h3>
+            <div class="Sign-icon f-pr">
+                <img src="{$CDN_BASE_URL_RES}/html/images/sign/txt1.png?171116" class="wow rotateInDownRight">
+            </div>
+        </div>
+    </div>
+    <div class="bgc integral-btn">
+        <ul>
+            <li>
+                <a href="score.html" class="clearrix">
+                    <img src="{$CDN_BASE_URL_RES}/html/images/sign/icon1.png" class="">
+                    <div class="num"><span class="txt"></span><br><span>我的积分</span></div>
+                </a>
+            </li>
+            <li>
+                <a href="exchange.html" class="clearrix">
+                    <img src="{$CDN_BASE_URL_RES}/html/images/sign/icon2.png" class="">
+                    <div><span class="txt">积分兑换</span><br><span>攒积分兑好物</span></div>
+                </a>
+            </li>
+        </ul>
+    </div>
+    <div class="Sign">
+        <ul class="f-pr clearfix Sign-list">
+            <div class="line"></div>
+        </ul>
+    </div>
+    <!-- -03-13新增 -->
+    <div style="margin: 0.2rem 0.28rem;">
+        <a href="invite.html">
+            <img src="{$CDN_BASE_URL_RES}/html/images/h5/ad.png" alt="">
+        </a>
+    </div>
+    <div class="jifen-txt bgc">
+        <h3>如何赚积分</h3>
+        <ul>
+            <li>1.每天可签到一次，每签到1次可+1积分</li>
+            <li>2.邀请好友下载掌玩APP+30积分</li>
+            <li>3.新用户认证+20分</li>
+            <li>4.发布藏品一件+1积分（每天上限10积分）</li>
+            <li>5.在圈子里发布一条信息+1积分（每天上限10积分）</li>
+            <!-- <li>6.平台内点赞/评论/关注+1积分（每日上限10积分）</li> -->
+        </ul>
+    </div>
+</section>
+<script>
+    new WOW().init();
+</script>
+<script>
+    //获取用户uid
+    if(typeof(HandPlay)!="undefined"){
+        var UID = HandPlay.getUserId();
+        console.log( UID);
+        //alert(UID);
+    }else{
+        var UID = qiaoxuekui.getUU();
+    } 
+    //积分数量
+    $.ajax({
+        type:"POST",
+        url:"/user/sign/add?uid="+UID,
+        dataType:"json",
+        cache: false,
+        error: function(){
+            alert("未知错误");
+        },
+        success: function(msg){
+            if(msg.error_code == 0){
+                var num = msg.data;
+                $(".num .txt").html(num.currentIntegral)
+            }
+        }
+    });
+
+    // 签到日期
+    $.ajax({
+        type:"POST",
+        url:"/user/sign/lists?uid="+UID,
+        dataType:"json",
+        cache: false,
+        error: function(){
+            alert("未知错误");
+        },
+        success: function(msg){
+            if(msg.error_code == 0){
+                var Sign = msg.data;
+                if(Sign.length > 0){
+                    console.log(Sign);
+                    $.each( Sign, function(index, content)
+                    {
+
+                        var str = '';
+                        if(content.isSign == 1) {
+                            str += '<li class="on">';
+                        }else {
+                            str += '<li>';
+                        }
+
+                        str += '<span>+1</span> '+content.day+' </i>';
+                        str += '</li>';
+
+                        $(".Sign-list").append(str);
+                    });
+                    
+                }
+            }
+        }
+    });
+</script>
+</body>
+</html>

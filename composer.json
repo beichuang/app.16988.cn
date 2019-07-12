@@ -1,0 +1,30 @@
+{
+
+    "name": "zhangwan/app",
+    "authors": [
+        {
+            "name": "yangzongxun",
+            "email": "junxuny@163.com"
+        }
+    ],
+    "repositories": {
+        "zhangwan/library":{
+            "type": "vcs",
+            "url": "[git@git.bxd365.com:3022]:zhangwan/library.git"
+        },
+        "zhangwan/phpspider":{
+            "type": "vcs",
+            "url": "[git@git.bxd365.com:3022]:yangzongxun/phpspider.git"
+        },
+        "packagist": {
+            "type": "composer",
+            "url": "https://packagist.laravel-china.org"
+        }
+    },
+    "require": {
+        "zhangwan/library": "dev-branch1",
+        "zhangwan/phpspider": "dev-master",
+        "gumlet/php-image-resize": "1.9.*",
+        "monolog/monolog":"1.23.0"
+    }
+}

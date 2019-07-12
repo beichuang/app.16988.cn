@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html>
+<head>
+{template public/WxShareJS}
+	<meta charset="UTF-8">
+	<title>邀请有礼</title>
+	<meta name="viewport" content="width=device-width,minimum-scale=1.00001,maximum-scale=1.00001,user-scalable=no,minimal-ui">
+	<link rel="stylesheet" type="text/css" href="{$CDN_BASE_URL_RES}/html/css/css.css?20170419">
+	<script src="{$CDN_BASE_URL_RES}/html/js/jquery.min.js"></script>
+	<script src="{$CDN_BASE_URL_RES}/html/js/currency.js"></script>
+</head>
+<body class="opinion">
+	<h6>分享邀请<span class="red sbtn"><img src="{$CDN_BASE_URL_RES}/html/images/shuaxin.png">换一条</span></h6>
+	<textarea class="stext">我在掌玩开了一个字画小店，有空来看看，保证全部真迹！</textarea>
+	<div class="red_box" id="submit1">立即邀请</div>
+	<p>每分享邀请一次即可获得50升稻米，每日仅限3次！</p>
+</body>
+<script>
+	/*var data = {"jump": 7};
+	console.log(data);
+	window.WebViewJavascriptBridge.callHandler(
+    	"submitFromWeb",
+        data
+        , function(responseData){
+        	alert(responseData);
+        	$.ajaxSetup({
+        	  	headers: {
+        	  	    "action": responseData,
+        	  	},
+        	});
+        }
+	);*/
+$(function(){
+	var txt = [
+	"我在掌玩开了一个字画小店，有空来看看，保证全部真迹！",
+	"终于找了知趣相投的藏友，掌玩是一个艺术品爱好者交友的平台，赶快加入吧！",
+	"购买艺术品又不懂，就上掌玩APP，与国内名家交流学习，还有机会获赠真迹哦！",
+	"私人定制作品就上掌玩APP，找你身边的艺术名家定制书画作品，让艺术走进寻常百姓家！"
+	];
+	var ind = 0;
+	$(".sbtn").click(function(){
+		ind++;
+		$(".stext").val(txt[ind]);
+		fn_srotate360($(".sbtn img"));//旋转一圈
+		if(ind==txt.length-1)
+		{
+			ind=-1;
+		};
+	});
+	//提交
+	$("#submit1").click(function(event) {
+		event.preventDefault();
+		var content = $.trim($(".stext").val());
+		if(content=="")
+		{
+			alert("分享内容不能为空");
+			return;
+		};
+		if(content.length>50)
+		{
+			alert("分享内容不能超过50个字符");
+			return;
+		};
+		var app = {};
+		app.share_title = "掌玩APP";
+		app.share_images = "https://xjapp.365kp.com/xjcdn/res/html/images/fenxianglogo.jpg";
+		app.share_url = "https://xjapp.365kp.com/html/jp_ExtensionM.html";
+		app.share_content = content;
+		app.jump = 3;
+		//call native method
+		window.WebViewJavascriptBridge.callHandler(
+		    'submitFromWeb'
+		    , app
+		    , function(responseData) {
+		        if(responseData == "0"){
+		        	var data_arr = {};
+        			data_arr.content = content;
+        			$.ajax({
+        			    type: "POST",
+        			    url: "/user/invite/add",
+        			    data: data_arr,
+        			    dataType: "json",
+        			    cache: false,
+        			    error: function () {
+        			        alert("未知错误");
+        			    },
+        			    success: function(msg){
+        			        if(msg.error_code == 0){
+        			        	alert("分享成功");
+        			        }else{
+        			            alert(msg.error_msg);
+        			        };
+        			    }
+        			});
+		        }else if(responseData == "1"){
+					alert("分享失败")
+		        }else if(responseData == "2"){
+		        	alert("取消分享")
+		        }
+		    }
+		);
+	});
+	function alert(e){
+    	$("body").append("<div id='msg'><span>"+e+"</span></div>");
+    	clearmsg();
+    }
+    function clearmsg(){
+    	var t = setTimeout(function(){
+    		$("#msg").remove();
+    	},2000)
+    };
+});
+</script>
+</html>

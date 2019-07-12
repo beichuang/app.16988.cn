@@ -1,0 +1,169 @@
+<!doctype html>
+<html lang="zh">
+<head>
+	<meta charset="UTF-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=Edge" />
+	<title>头条详情</title>
+	<link rel="stylesheet" href="{$CDN_BASE_URL_RES}/html/pc/css/global.css?171201">
+	<script src="{$CDN_BASE_URL_RES}/html/js/jquery.min.js"></script>
+	<script src="{$CDN_BASE_URL_RES}/html/pc/js/zhangwan.js?180305"></script>	
+	<script src="//s29.9956.cn/res/bxd365/product/js/amazeui.min.js"></script>
+	<style>
+		div.bdsharebuttonbox a.bds_tsina,div.bdsharebuttonbox a.bds_weixin,div.bdsharebuttonbox a.bds_qzone{
+		    background-position: 0 0;
+		    width: 60px;height: 58px;
+		    margin: 0;
+		}
+		.sidebar .suspend-info2 a {
+		    height: 38px;
+		}
+		.bdsharebuttonbox a{}
+		.sidebar .photo-box .photo img{
+			height: 68px;
+			object-fit: cover;
+	    -moz-object-fit: cover;
+	    -webkit-object-fit: cover;
+	    -o-object-fit: cover;
+	    -ms-object-fit: cover;
+		}
+		.bd_weixin_popup .bd_weixin_popup_foot{margin-top: -10px;}
+		.gb_resLay{left: 50%;top: 90px;margin-left: 630px;}
+		.am-sticky {
+            position: fixed !important;
+            z-index: 1010;
+            -webkit-transform-origin: 0 0;
+            -ms-transform-origin: 0 0;
+            transform-origin: 0 0;
+            background-color: #fff;
+        }
+        .sidebar{padding-bottom: 25px;}
+		.bdsharebuttonbox a{
+			
+		}
+        .bdsharebuttonbox .bds_tsina{
+    background: url({$CDN_BASE_URL_RES}/html/pc/images/sina1.jpg) no-repeat;
+    margin: 0;
+}
+.bdsharebuttonbox .bds_tsina:hover{
+    background: url({$CDN_BASE_URL_RES}/html/pc/images/sina2.jpg) no-repeat;
+    margin: 0;
+}
+.bdsharebuttonbox .bds_weixin{
+    background: url({$CDN_BASE_URL_RES}/html/pc/images/wechat1.jpg) no-repeat;
+    margin: 0;
+}
+.bdsharebuttonbox .bds_weixin:hover{
+    background: url({$CDN_BASE_URL_RES}/html/pc/images/wechat2.jpg) no-repeat;
+    margin: 0;
+}
+.bdsharebuttonbox .bds_qzone{
+    background: url({$CDN_BASE_URL_RES}/html/pc/images/qone1.jpg) no-repeat;
+    margin: 0;
+}
+.bdsharebuttonbox .bds_qzone:hover{
+    background: url({$CDN_BASE_URL_RES}/html/pc/images/qone2.jpg) no-repeat;
+    margin: 0;
+}
+	</style>
+</head>
+<body>
+	<!-- nav -->
+	<div class="header bgc">
+		<div class="container nav">
+			<a href="/" class="f-fl logo"><img src="{$CDN_BASE_URL_RES}/html/pc/images/logo.png"></a>
+            <ul>
+                <li><a href="/">首页</a></li>
+                <li class="on"><a href="/Index/headlines.html">头条</a></li>
+                <li><a href="/Index/circle.html">圈子</a></li>
+                <li><a href="/Index/treasure.html">寻宝</a></li>
+                <li><a href="/Index/download.html">APP下载</a></li>
+                <li><a href="/Index/about.html">关于我们</a></li>
+            </ul>
+			<div class="clearfix f-fr search-box">
+				<input type="text" placeholder="请输入关键词" class="search f-fl">
+				<button class="f-fr icon submit" type="button"></button>
+			</div>								
+		</div>
+	</div>
+	<div class="container f-pr clearfix layout toutiao">
+		<div class="f-fl bgc fl toutiao-info">
+		</div>
+		<div class="f-fr bgc sidebar hot-headlines">
+			<div id="my-sticky" class="bgc">
+				<div class="titlebar clearfix">
+					<h3 class="">热门头条</h3>
+				</div>
+
+				<!-- 显示6条 -->
+			</div>
+		</div>
+		<div class="f-pf gb_resLay">
+<div class="bdsharebuttonbox">
+    
+    <a href="#" class="bds_tsina" data-cmd="tsina" title="分享到新浪微博"></a>
+    <a href="#" class="bds_qzone" data-cmd="qzone" title="分享到QQ空间"></a>
+    <a href="#" class="bds_weixin" data-cmd="weixin" title="分享到微信"></a>
+    <li class="top"></li>
+</div>
+<script>window._bd_share_config={"common":{"bdSnsKey":{},"bdText":"","bdMini":"2","bdPic":"","bdStyle":"0","bdSize":"16"},"share":{}};with(document)0[(getElementsByTagName('head')[0]||body).appendChild(createElement('script')).src='http://bdimg.share.baidu.com/static/api/js/share.js?v=89860593.js?cdnversion='+~(-new Date()/36e5)];</script>		
+		</div>
+	</div>
+	<script>
+		//回到顶部
+ 
+    $('.top').click(function() {
+    	$('html,body').animate({
+    		'scrollTop':0
+    	});
+    });
+		//热门头条
+        _hotbar();
+
+       //获取网页的uid
+        (function ($) {
+            $.getUrlParam = function (name) {
+                var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)");
+                var r = window.location.search.substr(1).match(reg);
+                if (r != null) return unescape(r[2]); return null;
+            }
+        })(jQuery);
+        console.log($.getUrlParam('id'));
+        _uid = $.getUrlParam('id');
+
+
+		//头条详情内容
+		$.ajax({
+            type:"POST",
+            url:"/news/news/newsInfo?n_id="+_uid,
+            dataType:"json",
+            cache: false,
+            error: function(){
+                alert("未知错误");
+            },
+            success: function(msg){
+                if(msg.error_code == 0){
+                    var all = msg.data;
+                    	//console.log(all);
+                        var str = 
+						'<div class="titlebar clearfix">'+
+							'<h3 class="">'+all.n_title+'</h3>'+
+						'</div>'+
+						'<ul class="zhuangtai">'+
+							'<li><i class="icon name"></i>'+all.n_anthor+'</li>'+
+							'<li>'+all.displayTime+'</li>'+
+						'</ul>'+
+						'<div class="text">'+
+							//'<img src="'+all.img[0]+'">'+
+							'<p>'+all.n_content+'</p>'+
+						'</div>';	                		
+                        $(".toutiao-info").append(str);
+                      
+                    
+                }else{
+                    alert(msg.error_msg);
+                };
+            }
+        });
+	</script>
+</body>
+</html>                                              

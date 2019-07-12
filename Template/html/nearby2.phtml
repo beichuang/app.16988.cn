@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html>
+<head>
+{template public/WxShareJS}
+	<meta charset="UTF-8">
+	<title>附近的市场</title>
+	<meta name="viewport" content="width=device-width,minimum-scale=1.00001,maximum-scale=1.00001,user-scalable=no,minimal-ui">
+	<link rel="stylesheet" type="text/css" href="{$CDN_BASE_URL_RES}/html/css/css.css?201703311742">
+	<script src="{$CDN_BASE_URL_RES}/html/js/jquery.min.js"></script>
+	<script src="{$CDN_BASE_URL_RES}/html/js/currency.js"></script>
+</head>
+<body>
+<!--
+<div class="loadimgBox">
+	<div class="mul15">
+		<div class="m15c m15c1"></div>
+		<div class="m15c m15c2"></div>
+		<div class="m15c m15c3"></div>
+		<div class="m15c m15c4"></div>
+		<div class="m15c m15c5"></div>
+		<div class="m15c m15c6"></div>
+		<div class="m15c m15c7"></div>
+		<div class="m15c m15c8"></div>
+	</div>
+</div>-->
+<!--市场列表为空-->
+<div class="list_kong_showBox">
+	<img src="{$CDN_BASE_URL_RES}/html/images/kong_img_2.gif">
+	<p class="p1">附近暂无市场哦</p>
+	<a href="nearby.html" class="kongBtn">别处看看</a>
+</div>
+	<ul class="nearby">
+	</ul>
+	<script type="text/javascript">
+		function alert(e){
+        	$("body").append("<div id='msg'><span>"+e+"</span></div>");
+        	clearmsg();
+        };
+        function clearmsg(){
+        	var t = setTimeout(function(){
+        		$("#msg").remove();
+        	},2000);
+        };
+	</script>
+</body>
+
+<script type="text/javascript" src="http://webapi.amap.com/maps?v=1.3&key=ab74d30bcf8388f756090f752c330da8&plugin=AMap.Autocomplete"></script>
+<script src="{$CDN_BASE_URL_RES}/html/js/region.2.js"></script>
+<script>
+var regionSelectjsn1 = newdizhiregion.data;
+var regionSelect1={};
+	regionSelect1.sheng={};
+	regionSelect1.shi={};
+	regionSelect1.qu={};
+var dizhi_1="";
+$(function(){
+	for(var p in regionSelectjsn1)
+	{
+		if(regionSelectjsn1[p].region_level==1)
+		{
+			regionSelect1.sheng[p]=(regionSelectjsn1[p]);
+		}else if(regionSelectjsn1[p].region_level==2)
+		{
+			regionSelect1.shi[p]=(regionSelectjsn1[p]);
+		}else if(regionSelectjsn1[p].region_level==3)
+		{
+			regionSelect1.qu[p]=(regionSelectjsn1[p]);
+		};
+	};
+	var val = location.hash;
+	val=val.replace(/#/,"");
+	for(var p in regionSelect1.shi)
+	{
+		if(regionSelect1.shi[p].region_code == val)
+		{
+			dizhi_1 = regionSelect1.shi[p].region_name;
+			dizhi_1 = dizhi_1.replace(/市/,"");
+		};
+	};
+	//中部软件园:113.562266,34.818063
+	//郑州火车站:113.658395,34.744223
+	
+	//10011:10051
+	$.ajax({
+	    type: "POST",
+	    url: "/found/market/lists",
+	    data: {"cityCode":val,'page':1,'pageSize':100},
+	    dataType: "json",
+	    cache: false,
+	    error: function () {
+	      	$(".confirm").hide();
+	        alert("未知错误");
+	        $(".loadimgBox").fadeOut(500);
+	    },
+	    success: function(msg){
+	        if(msg.error_code == 0){
+	            return_htmlstr(msg.data);
+	        }else{
+	            alert(msg.error_msg);
+	            $(".loadimgBox").fadeOut(500);
+	        };
+	    }
+	});
+});
+//对于详细地址中没有市名字的加上市的名字
+function fn_addstr()
+{
+
+};
+function addEvent()
+{
+	$(".nearby li").click(function(event) {
+		var x=$(this).attr("latitude");
+		var y=$(this).attr("longitude");
+		var tx=$(this).attr("txt");
+		var address=$(this).attr("address");
+		var loca=$(this).attr("loca");
+		location.href ="/html/map.html?loc="+loca+"&txt="+tx+"&address="+address;
+	});
+};
+//地理编码
+function ditu_dilibianma(ind,txt)
+{
+	var obj = $(".nearby");
+    $.ajax({
+      type:"GET",
+      url:"https://restapi.amap.com/v3/geocode/geo?key=1d7aad5398ce2f029a1142c9a08c94c9&address="+txt,
+      dataType:"json",
+      success:function(data){
+        if(data.geocodes.length!=0)
+        {
+        	obj.find('li').eq(ind).attr("loca",data.geocodes[0].location);
+        }else{
+        	obj.find('li').eq(ind).css("display","none");
+        };
+      }
+    });
+};
+//ditu_dilibianma(1,"北京市");
+function return_htmlstr(arr)
+{
+	console.log(arr);
+	var str = "";
+	$(".loadimgBox").fadeOut(500);
+	for(var i=0;i<arr.length;i++)
+	{
+		var tx = arr[i];
+		var str_2 = tx.m_address;
+		if(str_2.indexOf(dizhi_1)==-1)
+		{
+			//str_2=dizhi_1+str_2;
+		};
+		str+="<li latitude='"+tx.m_latitude+"' longitude='"+tx.m_longitude+"' txt='"+tx.m_name+"' address='"+str_2+"'>";
+		str+=	"<a>"+tx.m_name;
+		str+=	"<img src='{$CDN_BASE_URL_RES}/html/images/more.png'>";
+		str+="<i style='font-style:initial;background:#fff;display:block;width:93%;font-style:.75rem;color:#999;'>"+str_2+"</i>";
+		str+=	"</a>";
+		str+="</li>";
+		ditu_dilibianma(i,str_2);
+	};
+	$(".nearby").html(str);
+	if(str==""){$(".list_kong_showBox").show();};
+	addEvent();
+};
+</script>
+</html>

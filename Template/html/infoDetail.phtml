@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1,user-scalable=no">
+    <script src="https://s28.9956.cn/static/v3_1/js/jquery.min.js"></script>
+    <title>{$n_title}</title>
+    <!-- Core CSS file -->
+    <!-- <link rel="stylesheet" href="//g.alicdn.com/de/prismplayer/2.0.1/skins/default/aliplayer-min.css" />
+    <script type="text/javascript" src="//g.alicdn.com/de/prismplayer/2.0.1/aliplayer-min.js"></script> -->
+    <style type="text/css">
+        .pswp__ui {
+            display: none;
+        }
+        html,
+        body {
+            -webkit-user-select: auto;
+            user-select: auto;
+            margin: 0;
+        }
+        .seckill-bottom {
+            position: fixed;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            display: flex;
+            height: 55px;
+            line-height: 55px;
+            background: #fff;
+        }
+        .seckill-bottom .bottom-right {
+            flex: 1;
+            text-align: right;
+        }
+        .seckill-bottom .bottom-right span {
+            background: #000;
+            color: #fff;
+            padding: 8px;
+            margin-right: 20px;
+            border-radius: 5px;
+        }
+        .seckill-bottom .logo-left {
+            flex: 1;
+            padding: 10px;
+            margin-left: 10px;
+        }
+        .info-detail {
+            margin-bottom: 40px;
+        }
+        .info-detail .top>.label {
+            text-align: left;
+        }
+        .eyeIcon {
+            display: inline-block;
+            width: 20px;
+            vertical-align: middle;
+            margin-left: 20px;
+        }
+        .eyeIcon img {
+            width: 100%;
+        }
+        .info-detail .top>h3 {
+            text-align: left;
+        }
+        .info-detail .top>.label {
+            border-bottom: 1px solid #e5e5e5;
+            padding-bottom: .8rem;
+            color: #999;
+            font-size: .8rem;
+            line-height: 1.2rem;
+        }
+        .padding {
+            padding-right: 1rem;
+            padding-left: 1rem;
+        }
+        .info-detail .my-gallery {
+            /*width: 100%;*/
+            overflow: hidden;
+            padding-top: .8rem;
+            padding-bottom: .8rem;
+            background-color: #FFF;
+        }
+        .seckill-bottom {
+            position: fixed;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            display: flex;
+            height: 55px;
+            line-height: 55px;
+            background: #fff;
+        }
+        .seckill-bottom .bottom-right {
+            flex: 1;
+            text-align: right;
+        }
+        .seckill-bottom .bottom-right span {
+            background: #000;
+            color: #fff;
+            padding: 8px;
+            margin-right: 20px;
+            border-radius: 5px;
+        }
+        .seckill-bottom .logo-left {
+            flex: 1;
+            padding: 10px;
+            margin-left: 10px;
+        }
+        .seckill-bottom .logo-left img {
+            width: 100%;
+        }
+
+        #n_content{
+            font-size: 14px;
+        }
+        #n_content img{
+            width: 100% !important;
+            height: auto !important;
+        }
+        #n_content audio{
+            height: 30px !important;
+        }
+        a{text-decoration:none}
+    </style>
+</head>
+
+<body>
+    <div class="info-detail">
+        <div class="top padding">
+            <h3 class="black">{$n_title}</h3>
+            <div class="label clearfix">
+                <span id="n_create_date">{$displayTime}</span>
+                <span class="eyeIcon"><img src="{$CDN_BASE_URL_RES}/html/images/h5/optimize_eye@2x.png" alt=""></span>
+                <span id="n_click_rate">{$n_click_rate}</span>
+            </div>
+        </div>
+        <!--文章内容，编辑器编辑box-->
+        <div id="n_content" class="content-box my-gallery clearfix padding">
+            {$n_content}
+        </div>
+        <!--文章内容，编辑器编辑box end-->
+    </div>
+    <div class="seckill-bottom">
+        <div class="logo-left">
+            <img src="{$CDN_BASE_URL_RES}/html/images/h5/pic_logo@2x.png" alt="">
+        </div>
+        <div class="bottom-right">
+            <a href="http://a.app.qq.com/o/simple.jsp?pkgname=art.jupai.com.jupai"><span>立即体验</span></a>
+        </div>
+    </div>
+    <script type="text/javascript">
+        function fontSize() { 
+            var a = document.documentElement.clientWidth > 768 ? 768 : document.documentElement.clientWidth; 
+            document.documentElement.style.fontSize = (a / 25) + "px" 
+        } 
+        fontSize(); 
+        window.onresize = fontSize;
+        var is_weixin = (function () { return navigator.userAgent.toLowerCase().indexOf('micromessenger') !== -1 })();
+        if (is_weixin) {
+            $(".seckill-bottom").show();
+        } else {
+            $(".seckill-bottom").hide();
+        }
+        // 获取href的参数
+        function getURL(url,name){
+            var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)");
+            var r = url.substr(1).match(reg);
+            if (r != null) return unescape(r[2]); return null;
+        }
+        var content_json = {
+            "title": '{$n_title}',
+            "content": '{$n_subtitle}',
+            "image": '{$n_picurl}',
+            "url": location.href
+        };
+        function gotoApp(id){
+            var obj = {
+				"targetPage": "baby",
+				"gid": id
+			};
+            HandPlay.execNative(JSON.stringify(obj));
+        }
+        if (typeof (HandPlay) != "undefined") {
+            HandPlay.setShareInfo(JSON.stringify(content_json));
+            $(function(){
+                // 处理app中a链接打不开的问题
+                $('a').each((ele,index)=>{
+                    var id = getURL(index.href,'id');
+                    console.log(getURL(index.href,'id'))
+                    if(index.href.indexOf('type=goods') > 0){
+                        index.href = 'javascript:gotoApp('+id+');'
+                    }
+                })
+            });
+        } else {
+            console.log("不在掌玩中");
+        }
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,170 @@
+<!doctype html>
+<html lang="zh">
+<head>
+{template public/WxShareJS}
+	<meta charset="UTF-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=Edge" />
+	<title>头条详情</title>
+	<link rel="stylesheet" href="{$CDN_BASE_URL_RES}/html/pc/css/global.css">
+	<script src="{$CDN_BASE_URL_RES}/html/js/jquery.min.js"></script>
+	<script src="{$CDN_BASE_URL_RES}/html/pc/js/zhangwan.js?17"></script>	
+	<script src="{$CDN_BASE_URL_RES}/html/pc/js/share.js"></script>	
+	<style>
+		div.bdshare-button-style0-24 a.bds_tsina,div.bdshare-button-style0-24 a.bds_weixin,div.bdshare-button-style0-24 a.bds_qzone{
+		    background-position: 0 0;
+		}
+		.sidebar .suspend-info2 a {
+		    height: 38px;
+		}
+		
+	</style>
+</head>
+<body>
+	<!-- nav -->
+	<div class="header bgc">
+		<div class="container nav">
+			<a href="/" class="f-fl logo"><img src="{$CDN_BASE_URL_RES}/html/pc/images/logo.png"></a>
+            <ul>
+                <li><a href="/">首页</a></li>
+                <li class="on"><a href="/Index/headlines.html">头条</a></li>
+                <li><a href="/Index/circle.html">圈子</a></li>
+                <li><a href="/Index/treasure.html">寻宝</a></li>
+                <li><a href="/Index/download.html">APP下载</a></li>
+                <li><a href="/Index/about.html">关于我们</a></li>
+            </ul>
+			<div class="clearfix f-fr search-box">
+				<input type="text" placeholder="请输入关键词" class="search f-fl">
+				<button class="f-fr icon submit" type="button"></button>
+			</div>								
+		</div>
+	</div>
+	<div class="container f-pr clearfix layout toutiao">
+		<div class="f-fl bgc fl toutiao-info">
+			<!-- <div class="titlebar clearfix">
+				<h3 class="">文玩圈最难伺候的八大文玩，你有几件？</h3>
+			</div> 
+			<ul class="zhuangtai">
+				<li><i class="icon name"></i>掌玩大玩家</li>
+				<li>一小时前</li>
+			</ul>
+			<div class="text">
+				<img src="images/toutiaoinfo.jpg">
+				<p>南红的诸多品种中，有一种红白相生，半红半白的特殊料子，它就是南红红白料，常见的主要是红白缠丝料，其中红白分明的料子比较珍贵。红白料在南红里算得上是画风清奇、不走寻常路的代表！尤其在南红进入雕刻圈以后，红白料的独特画风更是受到了很多玉雕大师的喜爱。</p>
+				<h3>界限明显</h3>
+				<p>高品质的南红红白料，红白界限非常明显，并且没有交融，极具层次感。其中，红色的部分，应为色泽浓郁而纯净的柿子红，而白色的部分，则应为牛乳般洁白的乳白色。</p>
+				<p>立秋之后，又到了文玩核桃上市的季节，可记者走访市场发现，与数年前动辄上万一对的“疯狂”核桃相比，今年大部分文玩核桃出现了八成或以上的跌幅，而如三棱四棱等异形核桃的价格，虽说仍维持在较高水平，但也属于“有价无市”。</p>
+				<p><不少商家坦言，文玩核桃前期是“虚火过旺”，价格被不合理地推得太高，如今又出现了明显的“供大于求”现象，价格自然大幅度回落，不少商家还暂停了文玩核桃的交易。</p>
+				<p>文玩核桃价格的走低，一定程度上降低了不少职工加入文玩核桃玩家的门槛。不过，在见识了文玩核桃价格的大起大落后，职工玩家们变得更加理性。</p>
+				<h3>供大于求成跌价主因</h3>
+				<p>文玩核桃的主要产地来自河北涞水，而据当地文玩核桃协会的粗略统计，在文玩核桃价格最高的2013年，当地有种植户约2.5万户，种植面积3.5万亩，文玩核桃树100多万株。而到了文玩核桃价格猛跌的2015年，涞水县核桃种植户已经达到4.5万户，种植面积6.5万亩，文玩核桃树200多万株，数量翻了一倍</p>
+			</div> -->
+		</div>
+		<div class="f-fr bgc sidebar hot-headlines">
+			<div class="titlebar clearfix">
+				<h3 class="">热门头条</h3>
+			</div>
+			<!-- 显示6条 -->
+		</div>
+		<div class="f-pa gb_resLay">
+			<div class="bdsharebuttonbox">
+				<ul class="gb_resItms">
+					<li> <a title="分享到新浪微博" href="#" class="bds_tsina" data-cmd="tsina" data-url="http://www.internetke.com/material/img/2013/1026/26.html"></a> </li>
+					<li> <a title="分享到微信" href="#" class="bds_weixin" data-cmd="weixin" data-url="http://www.internetke.com/material/img/2013/1026/26.html"></a> </li>
+					<li> <a title="分享到QQ空间" href="#" class="bds_qzone" data-cmd="qzone" data-url="http://www.internetke.com/material/img/2013/1026/26.html"></a> </li>
+					<li class="top"></li>
+				</ul>
+			</div>
+		</div>
+	</div>
+
+	<script>
+		//热门头条
+        _hotbar();
+
+       //获取网页的uid
+        (function ($) {
+            $.getUrlParam = function (name) {
+                var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)");
+                var r = window.location.search.substr(1).match(reg);
+                if (r != null) return unescape(r[2]); return null;
+            }
+        })(jQuery);
+        console.log($.getUrlParam('id'));
+        _uid = $.getUrlParam('id');
+
+
+		//头条详情内容
+		$.ajax({
+            type:"POST",
+            url:"/news/news/newsInfo?n_id="+_uid,
+            dataType:"json",
+            cache: false,
+            error: function(){
+                alert("未知错误");
+            },
+            success: function(msg){
+                if(msg.error_code == 0){
+                    var all = msg.data;
+                    	//console.log(all);
+                        var str = 
+						'<div class="titlebar clearfix">'+
+							'<h3 class="">'+all.n_title+'</h3>'+
+						'</div>'+
+						'<ul class="zhuangtai">'+
+							'<li><i class="icon name"></i>'+all.n_anthor+'</li>'+
+							'<li>'+all.displayTime+'</li>'+
+						'</ul>'+
+						'<div class="text">'+
+							//'<img src="'+all.img[0]+'">'+
+							'<p>'+all.n_content+'</p>'+
+						'</div>';	                		
+                        $(".toutiao-info").append(str);
+                      
+                    
+                }else{
+                    alert(msg.error_msg);
+                };
+            }
+        });
+
+        
+	</script>
+	<!-- 分享插件 -->
+	<script type="text/javascript">
+	    //全局变量，动态的文章ID
+	    var ShareURL = "";
+	    //绑定所有分享按钮所在A标签的鼠标移入事件，从而获取动态ID
+	    $(function () {
+	        $(".bdsharebuttonbox a").mouseover(function () {
+	            ShareURL = $(this).attr("data-url");
+	        });
+	    });
+
+	    /* 
+	    * 动态设置百度分享URL的函数,具体参数
+	    * cmd为分享目标id,此id指的是插件中分析按钮的ID
+	    *，我们自己的文章ID要通过全局变量获取
+	    * config为当前设置，返回值为更新后的设置。
+	    */
+	    function SetShareUrl(cmd, config) {            
+	        if (ShareURL) {
+	            config.bdUrl = ShareURL;    
+	        }
+	        return config;
+	    }
+
+	    //插件的配置部分，注意要记得设置onBeforeClick事件，主要用于获取动态的文章ID
+	    window._bd_share_config = {
+	        "common": {
+	            onBeforeClick: SetShareUrl, "bdSnsKey": {}, "bdText": ""
+	            , "bdMini": "2", "bdMiniList": false, "bdPic": "http://www.internetke.com/uploads/allimg/131026/1-1310261J0270-L.jpg", "bdStyle": "0", "bdSize": "24"
+	        }, "share": {}
+	    };
+	    //插件的JS加载部分
+	    with (document) 0[(getElementsByTagName('head')[0] || body)
+	        .appendChild(createElement('script'))
+	        .src = 'http://bdimg.share.baidu.com/static/api/js/share.js?v=89860593.js?cdnversion='
+	        + ~(-new Date() / 36e5)];
+	</script> 
+</body>
+</html>                                              

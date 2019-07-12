@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html>
+<head>
+{template public/WxShareJS}
+<meta charset="UTF-8">
+<title>地图</title>
+<meta name="viewport" content="width=device-width,minimum-scale=1.00001,maximum-scale=1.00001,user-scalable=no,minimal-ui">
+<script src="{$CDN_BASE_URL_RES}/html/js/jquery.min.js"></script>
+<script src="{$CDN_BASE_URL_RES}/html/js/currency.js"></script>
+<link rel="stylesheet" type="text/css" href="{$CDN_BASE_URL_RES}/html/css/css.css?20170420">
+</head>
+<style>
+.bigBox{
+	position:fixed;
+	width:100%;
+	height:calc(100% - 0px);
+	left:0;
+	top:0;
+	overflow:hidden;
+}
+#myiframe{
+	position:absolute;
+	width:102%;
+	height:calc(100% + 53px);
+	left:-2px;
+	top:-50px;
+}
+.txt{
+	background:#fff;
+	display:none;
+	position:fixed;
+	width:100%;
+	height:44px;
+	left:0;
+	bottom:0;
+	padding-left:10px;
+	border-top:solid 1px #ccc;
+
+}
+.txt div{
+	font-size:14px;
+	width:90%;
+	line-height:22px;
+	border-bottom:solid 1px #ccc;
+	color:#333;
+}
+.txt p{
+	margin:0;
+	padding:0;
+	font-size:12px;
+	color:#666;
+	line-height:22px;
+}
+</style>
+<body>
+<!--
+<div class="loadimgBox">
+	<div class="mul15">
+		<div class="m15c m15c1"></div>
+		<div class="m15c m15c2"></div>
+		<div class="m15c m15c3"></div>
+		<div class="m15c m15c4"></div>
+		<div class="m15c m15c5"></div>
+		<div class="m15c m15c6"></div>
+		<div class="m15c m15c7"></div>
+		<div class="m15c m15c8"></div>
+	</div>
+</div>-->
+<div class="bigBox">
+	<iframe src="" id="myiframe"></iframe>
+</div>
+<div class="txt">
+	<div>好嗲大病</div>
+	<p>好嗲大病发送我的佛教我的房间</p>
+</div>
+<script>
+$(function(){
+	var obj = getQuery();
+	var url = "https://m.amap.com/navi/?dest="+obj.loc+"&destName="+obj.txt+"&hideRouteIcon=1&key=1d7aad5398ce2f029a1142c9a08c94c9&plugin";
+	$("#myiframe").attr("src",url);
+	$(".txt div").html(obj.txt);
+	$(".txt p").html(obj.address);
+	$("#myiframe").load(function() {
+		$(".loadimgBox").fadeOut(100);
+	});
+});
+</script>
+</body>
+</html>

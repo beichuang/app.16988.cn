@@ -1,0 +1,25 @@
+<?php
+return array (
+    'User'=>array(
+        'serverUrl'=>"http://jupai-user-api.xtest.tech",
+        'serverIp'=>"192.168.1.18",
+        'appId'=>"10000",
+        'appSecret'=>"f3b496e41a22fdcc8f629c3f65c528d0a",
+    ),
+    'Mall'=>array(
+        'serverUrl'=>"http://jupai-mall-api.xtest.tech",
+        'serverIp'=>"192.168.1.18",
+        'appId'=>"30000",
+        'appSecret'=>"f3b496e41a22fdcc8f629c3f65c528d0a",
+    ),
+    'CommonData'=>array(
+        'serverUrl'=>"http://api.xtest.tech/",
+        'serverIp'=>"192.168.1.18",
+        'appId'=>"jupai",
+        'appSecret'=>"juHjhk99Yhjkl3R34685ppai",
+        'defaultRequestTimeOut'=>5,
+        'cachePath'=>dirname(__DIR__)."/Data/Cache/commonDataApi",
+        //缓存时间，秒
+        'cacheLifetime'=>31536000,
+    ),
+);

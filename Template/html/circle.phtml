@@ -1,0 +1,189 @@
+<!doctype html>
+<html lang="zh">
+<head>
+{template public/WxShareJS}
+	<meta charset="UTF-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=Edge" />
+	<title>圈子</title>
+	<link rel="stylesheet" href="{$CDN_BASE_URL_RES}/html/pc/css/global.css">
+	<script src="{$CDN_BASE_URL_RES}/html/js/jquery.min.js"></script>
+	<script src="{$CDN_BASE_URL_RES}/html/pc/js/zhangwan.js"></script>
+</head>
+<body>
+	<!-- nav -->
+	<div class="header bgc">
+		<div class="container nav">
+			<a href="index.html" class="f-fl logo"><img src="{$CDN_BASE_URL_RES}/html/pc/images/logo.png"></a>
+			<ul>
+				<li><a href="index.html">首页</a></li>
+				<li><a href="headlines.html">头条</a></li>
+				<li class="on"><a href="circle.html">圈子</a></li>
+				<li><a href="treasure.html">寻宝</a></li>
+				<li><a href="download.html">APP下载</a></li>
+				<li><a href="about.html">关于我们</a></li>
+			</ul>		
+			<div class="clearfix f-fr search-box">
+				<input type="text" placeholder="请输入关键词" class="search f-fl">
+				<button class="f-fr icon submit" type="button"></button>
+			</div>								
+		</div>
+	</div>
+	<div class="container f-pr clearfix layout ">
+		<div class="f-fl bgc quanzi ">
+			<div class="more-btn" value="">浏览更多</div>
+		</div>
+		<div class="f-fr bgc sidebar quanyou">
+			<div class="titlebar clearfix">
+				<h3 class="">活跃圈友</h3>
+			</div>
+			<!-- 显示6条 -->			 
+		</div>
+	</div>
+	<script>
+		//关注的点击事件
+		var _gaunzhu = function(){
+	        $(".follow").click(function(){
+	        	$(".popup-box01").show();
+	        	$(".popup-box .popup p em").html("关注");
+	        });
+		}
+
+		var page = 1;
+		var pageSize = 6;
+        $(function () {
+            getLists(page, pageSize);
+        })
+
+		function getLists(page, pageSize){
+            //圈子
+            $.ajax({
+                type: "POST",
+                url: "/treasure/treasure/lists?type=4&page="+page+"&pageSize="+pageSize,
+                dataType: "json",
+                cache: false,
+                error: function () {
+                    alert("未知错误");
+                },
+                success: function(msg){
+                    if(msg.error_code == 0){
+                        var quanziList = msg.data;
+                        if(quanziList.length > 0){
+                            $.each( quanziList, function(index, content)
+                            {
+                                //console.log(content.displayTime);
+                                var str = ''
+                                    str +='<div class="quanzi-list">';
+                                    str +='<div class="suspend clearfix">';
+                                    str +='<div class="photo-box"><a href="javasrcipt:vodi(0);" class="photo">';
+                                    if((content.t_avatar=='')){
+                                        str+='<img src="//cdn.16988.cn/res/html/pc/images/morentouxiang.png">';
+                                    }else{
+                                        str+='<img src="'+content.t_avatar+'">';
+                                    }
+                                    
+                                    str +='</a></div>';
+                                    str +='<div class="suspend-info">';
+                                    str +='<h3>'+content.t_nickname+'</h3>';
+                                    str +='<p>'+content.displayTime+'</p>';
+                                    str +='</div>';
+                                    str +='</div>';
+                                    str +='<p class="txt">'+ content.t_desc +'</p>';
+                                    str +='<div class="quanzi-pic"><ol class="clearfix">';
+                                if((content.t_pictures[0])){
+                                    $.each( content.t_pictures, function(index1, content1){
+                                        if(index1<3){str += '<li><img src="'+content.t_pictures[0].ti_img+'"></li>';}
+
+                                    });
+                                }
+                                    str += '</ol></div>';
+                                    str +='<ul class="foot clearfix">';
+                                    str +='<li>';
+                                    str +='<div class="praise1 praiseb">';
+                                    str +='<span class="praise"><img src="{$CDN_BASE_URL_RES}/html/pc/images/zan.png" class="praise-img animation"><i>点赞</i></span>';
+                                    str +='<span class="add-num" style="display: inline;"><em class="add-animation hover"></em></span>';
+                                    str +='</div>';
+                                    str +='</li>';
+                                    str +='<li class="popup-btn pl-btn"><i class="icon pl"></i>评论</li>';
+                                    str +='<li class="popup-btn cang-btn"><i class="icon cang"></i>收藏</li>';
+                                    str +='</ul>';
+                                    str +='</div>';
+
+                                if (page ==1){
+                                    $(".quanzi").prepend(str);
+                                }else {
+                                    $(".more-btn").before(str);
+                                }
+
+                                onQuanziClick && onQuanziClick();
+
+                            });
+                        }
+
+                        page ++;
+                        $('.more-btn').val(page);
+                    }else{
+                        alert(msg.error_msg);
+                    };
+                }
+            });
+        }
+
+        //加载更多
+        $(".more-btn").click(function(){
+            getLists($('.more-btn').val(), pageSize);
+        });
+
+
+        //活跃圈友
+        $.ajax({
+            type: "POST",
+            url: "/treasure/treasure/activeTreasure",
+            dataType: "json",
+            cache: false,
+            error: function () {
+                alert("未知错误");
+            },
+            success: function(msg){
+                if(msg.error_code == 0){
+                    var quanziList = msg.data;
+                    if(quanziList.length > 0){
+                        $.each( quanziList, function(index, content)
+                        {
+                        	if(index<6){
+                        		//console.log(content.displayTime);
+	                        	var str = ''
+								str += '<div class="suspend clearfix quanyuan">';
+									str += '<div class="photo-box"><a href="javascript:void(0);" class="photo">';
+									if(content.t_avatar == ''){
+										str += '<img src="//cdn.16988.cn/res/html/pc/images/morentouxiang.png">';
+									}else{
+										str += '<img src="'+content.t_avatar+'">';
+									}
+									str += '</a></div>';
+									str += '<div class="suspend-info2">';
+										str += '<h3>';
+											str += '<a href="javascript:void(0);">'+content.t_nickname+'</a>';
+											str += '<a href="javascript:void(0);" class="follow">+关注</a>';
+										str += '</h3>';
+										str += '<p>';
+											str += '<span>'+content.attentionNum+'关注 </span>';
+											str += '<span>'+content.fansNum+'粉丝 </span>';
+											str += '<span>'+content.goodsNum+'作品</span>';
+										str += '</p>';
+									str += '</div>';
+								str += '</div>';								 
+								$(".quanyou").append(str);
+								_gaunzhu();
+							}
+                        });
+                    }
+                }else{
+                    alert(msg.error_msg);
+                };
+            }
+        });
+
+
+	</script>
+</body>
+</html>                                              

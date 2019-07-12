@@ -1,0 +1,102 @@
+<!doctype html>
+<html lang="zh">
+<head>
+	<meta charset="UTF-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=Edge" />
+	<title>我的圈子</title>
+	<link rel="stylesheet" href="{$CDN_BASE_URL_RES}/html/pcweb/css/global.css?180116">
+	<script src="https://libs.baidu.com/jquery/1.8.3/jquery.min.js"></script>
+	<script src="{$CDN_BASE_URL_RES}/html/pcweb/js/masonry-docs.min.js"></script>
+	<script src="{$CDN_BASE_URL_RES}/html/pcweb/js/web.js?180107"></script>
+	<script src="{$CDN_BASE_URL_RES}/html/pcweb/js/pinyin.js"></script>
+	<style>
+		.quanzi-list{margin: 0 15px;padding: 30px 25px;}
+		.quanzi-list .quanzi-pic li{width: 227px;
+		height: 163px;}
+		.quanzi-list .quanzi-pic li img{
+			width: 227px;
+		height: 163px;
+		}
+		.QUANZI2{margin-top: -35px;}
+		.QUANZI2 .null{margin-bottom: 25px;}
+		.quanzi div.quanzi-list div.suspend-info img{width: 15px;}
+	</style>
+	<script>
+        $(window).on('load',function(){
+            $(window).scrollTop(640);
+            console.log($(window).scrollTop())
+        }); 
+	</script>
+</head>
+<body>
+	<div class="banner f-tac f-pr">
+		<div class="container f-pa">
+			<div class="hd-img"></div>
+			<h3 class="name"></h3>
+			<pre class="pinyin"></pre>
+			<div class="region"></div>
+			<div class="state">
+				<ul>
+					 
+				</ul>
+			</div>
+			<img src="{$CDN_BASE_URL_RES}/html/pcweb/images/arrow.png">
+		</div>
+	</div>
+
+	<div class="nav bgc">
+		<div class="container f-tac">
+			<ul>
+				<li><a href="index.html?uid=">首页</a></li>
+				<li><a href="profile.html?uid=">简介</a></li>
+				<li><a href="works.html?uid=">作品</a></li>
+				<li><a href="experience.html?uid=">获奖经历</a></li>
+				<li class="on"><a href="circle.html?uid=">我的圈子</a></li>
+			</ul>
+		</div>
+	</div>
+
+	<div class="container layoyt clearfix index">
+		<div class="f-fl sidebar bgc jianjie border-radius-6 quanzi ">
+			<div class="titlebar clearfix"><h3 class="">我的圈子<em>CIRCLE</em></h3></div>
+			<div class="QUANZI2">
+			</div>
+			<div class="f-tac btn more-works border-radius-6 circle-btn">浏览更多</div>
+		</div>
+		<div class="f-fr sidebar">
+			<div class="jianjie mb20 bgc border-radius-6">
+				<div class="titlebar clearfix"><h3 class="">简介<em>ABOUT ME</em></h3></div>
+				<div class="JIANJIE">
+					
+				</div>
+				<div class="more-btn">查看更多<img src="{$CDN_BASE_URL_RES}/html/pcweb/images/arrow.png"></div>
+			</div> 
+			<div class="jianjie mb20 bgc border-radius-6 tuijian">
+				<div class="titlebar clearfix"><h3 class="">作品<em>WORKS</em></h3></div>
+				<div class="ZUOPIN"></div>
+			</div>
+		</div>
+	</div>
+
+	<div class="photo-mask"></div>
+	<div class="photo-panel">
+	    <div class="photo-div">
+	        <div class="photo-left">
+	            <div class="arrow-prv"></div>
+	        </div>
+	        <div class="photo-img">
+	            <div class="photo-bar">
+	                <div class="photo-close"></div>
+	            </div>
+	            <div class="photo-view-h">
+	                <img src="" />
+	            </div>
+	        </div>
+	        <div class="photo-right">
+	            <div class="arrow-next"></div>
+	        </div>
+	    </div>
+	</div>
+
+</body>
+</html>

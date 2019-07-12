@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+{template public/WxShareJS}
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>邀请成为掌门人</title>
+</head>
+<style>
+     *{
+        margin: 0;
+        padding: 0
+    }
+    img{
+        width: 100%;
+        vertical-align: top;
+    }
+    h1{
+        text-align: center;
+        font-size: 22px;
+        font-weight: normal;
+    }
+    p{
+        font-size:14px;
+        text-align: center;
+    }
+    .left-word{
+        display: inline-block;
+        padding-left: 20px;
+        width: 45%;
+        flex: 1;
+        padding-top: 50px;
+    }
+    .right-word{
+        display: inline-block;
+        padding-right: 20px;
+        flex: 1;
+        padding-top: 50px;
+    }
+    .left-img{
+        display: inline-block;
+        width: 48%;
+    }
+    .right-img{
+        display: inline-block;
+        width: 48%;
+        float: right;
+    }
+    h2,h3{
+        text-align: center;
+        color:#CEA068;
+        font-size: 16px;
+    }
+    .list1{
+        display:flex;
+    }
+    .inviteboss-btn{
+        position: fixed;
+        left: 0;
+        bottom: 0;
+        right: 0;
+        width: 100%;
+        height: 50px;
+        color: #fff;
+        background: #CEA068;
+        text-align: center;
+        line-height: 50px;
+        margin-top:35px;
+    }
+    a{
+        text-decoration: none;
+        color: #fff;
+    }
+</style>
+<body>
+    <div>
+        <img src="{$CDN_BASE_URL_RES}/html/images/h5/invite_beboss_02.png" alt="">
+        <img src="{$CDN_BASE_URL_RES}/html/images/h5/invite_beboss_03.png" alt="">
+        <img src="{$CDN_BASE_URL_RES}/html/images/h5/invite_beboss_04.png" alt="">
+        <h1>艺术掌门 火爆来袭</h1>
+        <div>
+            <div class="list1">
+                <div class="left-word">
+                    <h3>优选珍品</h3>
+                    <p>匠心臻品，为您优选</p>
+                    <p>一件代发，无需囤货</p>
+                </div>
+                <div class="right-img">
+                    <img src="{$CDN_BASE_URL_RES}/html/images/h5/invite_beboss_07.png" alt="">
+                </div>
+            </div>
+             
+            <div class="list1">
+                <div class="left-img">
+                    <img src="{$CDN_BASE_URL_RES}/html/images/h5/invite_beboss_08.png" alt="">
+                </div>
+                <div class="right-word">
+                    <h3>活动支持</h3>
+                    <p>线上宣传，线下活动</p>
+                    <p>全面覆盖，客源保障</p>
+                </div>
+            </div>
+            <div class="list1">
+                <div class="left-word">
+                    <h3>团队支持</h3>
+                    <p>专业培训，专属客服</p>
+                    <p>专项店铺，服务更贴心</p>
+                </div>
+                <div class="right-img" style="width: 60%;">
+                    <img src="{$CDN_BASE_URL_RES}/html/images/h5/invite_beboss_12.png" alt="">
+                </div>
+            </div>
+            
+            <div style="text-align: center;margin: 10px;">
+                <h2>艺术掌门人，邀您一起艺术江湖</h2>
+                <h2>为传统文化发声，为创新艺术代言</h2>
+            </div>
+        </div>
+        <div style="height:60px;"></div>
+        <div class="inviteboss-btn">
+            <input type="hidden" id="share">    
+            <span>立即邀请</span> 
+        </div>
+    </div>
+</body>
+<script src="https://s28.9956.cn/static/v3_1/js/jquery.min.js"></script>
+
+<script>
+    //获取用户uid
+    if(typeof(HandPlay)!="undefined"){
+        var UID = HandPlay.getUserId();
+        console.log( UID);
+        //alert(UID);
+    }else{
+        var UID = qiaoxuekui.getUU();
+    } 
+    $.ajax({
+        type:"POST",
+        url:"/user/invite/invite?type=1&uid="+UID,
+        dataType:"json",
+        cache: false,
+        // data:{
+        //     uid:UID,
+        // },
+        error: function(){
+            alert("未知错误");
+        },
+        success: function(msg){
+            if(msg.error_code == 0){
+
+                var Url = msg.data.url;
+                $('#share').val(Url);
+                console.log(Url);
+                
+            }else{
+                alert(msg.error_msg);
+            };
+
+        }
+    });
+    $(".inviteboss-btn").click(function(){
+        // alert("hu")
+        var url = $('#share').val();
+        if(typeof(HandPlay)!="undefined"){
+            var UID = HandPlay.getUserId();
+            console.log( UID);
+          
+            HandPlay.share('{"title":"艺术掌门人，邀您一起艺术江湖","content":"即刻起，申请成为掌门人，畅游艺术江湖，为传统文化发声，为创新艺术代言","image":"https://s29.9956.cn/tmp/share_img.jpg","url":"'+url+'","channel":"MOMENTS"}');
+        }else{
+            var UID = qiaoxuekui.getUU();
+            qiaoxuekui.shareUU('{"title":"艺术掌门人，邀您一起艺术江湖","content":"即刻起，申请成为掌门人，畅游艺术江湖，为传统文化发声，为创新艺术代言","image":"https://s29.9956.cn/tmp/share_img.jpg","url":"'+url+'","channel":"MOMENTS"}');
+        }
+        
+    }); 
+</script>
+</html>

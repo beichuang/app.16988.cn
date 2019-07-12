@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html>
+<head>
+{template public/WxShareJS}
+	<meta charset="UTF-8">
+	<title>意见反馈</title>
+	<meta name="viewport" content="width=device-width,minimum-scale=1.00001,maximum-scale=1.00001,user-scalable=no,minimal-ui">
+	<link rel="stylesheet" type="text/css" href="{$CDN_BASE_URL_RES}/html/css/css.css?20170419">
+	<script src="{$CDN_BASE_URL_RES}/html/js/jquery.min.js"></script>
+	<script src="{$CDN_BASE_URL_RES}/html/js/currency.js"></script>
+</head>
+<body class="opinion">
+	<h6>意见反馈<span><font>0</font>/限500字符</span></h6>
+	<textarea onkeyup="fn_substring($(this),$('.opinion font'),500)"></textarea>
+	<div class="red_box" id="submit">提交反馈</div>
+	<p>如果你有好的意见或建议，请加QQ：415453424反馈！</p>
+	<div class="confirm">
+		<div>
+			<p>确定提交吗？</p>
+			<span class="sure">确定</span>
+			<span class="cancel">取消</span>
+		</div>
+	</div>
+</body>
+<script>
+$(function(){
+	//提交
+	$("#submit").click(function(){
+		$(".confirm").show();
+	});
+	$(".sure").click(function(){
+		// var app = {};
+		// app.jump = 2;
+		// app.page = "PersonProfileActivity";
+		// //call native method
+		// window.WebViewJavascriptBridge.callHandler(
+		//     'submitFromWeb'
+		//     , app
+		//     , function(responseData) {
+		        
+		//     }
+		// );
+		var data_arr = {};
+		data_arr.content = $.trim($("textarea").val());
+		if(data_arr.content == "")
+		{
+			$(".confirm").hide();
+			alert("意见内容不能为空！");
+			return;
+		};
+		$.ajax({
+		    type: "POST",
+		    url: "/user/suggestion/add",
+		    data: data_arr,
+		    dataType: "json",
+		    cache: false,
+		    error: function () {
+		      	$(".confirm").hide();
+		        alert("未知错误");
+		    },
+		    success: function(msg){
+		      	console.log(msg);
+		        if(msg.error_code == 0){
+		        	$(".confirm").hide();
+		        	$("textarea").val("");
+		        	$('.opinion font').text("0");
+		            alert("提交成功");
+		        }else{
+		        	$(".confirm").hide();
+		            alert("您好！现在系统繁忙，请您稍后再试！谢谢");
+		        };
+		    }
+		});
+	});
+	$(".cancel").click(function(){
+		$(".confirm").hide();
+	});
+	function alert(e){
+    	$("body").append("<div id='msg'><span>"+e+"</span></div>");
+    	clearmsg();
+    }
+    function clearmsg(){
+    	var t = setTimeout(function(){
+    		$("#msg").remove();
+    	},2000)
+    };
+});
+</script>
+</html>

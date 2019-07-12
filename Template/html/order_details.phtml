@@ -1,0 +1,1017 @@
+<!DOCTYPE html>
+<html>
+<head>
+{template public/WxShareJS}
+<meta charset="UTF-8">
+<title>订单详情</title>
+<meta name="viewport" content="width=device-width,minimum-scale=1.00001,maximum-scale=1.00001,user-scalable=no,minimal-ui">
+<link rel="stylesheet" type="text/css" href="{$CDN_BASE_URL_RES}/html/css/css.css?20170407">
+<script src="{$CDN_BASE_URL_RES}/html/js/jquery.min.js"></script>
+<script src="{$CDN_BASE_URL_RES}/html/js/region.2.js"></script>
+<script src="{$CDN_BASE_URL_RES}/html/js/currency.js"></script>
+</head>
+<body>
+<div class="loadimgBox">
+	<div class="mul15">
+		<div class="m15c m15c1"></div>
+		<div class="m15c m15c2"></div>
+		<div class="m15c m15c3"></div>
+		<div class="m15c m15c4"></div>
+		<div class="m15c m15c5"></div>
+		<div class="m15c m15c6"></div>
+		<div class="m15c m15c7"></div>
+		<div class="m15c m15c8"></div>
+	</div>
+</div>
+<div class="order_details">
+	<p>订单编号：<span>-----</span></p>
+	<i>订单时间：<span>-----</span></i>
+</div>
+<ul class="order_details_list">
+	<li>
+		<img src="" alt="无">
+		<div>
+			<p>-----</p>
+			<span>-----</span>
+			<i>---</i>
+		</div>
+	</li>
+</ul>
+<div class="order_money">订单金额：<strong>¥<span id="money">-----</span></strong></div>
+<div class="order_address">收货地址</div>
+<ul class="order_address_list">
+	<li>
+		<span>收货人：</span>
+		<div>
+			<input disabled type="text" value="-----" id="name" name="name">
+		</div>
+	</li>
+	<li>
+		<span>所在地区：</span>
+		<div class="region-select-app">
+			<p>
+				<select disabled onchange="fn_region(this,1)"></select>
+				<img src="{$CDN_BASE_URL_RES}/html/images/sico01.gif">
+			</p>
+			<p>
+				<select disabled onchange="fn_region(this,2)"></select>
+				<img src="{$CDN_BASE_URL_RES}/html/images/sico01.gif">
+			</p>
+			<p>
+				<select disabled onchange="fn_region(this,3)"></select>
+				<img src="{$CDN_BASE_URL_RES}/html/images/sico01.gif">
+			</p>
+			<input type="hidden">
+		</div>
+	</li>
+	<li>
+		<span>详细地址：</span>
+		<div>
+			<input disabled type="text" value="-----" id="address" name="address">
+		</div>
+	</li>
+	<li>
+		<span>手机号：</span>
+		<div>
+			<input disabled type="tell" value="-----" id="phone" name="phone">
+		</div>
+	</li>
+</ul>
+<p class="order_address_p">申请退款请联系平台客服：400-886-9956</p>
+<div class="bottom">
+	<div class="lianxi jin">
+		<img src="{$CDN_BASE_URL_RES}/html/images/lianxi.png"><br>
+		<span>-----</span>
+	</div>
+	<div class="jiaru jin">
+		-------
+	</div>
+	<div class="buy jin">
+		-----
+	</div>
+</div>
+<!--商品评论弹框-->
+<div class="shangPingBox">
+	<div>
+		<div class="txBox">
+			<textarea onkeyup="fn_substring($(this),$('.shangPingBox .yu'),200)" id="PingJiaTx" placeholder="在此填写商品评价"></textarea>
+			<p><span class="yu">0</span>/200</p>
+		</div>
+		<div class="btnBox">
+			<div id="upComment">完成评价</div>
+			<div id="closeComment">稍后再评</div>
+		</div>
+	</div>
+</div>
+<!--确认tk快递公司-->
+<div class="confirm">
+	<div class="div1">
+		<ul>
+			<li><p>快递公司:</p></li>
+			<li class="region-select-style">
+				<p class="p1">
+					<select id="com_name"></select>
+					<img src="{$CDN_BASE_URL_RES}/html/images/sico01.gif">
+				</p>
+			</li>
+		</ul>
+		<ul>
+			<li><p>快递单号:</p></li>
+			<li><p class="p2"><input id="com_number" type="number" placeholder="请填写快递单号"></p></li>
+		</ul>
+		<span class="sure">确定</span>
+		<span onclick="fn_cloasTk()" class="cancel">取消</span>
+	</div>
+</div>
+<!--可选择弹框-->
+<div class="confirm1">
+	<div>
+		<p>确定提交吗？</p>
+		<span class="btnOk">确定</span>
+		<span class="btnNo">取消</span>
+	</div>
+</div>
+<!--支付选择弹窗-->
+<div class="zifuTk">
+	<div class="box">
+		<p>支付宝支付</p>
+		<p>微信支付</p>
+	</div>
+</div>
+<script type="text/javascript">
+//可选择弹框
+function fn_or(msg,fn)
+{
+	msg = msg==undefined?"":msg;
+	var obj = $(".confirm1");
+	obj.find('p').html(msg);
+	obj.show();
+	obj.find('.btnOk').attr("onclick",fn);
+};
+function alert(e){
+	$("body").append("<div id='msg'><span>"+e+"</span></div>");
+	clearmsg();
+}
+function clearmsg(){
+	var t = setTimeout(function(){
+		$("#msg").remove();
+	},4000)
+};
+//关闭快递公司选择弹窗
+function fn_cloasTk()
+{
+	$(".confirm").hide();
+};
+</script>
+<script>
+var order={};
+var obj_centerBth;
+var obj_lainxiBtn; 
+var obj_RightBtn; 
+var style1 = "background:#ccc;color:#333;";
+var style2 = "background:#f2f2f2;color:#333;";
+$(function(){
+	//得到用户id
+	order._usid;
+	order._usphone;
+	order.or;//当前用户在订单中是卖方还是买方true买；false卖
+	order.olist=false;//没有订单数据时为true；用来控制下面的按钮
+	$.ajax({
+	    type: "POST",
+	    url: "/user/common/myInfo",
+	    data: "",
+	    dataType: "json",
+	    success: function(msg){
+	    	order._usid = msg.data.u_id;
+	    	order._usphone = msg.data.u_phone;
+	    	//console.log("用户id="+order._usid);
+	    	fn_nextUpOrder();//开始读取订单信息
+	    }
+	});
+	//三个按钮对象
+	obj_lainxiBtn = $(".lianxi");
+	obj_centerBth = $(".jiaru"); 
+	obj_RightBtn = $(".buy");
+	//获取快递公司列表
+	$.ajax({
+	    type: "POST",
+	    url: "/common/express/companyList",
+	    data: "",
+	    dataType: "json",
+	    error: function () {
+	    	$(".loadimgBox").fadeOut(500);
+	        alert("未知错误,请稍后再试");
+	        order.olist = true;
+	    },
+	    success: function(data){
+	    	//console.log(data);
+	   		if(data.error_code==0)
+	   		{
+	   			fn_renderCom(data.data);
+	   		}
+	   		else
+	   		{
+	   			alert(data.error_msg);
+	   			$(".loadimgBox").fadeOut(500);
+	   			order.olist = true;
+	   		};
+	    }
+	});
+	//得到用户id后再来读取订单信息
+	function fn_nextUpOrder()
+	{
+		//解析get数据
+		order.o_sn = getQuery().sn;//订单编号
+		//获取订单详情
+		$.ajax({
+		    type: "POST",
+		    url: "/mall/order/order/detail",
+		    data: {"sn":order.o_sn},
+		    dataType: "json",
+		    error: function () {
+		        alert("未知错误,请稍后再试");
+		        order.olist = true;
+		    },
+		    success: function(data){
+		    	console.log(data);
+		   		if(data.error_code==0)
+		   		{
+		   			fn_oRender(data);
+		   		}
+		   		else
+		   		{
+		   			alert(data.error_msg);
+		   			$(".loadimgBox").fadeOut(500);
+		   			order.olist = true;
+		   		};
+		    }
+		});
+	};
+	$("#upComment").click(function(event) {
+		fn_upCommodity_comment();
+	});
+	$("#closeComment").click(function(event) {
+		$(".shangPingBox").hide();
+	});
+	funcregionSelect();//加载地址选择组件
+	$(".zifuTk").click(function(event) {
+		$(".zifuTk").css("display","none");
+		$(".buy").attr("class",order.thisclassname).css({
+			background: order.bgcolr,
+			color: order.texcolr
+		}).html(order.thisBtnHtml);
+	});
+	$(".zifuTk").find("p").click(function(event) {
+		if($(this).hasClass('disable')){return false;}
+		var dataThis = parseInt($(this).attr("data"));
+		fn_payment(dataThis,this);
+		return false;
+	});
+});
+//上传商品评论
+function fn_upCommodity_comment()
+{
+	var tx = $(".shangPingBox textarea").val();
+	if(tx=="")
+	{
+		alert("商品评论不能为空");
+		return;
+	};
+	//order.o_sn
+	var arr={
+		"goodsId":order.g_id,
+		"content":tx,
+		"orderSn":order.o_sn
+	};
+	$.ajax({
+		type:"POST",
+		url:"/mall/goods/comment/add",
+		data:arr,
+		dataType:"json",
+		success:function(data)
+		{	console.log("上传评论");
+			console.log(data);
+			if(data.error_code == 0)
+			{
+				obj_RightBtn.html("已支付").addClass('on').css({
+					background: '#f2f2f2',
+					color: '#333'
+				});
+				$(".shangPingBox").hide();
+				alert("评论已发布");
+				order.comment=false;
+			}else{
+				$(".shangPingBox").hide();
+				obj_RightBtn.html("").addClass('on').css({
+					background: '#f2f2f2',
+					color: '#333'
+				});
+				alert(data.error_msg);
+			};
+		}
+	})
+};
+//渲染快递公司
+function fn_renderCom(jsn)
+{
+	var str="<option value='-1'>请选择</option>";
+	for(var p in jsn)
+	{
+		str+="<option value='"+p+"'>"+jsn[p]+"</option>";
+	};
+	$("#com_name").html(str);
+};
+//可选择弹框取消按钮
+$(".btnNo").click(function(event) {
+	$(".confirm1").hide();
+});
+//联系对方
+$(".lianxi").click(function(event) {
+	if($(this).hasClass('jin')){return;};
+	//order.u_id买
+	//order.o_salesUid卖
+	console.log("买家id="+order.u_id+"////卖家id="+order.o_salesUid);
+	var duiFang;
+	if(order.or)
+	{
+		duiFang = order.o_salesUid;
+	}
+	else
+	{
+		duiFang = order.u_id;
+	};
+    var data = {"jump": 0,"g_salesid":duiFang};
+    window.WebViewJavascriptBridge.callHandler(
+    	"submitFromWeb",
+        data
+        , function(responseData) {
+           
+        }
+    );
+        
+});
+//确认发货按钮
+$(".jiaru").click(function(event){
+	if($(this).hasClass('jin')){return;};
+	if($(this).hasClass('on'))
+	{
+		return;
+	};
+	if(order.or)
+	{
+		//买家收货
+		fn_or("确认已经收货","fn_shouhuo()");
+	}
+	else
+	{
+		//卖家发货
+		$(".confirm").show();
+	};
+});
+//确认收货
+function fn_shouhuo()
+{
+	$(".confirm1").hide();
+	$.ajax({
+		type:"POST",
+		url:"/mall/order/buyer/finish",
+		data:{"osn":order.o_sn},
+		dataType:"json",
+		success:function(data)
+		{	//console.log(order.o_sn);
+			//console.log(data);
+			if(data.error_code == 0)
+			{
+				alert("订单已完成;");
+				fn_WhetherComment();
+			}else{
+				alert(data.error_msg);
+			};
+		}
+	});
+};
+//确认发货最终按钮
+$(".sure").click(function(event){
+	var data_arr={};
+	data_arr.id = order.o_id;
+	data_arr.expressCompany = $("#com_name").val();
+	data_arr.expressSn = $.trim($("#com_number").val());
+	if(data_arr.expressCompany == -1)
+	{
+		alert("请选择快递公司");
+		return;
+	};
+	if(data_arr.expressSn == "")
+	{
+		alert("请填写快递单号");
+		return;
+	};
+	$.ajax({
+		type:"POST",
+		url:"/mall/order/sales/update",
+		data:data_arr,
+		dataType:"json",
+		success:function(data)
+		{	//console.log(data_arr);
+			//console.log(data);
+			if(data.error_code == 0)
+			{
+				//把快递信息显示在页面
+			fn_renderAdss(data_arr.expressCompany,data_arr.expressSn);
+			$(".jiaru").addClass('on').html("等待收货").css({
+					background: '#ccc',
+					color: '#333'
+				});
+			}else{
+				alert(data.error_msg);
+			};
+		}
+	});
+	fn_cloasTk();
+});
+//支付按钮
+$(".buy").click(function(event){
+	if($(this).hasClass('jin')){return;};
+	if($(this).hasClass('on'))
+	{
+		return;
+	};
+	order.thisBtnHtml = $(".buy").html();
+	order.thisclassname = $(".buy").attr('class');
+	order.bgcolr = $(".buy").css('background');
+	order.texcolr = $(".buy").css('color');
+	if(order.comment)
+	{
+		$(".shangPingBox").show();
+		return;
+	};
+	$(this).addClass('on').css({
+		background: '#f2f2f2',
+		color: '#333'
+	}).html("请稍后...");
+	var arr={};
+	arr.tradeId = order.o_sn;
+	arr.subject = order.g_name;
+	arr.totalAmount = parseFloat(order.moneyall)*100;
+	arr.timeout = 24;
+	arr.from = 1;
+	//获取收银台信息
+	order.payChannel=[];
+	$.ajax({
+	    type: "POST",
+	    url: "/mall/order/pay/get",
+	    data: arr,
+	    dataType: "json",
+	    success: function(msg){
+	    	console.log(msg);
+	    	if(msg.error_code!=0)
+			{
+				alert(msg.error_msg);
+				$(".buy").removeClass('on').css({
+					background: '',
+					color: ''
+				}).html("去支付");
+				$(".loadimgBox").fadeOut(100);
+				return;
+			}
+			else
+			{
+				for(var i=0;i<msg.data.length;i++)
+				{
+					order.payChannel.push(msg.data[i].payChannel);
+				};
+				var zhifuObj = $(".zifuTk");
+				zhifuObj.css("display","block");
+				if(order.payChannel.indexOf("2")!=-1)
+				{
+					zhifuObj.find("p").eq(0).attr("data","2").removeClass('disable');
+				}else{
+					zhifuObj.find("p").eq(0).addClass('disable');
+				};
+				if(order.payChannel.indexOf("5")!=-1)
+				{
+					zhifuObj.find("p").eq(1).attr("data","5").removeClass('disable');
+				}else{
+					zhifuObj.find("p").eq(1).addClass('disable');
+				};
+			};
+	    }
+	});
+	return false;
+});
+//发起支付
+function fn_payment(num,obj)
+{
+	if($(obj).hasClass('disable')){return false;};
+	$(obj).addClass('on');
+	$(".zifuTk").fadeOut(200);
+	$(".loadimgBox").fadeIn(100);
+	setTimeout(function(){
+		$(".zifuTk").find("p").removeClass('on');
+	},300);
+	var jsn = {};
+	jsn.payChannel = num;
+	jsn.tradeId = order.o_sn;
+	var str_1="";
+/////////////////////////////////
+	if(jsn.payChannel == 3)
+	{
+		//支付宝支付ajax
+			$.ajax({
+			    type: "POST",
+			    url: "/mall/order/pay/init",
+			    data: jsn,
+			    dataType: "json",
+			    success: function(msg){
+			    	if(msg.error_code!=0)
+					{
+						alert(msg.error_msg);
+						$(".buy").removeClass('on').css({
+								background: '',
+								color: ''
+							}).html("去支付");
+						$(".loadimgBox").fadeOut(100);
+						return;
+					}
+					else
+					{
+						document.write(msg.data.payInfo)
+					};
+			    }
+			});
+	}else if(jsn.payChannel == 5)
+	{
+		//微信支付
+		$.ajax({
+		    type: "POST",
+		    url: "/mall/order/pay/init",
+		    data: jsn,
+		    dataType: "json",
+		    success: function(msg){
+		    	if(msg.error_code!=0)
+				{
+					alert(msg.error_msg);
+					$(".loadimgBox").fadeOut(100);
+					$(".buy").removeClass('on').css({
+							background: '',
+							color: ''
+						}).html("去支付");
+					return;
+				}
+				else
+				{
+					//获得微信支付数据
+					order.payInfo_weixin = msg.data.payInfo;
+					fn_weixin_app(order.payInfo_weixin);
+				};
+		    }
+		});
+	}else if(jsn.payChannel == 2){
+		//支付宝APP支付ajax
+		$.ajax({
+		    type: "POST",
+		    url: "/mall/order/pay/init",
+		    data: jsn,
+		    dataType: "json",
+		    success: function(msg){
+		    	if(msg.error_code!=0)
+				{
+					alert(msg.error_msg);
+					$(".loadimgBox").fadeOut(100);
+					$(".buy").removeClass('on').css({
+							background: '',
+							color: ''
+						}).html("去支付");
+					return;
+				}
+				else
+				{
+					//获得支付编码
+					order.payInfo = msg.data.payInfo;
+					fn_zhifu_app(order.payInfo);
+					console.log(order);
+				};
+		    }
+		});
+	}else{
+		alert("未知错误，请稍后再试！");
+		$(".buy").removeClass('on').css({
+				background: '',
+				color: ''
+			}).html("去支付");
+		$(".loadimgBox").fadeOut(100);
+		return;
+	};
+///////////////////////////////
+	return false;
+};
+//与微信APP取得联系
+function fn_weixin_app(obj)
+{
+	var data = {"jump": 5,"orderId":JSON.stringify(obj)};
+	console.log(data.orderId);
+	window.WebViewJavascriptBridge.callHandler(
+    	"submitFromWeb",
+        data
+        , function(responseData){
+        	var returNum = parseInt(responseData);
+		     switch(returNum)
+			{
+				case 0:
+					alert("已经支付成功");
+					$(".loadimgBox").fadeOut(100);
+					$(".buy").addClass('on').css({
+						background: '#f2f2f2',
+						color: '#333'
+					}).html("已支付");
+					order.thisBtnHtml = $(".buy").html();
+					order.thisclassname = $(".buy").attr('class');
+					order.bgcolr = $(".buy").css('background');
+					order.texcolr = $(".buy").css('color');
+				break;
+				case -1:
+					alert("订单支付失败");
+					$(".loadimgBox").fadeOut(100);
+					$(".buy").removeClass('on').css({
+						background: '',
+						color: ''
+					}).html("去支付");
+				break;
+				default:
+				//用户取消支付
+				$(".loadimgBox").fadeOut(100);
+				$(".buy").removeClass('on').css({
+					background: '',
+					color: ''
+				}).html("去支付");
+			};
+        }
+	);
+};
+//与APP支付取得联系
+function fn_zhifu_app(str)
+{
+	var data = {"jump": 4,"orderId":str};
+    window.WebViewJavascriptBridge.callHandler(
+    	"submitFromWeb",
+        data
+        , function(responseData){
+        var returNum = parseInt(responseData);
+		     switch(returNum)
+			{
+				case 9000:
+					alert("已经支付成功");
+					$(".loadimgBox").fadeOut(100);
+					$(".buy").addClass('on').css({
+						background: '#f2f2f2',
+						color: '#333'
+					}).html("已支付");
+					order.thisBtnHtml = $(".buy").html();
+					order.thisclassname = $(".buy").attr('class');
+					order.bgcolr = $(".buy").css('background');
+					order.texcolr = $(".buy").css('color');
+				break;
+				case 8000:
+					alert("正在处理中，支付结果未知,（有可能已经支付成功），请稍后再查询订单详情");
+					$(".loadimgBox").fadeOut(100);
+					$(".buy").addClass('on').css({
+						background: '#f2f2f2',
+						color: '#333'
+					}).html("未知");
+					order.thisBtnHtml = $(".buy").html();
+					order.thisclassname = $(".buy").attr('class');
+					order.bgcolr = $(".buy").css('background');
+					order.texcolr = $(".buy").css('color');
+				break;
+				case 4000:
+					alert("订单支付失败");
+					$(".loadimgBox").fadeOut(100);
+					$(".buy").removeClass('on').css({
+						background: '',
+						color: ''
+					}).html("去支付");
+				break;
+				case 5000:
+					alert("重复请求,请稍后再查询订单详情");
+					$(".loadimgBox").fadeOut(100);
+					$(".buy").addClass('on').css({
+						background: '#f2f2f2',
+						color: '#333'
+					}).html("未知");
+					order.thisBtnHtml = $(".buy").html();
+					order.thisclassname = $(".buy").attr('class');
+					order.bgcolr = $(".buy").css('background');
+					order.texcolr = $(".buy").css('color');
+				break;
+				case 6001:
+				//用户取消支付
+					$(".loadimgBox").fadeOut(100);
+					$(".buy").removeClass('on').css({
+						background: '',
+						color: ''
+					}).html("去支付");
+				break;
+				case 6002:
+					alert("网络链接出错");
+					$(".loadimgBox").fadeOut(100);
+					$(".buy").removeClass('on').css({
+						background: '',
+						color: ''
+					}).html("去支付");
+				break;
+				default:
+				alert("支付结果未知,（有可能已经支付成功），请稍后再查询订单详情");
+				$(".loadimgBox").fadeOut(100);
+				$(".buy").addClass('on').css({
+					background: '#f2f2f2',
+					color: '#333'
+				}).html("未知");
+				order.thisBtnHtml = $(".buy").html();
+				order.thisclassname = $(".buy").attr('class');
+				order.bgcolr = $(".buy").css('background');
+				order.texcolr = $(".buy").css('color');
+			}
+        }
+    );
+};
+//已完成交易的订单查看是否评论
+function fn_WhetherComment()
+{
+	//order._usid买家
+	//order.o_salesUid卖家
+	//order.g_id商品id
+	//order.o_sn
+	var arr={
+		"gc_uid":order._usid,
+		"g_id":order.g_id,
+		"o_id":order.o_id
+	};
+	$.ajax({
+		type: "POST",
+	    url: "/mall/goods/comment/lists",
+	    data: arr,
+	    dataType: "json",
+	    success: function(msg){
+	    	console.log("查询评论");
+	    	console.log(msg);
+	    	if(msg.error_code!=0)
+			{
+				alert(msg.error_msg);
+				return;
+			}
+			else
+			{
+				if(msg.data.rows.length==0)
+				{
+					obj_centerBth.html("已收货").addClass('on').css({
+						background: '#ccc',
+						color:'#333'
+					});
+					obj_RightBtn.html("去评价").removeClass('on').css({
+						background: '',
+						color: ''
+					});
+					order.comment = true;
+				}else
+				{
+					obj_centerBth.html("已收货").addClass('on').css({
+						background: '#ccc',
+						color:'#333'
+					});
+					obj_RightBtn.html("已支付").addClass('on').css({
+						background: '#f2f2f2',
+						color: '#333'
+					});
+				};
+			};
+	    }
+	})
+};
+//订单数据处理
+function fn_oRender(jsn)
+{
+	//区分买方卖方
+	var arr = jsn.data;
+	
+	var lianxi = $(".lianxi");
+	var up = $(".jiaru");
+	var zhifu = $(".buy");
+	//注意
+	if(order._usid == arr.u_id)
+	{
+		order.or = true;
+	}else{
+		order.or = false;
+	};
+	order.u_id = arr.u_id;
+	order.o_salesUid  = arr.o_salesUid;
+	//订单状态
+	var start = arr.o_status;
+	//为true是当前用户在订单中为买家；
+obj_centerBth.removeClass('jin');
+obj_lainxiBtn.removeClass('jin'); 
+obj_RightBtn.removeClass('jin'); 
+	$(".loadimgBox").fadeOut(500);
+	//渲染订单信息
+	order.o_id = arr.o_id;
+	var obj1 = $(".order_details");
+	var obj2 = $(".order_details_list li").eq(0);
+	var obj3 = $(".order_address_list");
+	obj1.find("p span").html(arr.o_sn);//编号
+	obj1.find("i span").html(arr.o_createDate);//日期
+	obj2.find("img").attr("src",arr.cart[0].image[0].gi_img);//图片
+	obj2.find("p").html(arr.cart[0].g_name);//文本
+	order.g_name = arr.cart[0].g_name;
+	obj2.find("span").html("￥"+arr.cart[0].c_price);//单价
+	obj2.find("i").html("x"+arr.cart[0].c_num);//数量
+	order.g_id = arr.cart[0].g_id;
+	order.g_num = arr.cart[0].c_num;
+	$("#money").html(arr.o_total);//金额
+	order.moneyall = arr.o_total;
+	order.o_money = arr.o_total;
+	obj3.find("#name").val(arr.o_consignee);//收货人
+	var dizhi = arr.o_provinceCode+":"+arr.o_cityCode+":"+arr.o_areaCode;
+	obj3.find(".region-select-app input[type='hidden']").val(dizhi);//地区
+	funcregionSelect();//加载地址选择组件
+if(order.or)
+{
+	////console.log("买家");
+	obj_lainxiBtn.find('span').html("联系卖家");
+	//买
+	if(start == 0)
+	{
+		obj_centerBth.html("未发货").addClass('on').css({
+			background: '#ccc',
+			color: '#333'
+		});
+		obj_RightBtn.html("去支付");
+	}else if(start == 1)
+	{
+		obj_centerBth.html("等待发货").addClass('on').css({
+			background: '#ccc',
+			color: '#333'
+		});
+		obj_RightBtn.html("已支付").addClass('on').css({
+			background: '#f2f2f2',
+			color: '#333'
+		});
+	}else if(start == 2)
+	{
+		obj_centerBth.html("确认收货");
+		obj_RightBtn.html("已支付").addClass('on').css({
+			background: '#f2f2f2',
+			color: '#333'
+		});
+	}else if(start == 3)
+	{
+		fn_WhetherComment();
+	}else if(start == 11)
+	{
+		obj_centerBth.html("逾时未支付").addClass('on').css({
+			background: '#ccc',
+			color: '#333'
+		});
+		obj_RightBtn.html("自动取消").addClass('on').css({
+			background: '#f2f2f2',
+			color: '#333'
+		});
+	}else if(start == 12)
+	{
+		obj_centerBth.html("未发货").addClass('on').css({
+			background: '#ccc',
+			color: '#333'
+		});
+		obj_RightBtn.html("人工取消").addClass('on').css({
+			background: '#f2f2f2',
+			color: '#333'
+		});
+	}else if(start == 13)
+	{
+		obj_centerBth.html("已发货").addClass('on').css({
+			background: '#ccc',
+			color: '#333'
+		});
+		obj_RightBtn.html("人工取消").addClass('on').css({
+			background: '#f2f2f2',
+			color: '#333'
+		});
+	};
+}
+else
+{
+	//console.log("卖家");
+	obj_lainxiBtn.find('span').html("联系买家");
+	//卖
+	if(start == 0)
+	{
+		obj_centerBth.html("未发货").addClass('on').css({
+			background: '#ccc',
+			color: '#333'
+		});
+		obj_RightBtn.html("等待支付").addClass('on').css({
+			background: '#f2f2f2',
+			color: '#333'
+		});
+	}else if(start == 1)
+	{
+		obj_centerBth.html("确认发货");
+		obj_RightBtn.html("已支付").addClass('on').css({
+			background: '#f2f2f2',
+			color: '#333'
+		});
+	}else if(start == 2)
+	{
+		obj_centerBth.html("等待收货").addClass('on').css({
+			background: '#ccc',
+			color: '#333'
+		});
+		obj_RightBtn.html("已支付").addClass('on').css({
+			background: '#f2f2f2',
+			color: '#333'
+		});
+	}else if(start == 3)
+	{
+		obj_centerBth.html("已收货").addClass('on').css({
+			background: '#ccc',
+			color: '#333'
+		});
+		obj_RightBtn.html("已支付").addClass('on').css({
+			background: '#f2f2f2',
+			color: '#333'
+		});
+	}else if(start == 11)
+	{
+		obj_centerBth.html("逾时未支付").addClass('on').css({
+			background: '#ccc',
+			color: '#333'
+		});
+		obj_RightBtn.html("自动取消").addClass('on').css({
+			background: '#f2f2f2',
+			color: '#333'
+		});
+	}else if(start == 12)
+	{
+		obj_centerBth.html("未发货").addClass('on').css({
+			background: '#ccc',
+			color: '#333'
+		});
+		obj_RightBtn.html("人工取消").addClass('on').css({
+			background: '#f2f2f2',
+			color: '#333'
+		});
+	}else if(start == 13)
+	{
+		obj_centerBth.html("已发货").addClass('on').css({
+			background: '#ccc',
+			color: '#333'
+		});
+		obj_RightBtn.html("人工取消").addClass('on').css({
+			background: '#f2f2f2',
+			color: '#333'
+		});
+	};
+};
+order.thisBtnHtml = $(".buy").html();
+order.thisclassname = $(".buy").attr('class');
+order.bgcolr = $(".buy").css('background');
+order.texcolr = $(".buy").css('color');
+	if(start==2 || start==3)
+	{
+		setTimeout(function(){
+			fn_renderAdss(arr.o_expressCompany,arr.o_expressSn);
+		},200);
+	};
+
+	obj3.find("#address").val(arr.o_address);//详细地址
+	obj3.find("#phone").val(arr.o_phone);//电话
+};
+//物流信息显示
+function fn_renderAdss(tx,num)
+{
+	$("#com_name").val(tx);
+	$("#com_number").val(num);
+	var str_1=$("#com_name").find("option:selected").text();
+	var str="";
+	str+= "<div class='wuliu' style='display:none;'>"
+	str+='<div class="order_address">物流信息</div>';
+	str+='<ul class="order_address_list">';
+	str+='<li>';
+	str+=	'<span>快递公司</span>';
+	str+=	'<div>';
+	str+=		'<input disabled type="text" value="'+str_1+'">';
+	str+=	'</div>';
+	str+='</li>';
+	str+='<li>';
+	str+=	'<span>快递单号</span>';
+	str+=	'<div>';
+	str+=		'<input disabled type="text" value="'+num+'">';
+	str+=	'</div>';
+	str+='</li>';
+	str+='</ul>';
+	str+='</div>';
+	$(".order_address_p").before(str);
+	$(".wuliu").fadeIn(1000);
+};
+</script>
+</body>
+</html>

@@ -1,0 +1,370 @@
+<!DOCTYPE html>
+<html>
+<head>
+{template public/WxShareJS}
+	<meta charset="UTF-8">
+	<title>我的订单</title>
+	<meta name="viewport" content="width=device-width,minimum-scale=1.00001,maximum-scale=1.00001,user-scalable=no,minimal-ui">
+	<link rel="stylesheet" type="text/css" href="{$CDN_BASE_URL_RES}/html/css/css.css?20170420">
+	<link rel="stylesheet" href="{$CDN_BASE_URL_RES}/html/css/swiper.min.css">
+	<script src="{$CDN_BASE_URL_RES}/html/js/jquery.min.js"></script>
+	<script src="{$CDN_BASE_URL_RES}/html/js/currency.js"></script>
+	<script src="{$CDN_BASE_URL_RES}/html/js/swiper.jquery.min.js"></script>
+</head>
+<body>
+<div class="loadimgBox">
+	<div class="mul15">
+		<div class="m15c m15c1"></div>
+		<div class="m15c m15c2"></div>
+		<div class="m15c m15c3"></div>
+		<div class="m15c m15c4"></div>
+		<div class="m15c m15c5"></div>
+		<div class="m15c m15c6"></div>
+		<div class="m15c m15c7"></div>
+		<div class="m15c m15c8"></div>
+	</div>
+</div>
+<div class="my_order_head">
+	<a href="javascript:;" class="on">全部</a>
+	<a href="javascript:;">待付款</a>
+	<a href="javascript:;">待发货</a>
+	<a href="javascript:;">待收货</a>
+	<a href="javascript:;">已完成</a>
+</div>
+<div class="my_orderBigBox">
+	<div class="swiper-wrapper">
+	    <div class="swiper-slide">
+			<ul class="my_order my_order1"></ul>
+			<div class="upBottomData">
+		      	<img class="loadingImg" src="{$CDN_BASE_URL_RES}/html/images/loading.gif"><span>上拉加载更多</span>
+		    </div>
+	    </div>
+	    <div class="swiper-slide">
+	    	<ul class="my_order my_order2"></ul>
+	    	<div class="upBottomData">
+		      	<img class="loadingImg" src="{$CDN_BASE_URL_RES}/html/images/loading.gif"><span>上拉加载更多</span>
+		    </div>
+	    </div>
+	    <div class="swiper-slide">
+	    	<ul class="my_order my_order3"></ul>
+	    	<div class="upBottomData">
+		      	<img class="loadingImg" src="{$CDN_BASE_URL_RES}/html/images/loading.gif"><span>上拉加载更多</span>
+		    </div>
+	    </div>
+	    <div class="swiper-slide">
+	    	<ul class="my_order my_order4"></ul>
+	    	<div class="upBottomData">
+		      	<img class="loadingImg" src="{$CDN_BASE_URL_RES}/html/images/loading.gif"><span>上拉加载更多</span>
+		    </div>
+	    </div>
+	    <div class="swiper-slide">
+	    	<ul class="my_order my_order5"></ul>
+	    	<div class="upBottomData">
+		      	<img class="loadingImg" src="{$CDN_BASE_URL_RES}/html/images/loading.gif"><span>上拉加载更多</span>
+		    </div>
+	    </div>
+	</div>
+</div>
+<!--订单为空-->
+<div class="list_kong_showBox">
+	<img src="{$CDN_BASE_URL_RES}/html/images/kong_img_3.gif">
+	<p class="p1">您还没有订单哦！</p>
+	<a href="index.html" class="kongBtn">去逛逛</a>
+</div>
+<!--确认tk有select选项-->
+<div class="confirm" style="z-index:11;">
+	<div class="div1">
+		<ul style="border-bottom: solid 1px #ccc;">
+			<li><p>选择理由:</p></li>
+			<li class="">
+				<p class="p1">
+					<select id="com_name">
+						<option value="-1">请选择</option>
+						<option value="价格问题">价格问题</option>
+						<option value="不知道买的合适不，犹豫中">不知道买的合适不，犹豫中</option>
+						<option value="考虑一下，再看看别的">考虑一下，再看看别的</option>
+						<option value="不想买了">不想买了</option>
+						<option value="作品不太符合我的审美">作品不太符合我的审美</option>
+					</select>
+					<img src="{$CDN_BASE_URL_RES}/html/images/sico01.gif">
+				</p>
+			</li>
+		</ul>
+		<span class="sure">确定</span>
+		<span class="cancel">取消</span>
+	</div>
+</div>
+<!--可选择弹框-->
+<div class="confirm1" style="z-index:10;">
+	<div>
+		<p>确定取消订单吗？</p>
+		<span class="btnOk">确定</span>
+		<span class="btnNo">取消</span>
+	</div>
+</div>
+<script type="text/javascript">
+	function alert(e){
+    	$("body").append("<div id='msg'><span>"+e+"</span></div>");
+    	clearmsg();
+    };
+    function clearmsg(){
+    	var t = setTimeout(function(){
+    		$("#msg").remove();
+    	},2000)
+    };
+</script>
+<script>
+var swiper;
+var pagesollTop = 0;
+var isUpData = false;
+var orderList;
+var orderType = getQuery().listType;
+var page={};
+page.size=10;
+page.a1=1;
+page.a2=1;
+page.a3=1;
+page.a4=1;
+page.a5=1;
+page.a1ok=false;
+page.a2ok=false;
+page.a3ok=false;
+page.a4ok=false;
+page.a5ok=false;
+//swiper回调
+function fn_swiperReturn(ind)
+{
+	$(".my_order_head a").removeClass('on');
+	$(".my_order_head a").eq(ind).addClass('on');
+	pagesollTop = ind;
+};
+$(".swiper-slide").scroll(function(){
+	var arr={
+		ahei:$(this).height(),
+		bhei:$(this).find('.my_order').height(),
+		ctop:$(this).scrollTop(),
+		dind:$(this).index()
+	};
+	fn_addData(arr);
+});
+//下拉加载
+function fn_addData(jsn)
+{
+	if(eval("page.a"+(jsn.dind+1)+"ok")==true){return;}
+	if(jsn.bhei -jsn.ahei - jsn.ctop <-90)
+	{
+		if(isUpData){return;}
+		isUpData = true;
+		$(".swiper-slide").eq(jsn.dind).find('.upBottomData .loadingImg').css("display","inline-block").siblings().html("正在加载");
+		if(jsn.dind == 0)
+		{
+			fn_upData({"isExchangeIntegral":0,"page":++page.a1,"pageSize":page.size,"listType":orderType},{"start":"a","obj":".my_order1"},fn_callbank);
+		}
+		else
+		{
+			eval('fn_upData({"isExchangeIntegral":0,"page":++page.a'+(jsn.dind+1)+',"pageSize":page.size,"listType":orderType,"status":'+(jsn.dind-1)+'},{"start":"a","obj":".my_order'+(jsn.dind+1)+'"},fn_callbank);')
+		};
+	};
+};
+//下拉加载后回调函数
+function fn_callbank(obj)
+{
+	isUpData = false;
+};
+$(function(){
+	swiper = new Swiper('.my_orderBigBox',{
+	    mode:'vertical',
+	    speed: 600,
+	    onSlideChangeStart: function(swiper){
+	      fn_swiperReturn(swiper.activeIndex);
+	    }
+	});
+	$(".my_order_head a").click(function(event) {
+		var ind = $(this).index();
+		swiper.slideTo(ind,600, true);
+	});
+});
+</script>
+<script>
+$(function(){
+	fn_upData({"isExchangeIntegral":0,"page":page.a1,"pageSize":page.size,"listType":orderType},{"start":true,"obj":".my_order1"});
+	fn_upData({"isExchangeIntegral":0,"page":page.a2,"pageSize":page.size,"listType":orderType,"status":0},{"start":false,"obj":".my_order2"});
+	fn_upData({"isExchangeIntegral":0,"page":page.a3,"pageSize":page.size,"listType":orderType,"status":1},{"start":false,"obj":".my_order3"});
+	fn_upData({"isExchangeIntegral":0,"page":page.a4,"pageSize":page.size,"listType":orderType,"status":2},{"start":false,"obj":".my_order4"});
+	fn_upData({"isExchangeIntegral":0,"page":page.a5,"pageSize":page.size,"listType":orderType,"status":3},{"start":false,"obj":".my_order5"});
+});
+function fn_upData(jsn,jsn1,allBank)
+{
+	$.ajax({
+		type:"POST",
+		url:"/mall/order/order/lists",
+		data:jsn,
+		datatype:"json",
+		success:function(data)
+		{
+			orderList = data.data;
+			if(data.error_code!=0)
+			{
+				$(".loadimgBox").fadeOut(500);
+			}
+			else
+			{
+				if(data.data.length<page.size)
+				{
+					eval("page.a"+(jsn1.obj.substring(jsn1.obj.length-1))+"ok=true");
+					$(jsn1.obj).siblings().find('span').html("内容已加载完毕").siblings().css("display","none");
+				};
+				if(data.data.length==0)
+				{
+					if(jsn1.start == true)
+					{
+						alert("您当前没有订单数据");
+						$(".list_kong_showBox").show();
+						$(".loadimgBox").fadeOut(500);
+						$(".my_orderBigBox").css("display","none");
+					}
+					else if(jsn1.start =="a")
+					{
+
+					}
+					else
+					{
+						$(jsn1.obj).siblings().find('span').html("暂无内容");
+					};
+					if(allBank)
+					{
+						allBank(jsn1.obj);
+					};
+				}else{
+					fn_rederList(data.data,jsn1,allBank);
+					for(var i=1;i<6;i++)
+					{
+						if(eval("page.a"+i+"ok")==false)
+						{
+							$(".my_order"+i).siblings().find('span').html("上拉加载更多").siblings().css("display","none");
+						};
+					};
+				};
+			};
+		}
+	});
+};
+function fn_rederList(arr,jsn1,allBank)
+{
+	$(".loadimgBox").fadeOut(500);
+	var str1="";
+	for(var i=0;i<arr.length;i++)
+	{
+		var obj = arr[i];
+		var returNum = parseInt(obj.o_status);
+		switch(returNum)
+		{
+			case 0:
+			startStr = "待付款";
+			startStyle = "";
+			break;
+			case 1:
+			startStr = "待发货";
+			startStyle = "";
+			break;
+			case 2:
+			startStr = "待收货";
+			startStyle = "style='display:none;'";
+			break;
+			case 3:
+			startStr = "已完成";
+			startStyle = "style='display:none;'";
+			break;
+			default:
+			startStr = "已取消";
+			startStyle = "style='display:none;'";
+		};
+		str1+='<li o_sn='+obj.o_sn+'>';
+		str1+=	'<p><i>'+obj.o_createDate+'</i></p>';
+		str1+=	'<a>';
+		str1+=		'<div>';
+
+		str1+=			'<p>订单号：'+obj.o_sn+'<span class="sp1">'+startStr+'</span></p>';
+		str1+=			'<dl>';
+		var str_1="";
+		for(var j=0;j<obj.cart.length;j++)
+		{
+			str_1+='<dd onclick="fn_addClick(this)">';
+			str_1+=	'<img src="'+obj.cart[j].image[0].gi_img+'">';
+			str_1+=	'<div>';
+			str_1+=	'<p>'+obj.cart[j].g_name+'</p>';
+			str_1+=	'<span>¥'+obj.cart[j].c_price+'</span>';
+			str_1+=	'<i>x'+obj.cart[j].c_num+'</i>';
+			str_1+=	'</div>';
+			str_1+=	'</dd>';
+		};
+		str1+=				str_1;
+		str1+=			'</dl>';
+		str1+=			'<p>订单金额：<font>¥'+obj.o_pay+'</font>';
+		str1+=           '<span class="cancel_order" onclick="fn_cancel_order('+obj.o_id+',this)" '+startStyle+'>取消订单</span>';
+		str1+=           '</p>';
+		str1+=		'</div>';
+		str1+=	'</a>';
+		str1+='</li>';
+	};
+	$(jsn1.obj).append(str1);
+	if(allBank)
+	{
+		allBank(jsn1.obj);
+	};
+};
+//取消
+function fn_cancel_order(num,obj)
+{
+	var littInd = $(obj).parents("li").index();
+	var bigInd = $(obj).parents(".swiper-slide").index();
+	$(".confirm").show().find('.sure').attr({"data":num,"litInd":littInd,"bigInd":bigInd});
+};
+$(".cancel").click(function(event) {
+	$(".confirm").hide();
+});
+$('.sure').click(function(event) {
+	var num = $(this).attr("data");
+	var litInd = parseInt($(this).attr("litInd"));
+	var bigInd = parseInt($(this).attr("bigInd"));
+	var val = $("#com_name").val();
+	if(val == -1)
+	{
+		alert("请选择取消理由");
+		return;
+	};
+	$(".confirm").hide();
+	$.ajax({
+		type:"POST",
+		data:{"id":num,"type":12,"reason":val},
+		url:"/mall/order/order/cancel",
+		dataType:"json",
+		error:function(){
+			alert("未知错误稍后再试！");
+		},
+		success:function(data){
+			console.log(data);
+			if(data.error_type==0)
+			{
+				alert("已成功取消该订单");
+				if(bigInd>0){
+					$(".swiper-wrapper .swiper-slide").eq(bigInd).find('.my_order li').eq(litInd).remove();
+					return;
+				};
+				$(".swiper-wrapper .swiper-slide").eq(bigInd).find('.my_order li').eq(litInd).find('.sp1').html("已取消").parents("li").find('.cancel_order').css("display","none");
+			}
+			else
+			{
+				alert(data.error_msg);
+			};
+		}
+	})
+});
+function fn_addClick(obj)
+{
+	var sn = $(obj).parents("li").attr("o_sn");
+	location.href="order_details.html?sn="+sn;
+};
+</script>
+</body>
+</html>

@@ -1,0 +1,291 @@
+<!doctype html>
+<html lang="zh">
+<head>
+{template public/WxShareJS}
+    <meta charset="UTF-8">
+    <title>邀请好友</title>
+    <meta name="viewport" content="width=device-width,minimum-scale=1.00001,maximum-scale=1.00001,user-scalable=no,minimal-ui">
+    <link rel="stylesheet" href="{$CDN_BASE_URL_RES}/html/css/global.css">
+    <link rel="stylesheet" href="{$CDN_BASE_URL_RES}/html/css/index.css">
+    <script src="https://s28.9956.cn/static/v3_1/js/jquery.min.js"></script>
+    <script src="{$CDN_BASE_URL_RES}/html/js/setfontsize.js"></script>
+    <script type="text/javascript" src="{$CDN_BASE_URL_RES}/html/js/jquery.qrcode.js" ></script>
+    <script type="text/javascript" src="{$CDN_BASE_URL_RES}/html/js/utf.js" ></script>
+    
+    <style>
+        body{background: url({$CDN_BASE_URL_RES}/html/images/sign/bg.jpg);-webkit-background-size: 100%;overflow-x: hidden;	background-size: 100%;}
+        .page{
+            background: #fff;
+            overflow: hidden;
+        }
+        .Invitation .yaoqing ul{
+            margin: 0 2%;
+        }
+        .more{
+            text-align:center;
+            background: #fff;
+            color: #D1A570;
+            font-size:14px;
+            width: 96%;
+            margin: 0 auto;
+            padding-bottom: 10px;
+        }
+    </style>
+</head>
+<body>
+<section class="container Invitation">
+    <img src="{$CDN_BASE_URL_RES}/html/images/sign/banner1.png?171117" style="margin-top: -17%;">
+    <img src="{$CDN_BASE_URL_RES}/html/images/sign/banner2.png?171117">
+    <img src="{$CDN_BASE_URL_RES}/html/images/sign/banner3.png?171117">
+    <img src="{$CDN_BASE_URL_RES}/html/images/sign/banner4.png?171117">
+    <img src="{$CDN_BASE_URL_RES}/html/images/sign/banner5.png?171117">
+    <!-- <img src="{$CDN_BASE_URL_RES}/html/images/sign/ff1.png?171116" class="fangfa"> -->
+    <img src="{$CDN_BASE_URL_RES}/html/images/h5/fenxiang_03.png" alt=""  class="fangfa">
+    <div>
+        <img src="{$CDN_BASE_URL_RES}/html/images/h5/gift_02.png" alt="">
+    </div>
+    <div class='share-btns' style="width:88%;margin:0 auto;margin-top:10px;margin-bottom:10px;">
+        <input type="hidden" id="share">
+        <img src="{$CDN_BASE_URL_RES}/html/images/h5/share_02.png" >
+    </div>
+    <!-- <div class="share-btn"> 
+        <input type="hidden" id="share">
+        <img src="{$CDN_BASE_URL_RES}/html/images/sign/share-btn.png">
+    </div>
+     
+    <img src="{$CDN_BASE_URL_RES}/html/images/sign/ff2.png?171116" class="fangfa">
+    <div class="ercode"> 
+        <img src="{$CDN_BASE_URL_RES}/html/images/sign/phone.png">
+        <div id="qrcodeCanvas"></div>
+    </div> -->
+    <div class="yaoqing">
+        <img src="{$CDN_BASE_URL_RES}/html/images/sign/line.png">
+        <div class="bgc">
+            <img src="{$CDN_BASE_URL_RES}/html/images/sign/yaoqing.png">
+            <ul class="jilu-li">
+                <li><span>用户</span><span style="margin-left:80px;">邀请情况</span><span class="f-fr">奖励</span></li>
+            </ul>
+        </div>
+        <!-- <ul class="page">
+            <li style="background: #fff;float: left;padding-left: 50px;font-weight:100" class="pre-page">上一页</li>
+            <li style="float: right;padding-right: 65px;" class="next-page">下一页</li>
+        </ul> -->
+        <div class="more more-btn">
+
+        </div>
+    </div>
+    <p class="txt">“已受邀未注册”表示您的好友已经接受了您的邀请但还未下载注册账号，快去提醒TA吧！</p>
+</section>
+
+<script>
+    //获取用户uid
+    if(typeof(HandPlay)!="undefined"){
+        var UID = HandPlay.getUserId();
+        console.log( UID);
+        //alert(UID);
+    }else{
+        var UID = qiaoxuekui.getUU();
+    } 
+    //获取网页的uid
+    (function ($) {
+            $.getUrlParam = function (name) {
+                var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)");
+                var r = window.location.search.substr(1).match(reg);
+                if (r != null) return unescape(r[2]); return null;
+            }
+        })(jQuery);
+        // alert($.getUrlParam('uid'))
+        console.log($.getUrlParam('uid'));
+        // alert($.getUrlParam('page'));
+ 
+    //二维码
+    $.ajax({
+        type:"POST",
+        url:"/user/invite/invite?uid="+UID,
+        dataType:"json",
+        cache: false,
+        // data:{
+        //     uid:UID,
+        // },
+        error: function(){
+            alert("未知错误");
+        },
+        success: function(msg){
+            if(msg.error_code == 0){
+
+                var Url = msg.data.url;
+                $('#share').val(Url);
+                console.log(Url);
+                //alert(Url);
+                jQuery('#qrcodeCanvas').qrcode({
+                    render: "canvas",
+                    text : Url,
+                    width : "200",               //二维码的宽度
+                    height : "200",              //二维码的高度
+                    background : "#ffffff",       //二维码的后景色
+                    foreground : "#000000",        //二维码的前景色
+                    src: 'https://cdn.16988.cn/res/html/images/sign/zwlogo.jpg'             //二维码中间的图片
+                });
+            }else{
+                alert(msg.error_msg);
+            };
+
+        }
+    });
+
+
+    //邀请记录
+    // 页数
+    var page = 1;
+    // 每页展示5个
+    var pageSize = 20;
+   
+        $(".more-btn").click(function(){
+            page++;
+            // 拼接HTML
+            var str = ''
+            $.ajax({
+                type:"POST",
+                url:"/user/invite/lists?uid="+UID+'&page='+page+'&pageSize='+pageSize,
+                dataType:"json",
+                cache: false,
+                error: function(){
+                    alert("未知错误");
+                },
+                success: function(msg){
+                    if(msg.error_code == 0){
+                        var jilu = msg.data;
+                        alert(jilu.length)
+                        // if(0<jilu.length < 20){
+                            console.log(jilu);
+                            $.each( jilu, function(index, content){
+                                if(content.des == '已受邀未注册'){
+                                var str_getScore = '<span class="getScore f-fr">-</span>'
+                                }else{
+                                var  str_getScore = '<span class="getScore f-fr">奖励30积分</span>'
+                                }
+                                str += '<li><span class="f-fl phone">'+content.uil_phone+'</span><span style="margin-left:15px;">'+content.des+'</span>' +str_getScore+ '</li>'
+                                $(".yaoqing .jilu-li").append(str);
+                            });
+                            $(".more").html("加载更多")
+                        // }
+                    }
+                }
+                
+            })
+        })
+    
+    // $.ajax({
+    //     type:"POST",
+    //     url:"/user/invite/lists?uid="+UID+'&page=1&pageSize=20',
+    //     dataType:"json",
+    //     cache: false,
+    //     error: function(){
+    //         alert("未知错误");
+    //     },
+    //     success: function(msg){
+    //         if(msg.error_code == 0){
+    //             var jilu = msg.data;
+    //             alert(jilu.length)
+    //             if(0<jilu.length < 20){
+    //                 console.log(jilu);
+    //                 $.each( jilu, function(index, content){
+    //                     if(content.des == '已受邀未注册'){
+    //                        var str_getScore = '<span class="getScore f-fr">-</span>'
+    //                     }else{
+    //                       var  str_getScore = '<span class="getScore f-fr">奖励30积分</span>'
+    //                     }
+    //                     str = '<li><span class="f-fl phone">'+content.uil_phone+'</span><span style="margin-left:15px;">'+content.des+'</span>' +str_getScore+ '</li>'
+    //                     $(".yaoqing .jilu-li").append(str);
+    //                 });
+    //                 $(".more").html("没有更多")
+    //             }
+    //         }else if(jilu.length>20){
+    //             $(".more").html("加载更多");
+    //             $(".more-btn").click(function(){
+    //                 if(20<jilu.length<40){
+    //                     $.ajax({
+    //                         type:"POST",
+    //                         url:"/user/invite/lists?uid="+UID+'&page=1&pageSize=20',
+    //                         dataType:"json",
+    //                         cache: false,
+    //                         error: function(){
+    //                             alert("未知错误");
+    //                         },
+    //                         success:function(){
+    //                             if(msg.error_code == 0){
+    //                                 var jilu = msg.data;
+    //                                 if(jilu.length > 0){
+    //                                     console.log(jilu);
+    //                                     $.each( jilu, function(index, content){
+    //                                         if(content.des == '已受邀未注册'){
+    //                                         var str_getScore = '<span class="getScore f-fr">-</span>'
+    //                                         }else{
+    //                                         var  str_getScore = '<span class="getScore f-fr">奖励30积分</span>'
+    //                                         }
+    //                                         str = '<li><span class="f-fl phone">'+content.uil_phone+'</span><span style="margin-left:15px;">'+content.des+'</span>' +str_getScore+ '</li>'
+    //                                         $(".yaoqing .jilu-li").append(str);
+    //                                     });
+                                        
+    //                                 }
+    //                             }
+    //                         }
+    //                     })
+    //                 }
+    //             })
+    //         }
+    //     }
+    // });
+    
+    // $('.next-page').click(function(){
+    //     var page = 1;
+    //     var page = page++;
+    //     $.ajax({
+    //     type:"POST",
+    //     url:"/user/invite/lists?uid="+UID+'&page='+page+'&pageSize=20',
+    //     dataType:"json",
+    //     cache: false,
+    //     error: function(){
+    //         alert("未知错误");
+    //     },
+    //     success: function(msg){
+    //         if(msg.error_code == 0){
+    //             var jilu = msg.data;
+    //             if(jilu.length > 0){
+    //                 console.log(jilu);
+    //                 $.each( jilu, function(index, content){
+    //                     if(content.des == '已受邀未注册'){
+    //                        var str_getScore = '<span class="getScore f-fr">-</span>'
+    //                     }else{
+    //                       var  str_getScore = '<span class="getScore f-fr">奖励30积分</span>'
+    //                     }
+    //                     str=''
+    //                     $(".yaoqing .jilu-li").append(str);
+    //                     str = '<li><span class="f-fl phone">'+content.uil_phone+'</span><span style="margin-left:15px;">'+content.des+'</span>' +str_getScore+ '</li>'
+    //                     $(".yaoqing .jilu-li").append(str);
+    //                 });
+                    
+    //             }
+    //         }else{
+    //             alert(msg.error_msg);
+    //         };
+    //     }
+    // });
+    // })
+    $(".share-btns").click(function(){
+        var url = $('#share').val();
+        console.log(url)
+        
+        if(typeof(HandPlay)!="undefined"){
+            var UID = HandPlay.getUserId();
+            console.log( UID);
+            //alert(UID);
+            HandPlay.share('{"title":"为您推荐【掌玩】","content":"一款专业的艺术品APP，识名家，交好友，让你的艺术世界不再孤单","image":"https://s29.9956.cn/tmp/share_img.jpg","url":"'+url+'","channel":"MOMENTS"}');
+        }else{
+            var UID = qiaoxuekui.getUU();
+            qiaoxuekui.shareUU('{"title":"为您推荐【掌玩】","content":"一款专业的艺术品APP，识名家，交好友，让你的艺术世界不再孤单","image":"https://s29.9956.cn/tmp/share_img.jpg","url":"'+url+'","channel":"MOMENTS"}');
+        }
+    });           
+</script>
+</body>
+</html>

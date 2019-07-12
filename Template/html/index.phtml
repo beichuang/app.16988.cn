@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html>
+<head>
+{template public/WxShareJS}
+	<meta charset="UTF-8">
+	<title>首页</title>
+	<meta name="viewport" content="width=device-width,minimum-scale=1.00001,maximum-scale=1.00001,user-scalable=no,minimal-ui">
+	<link rel="stylesheet" type="text/css" href="{$CDN_BASE_URL_RES}/html/css/css.css?20170427">
+	<link rel="stylesheet" type="text/css" href="{$CDN_BASE_URL_RES}/html/css/swiper.min.css">
+	<script src="{$CDN_BASE_URL_RES}/html/js/jquery.min.js"></script>
+	<script src="{$CDN_BASE_URL_RES}/html/js/swiper.jquery.min.js?20170421"></script>
+	<script src="{$CDN_BASE_URL_RES}/html/js/currency.js?20170427"></script>
+	<style type="text/css">
+		
+	</style>
+</head>
+<body>
+<div class="loadimgBox">
+	<div class="mul15">
+		<div class="m15c m15c1"></div>
+		<div class="m15c m15c2"></div>
+		<div class="m15c m15c3"></div>
+		<div class="m15c m15c4"></div>
+		<div class="m15c m15c5"></div>
+		<div class="m15c m15c6"></div>
+		<div class="m15c m15c7"></div>
+		<div class="m15c m15c8"></div>
+	</div>
+</div>
+	<div class="search">
+		<input type="text" name="search_content" id="search_content">
+		<span id="search-button"><img src="{$CDN_BASE_URL_RES}/html/images/search.png"></span>
+	</div>
+	<div class="index_box tuijian">
+		<h2>
+			<img src="{$CDN_BASE_URL_RES}/html/images/jian.png">精品推荐
+			<a id="jinrituijian_link" style="display:none;" href="#">更多></a>
+		</h2>
+		<div class="jinrituijian_box swiper-container">
+			<div class="swiper-wrapper">
+
+			</div>
+		</div>
+	</div>
+	<div class="index_box">
+		<h2>
+			<img src="{$CDN_BASE_URL_RES}/html/images/hua.png">国画
+			<a href="/html/search.html?categoryId=11">更多></a>
+		</h2>
+		<ul class="box1 ulstyle1">
+
+		</ul>
+	</div>
+	<div class="index_box">
+		<h2>
+			<img src="{$CDN_BASE_URL_RES}/html/images/shu.png">书法
+			<a href="/html/search.html?categoryId=20">更多></a>
+		</h2>
+		<ul class="box2 ulstyle1">
+
+		</ul>
+	</div>
+	<div class="index_box">
+		<h2>
+			<img src="{$CDN_BASE_URL_RES}/html/images/hua.png">油画
+			<a href="/html/search.html?categoryId=31">更多></a>
+		</h2>
+		<ul class="box3 ulstyle1">
+
+		</ul>
+	</div>
+	<div class="gouwuche">
+		<a href="/html/shoppingcart.html"><img src="{$CDN_BASE_URL_RES}/html/images/gouwuche.png"></a>
+	</div>
+<script>
+</script>
+<script type="text/javascript">
+	var data = {"jump": 7};
+function render_ImgList(arr)
+{
+	var str_2 = '';
+	var length_ = arr.length;
+	if(length_>4)
+	{
+		//$("#jinrituijian_link").css("display","inline-block");
+	};
+	length_ = length_>4?4:length_;
+	for(var i=0;i<length_;i++)
+	{
+		//arr[i].a_image
+		str_2 +='<div class="swiper-slide stop-swiping">';
+		str_2 +='<a href="'+arr[i].a_link+'"><img src="'+arr[i].a_image+'"></a>';
+		str_2+='</div>';
+	};
+	$(".swiper-wrapper").html(str_2);
+	var swiper = new Swiper('.swiper-container',{
+		autoplay: 2000,//可选选项，自动滑动
+		loop:true,
+		autoplayDisableOnInteraction : false,
+		touchMoveStopPropagation :true,
+		noSwipingClass : 'stop-swiping'
+	});
+};
+function fnwindowLoad()
+{
+	var isloading = true;
+	//渲染页面
+	var data_arr = {'type':2};
+	$.ajax({
+	    type: "POST",
+	    url: "/common/ad/lists",
+	    data: data_arr,
+	    dataType: "json",
+	    cache: false,
+	    error: function () {
+	        alert("未知错误");
+	    },
+	    success: function(msg){
+	    	if(isloading)
+	    	{
+	    		isloading = false;
+	    		$(".loadimgBox").fadeOut(500);
+	    	};
+	        if(msg.error_code == 0){
+	        	render_ImgList(msg.data.list);
+	        }else{
+	            alert(msg.error_msg);
+	        };
+	    }
+	});
+	var data_search = {};
+	data_search.page = 1;
+	data_search.pageSize = 4;
+	data_search.categoryId = 11;
+	$.ajax({
+		type: "POST",
+	    url: "/mall/goods/item/query",
+	    data: data_search,
+	    dataType: "json",
+	    cache: false,
+	    error: function () {
+	        alert("未知错误");
+	    },
+	    success: function(msg){
+	    	if(isloading)
+	    	{
+	    		isloading = false;
+	    		$(".loadimgBox").fadeOut(500);
+	    	};
+	    	console.log(msg);
+	        if(msg.error_code == 0){
+	        	if(msg.data.list.length == 0){
+	        		$(".box1").parents(".index_box").hide();
+	        	}else{
+	        		fn_render_pic(msg.data.list,".box1",CalculationImg);//渲染
+	        		if(msg.data.list.length < 4){
+		        		$(".box1").parents(".index_box").find("h2 a").hide();
+		        	}
+	        	}
+	        }else{
+	            alert(msg.error_msg);
+	        };
+	    }
+	});
+	var data_search2 = {};
+	data_search2.page = 1;
+	data_search2.pageSize = 4;
+	data_search2.categoryId = 20;
+	$.ajax({
+		type: "POST",
+	    url: "/mall/goods/item/query",
+	    data: data_search2,
+	    dataType: "json",
+	    cache: false,
+	    error: function () {
+	        alert("未知错误");
+	    },
+	    success: function(msg){
+	    	if(isloading)
+	    	{
+	    		isloading = false;
+	    		$(".loadimgBox").fadeOut(500);
+	    	};
+	        if(msg.error_code == 0){
+	        	if(msg.data.list.length == 0){
+	        		$(".box2").parents(".index_box").hide();
+	        	}else{
+	        		fn_render_pic(msg.data.list,".box2",CalculationImg);//渲染
+	        		if(msg.data.list.length < 4){
+		        		$(".box2").parents(".index_box").find("h2 a").hide();
+		        	}
+	        	}
+	        }else{
+	            alert(msg.error_msg);
+	        };
+	    }
+	});
+	var data_search3 = {};
+	data_search3.page = 1;
+	data_search3.pageSize = 4;
+	data_search3.categoryId = 31;
+	$.ajax({
+		type: "POST",
+	    url: "/mall/goods/item/query",
+	    data: data_search3,
+	    dataType: "json",
+	    cache: false,
+	    error: function () {
+	        alert("未知错误");
+	    },
+	    success: function(msg){
+	    	if(isloading)
+	    	{
+	    		isloading = false;
+	    		$(".loadimgBox").fadeOut(500);
+	    	};
+	        if(msg.error_code == 0){
+	        	if(msg.data.list.length == 0){
+	        		$(".box3").parents(".index_box").hide();
+	        	}else{
+	        		fn_render_pic(msg.data.list,".box3",CalculationImg);//渲染
+	        		if(msg.data.list.length < 4){
+		        		$(".box3").parents(".index_box").find("h2 a").hide();
+		        	}
+	        	}
+	        }else{
+	            alert(msg.error_msg);
+	        };
+	    }
+	});
+};
+window.onload=function()
+{
+	fnwindowLoad();
+};
+	//搜索
+	$("#search-button").click(function(){
+		var search = $("#search_content").val();
+		window.location = "/html/search.html?name="+encodeURIComponent(search)+"";
+		//window.open("/html/search.html?name="+encodeURIComponent(search)+"");
+	});
+function alert(e){
+	$("body").append("<div id='msg'><span>"+e+"</span></div>");
+	clearmsg();
+}
+function clearmsg(){
+	var t = setTimeout(function(){
+		$("#msg").remove();
+	},2000)
+};
+</script>
+</body>
+</html>

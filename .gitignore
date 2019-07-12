@@ -1,0 +1,14 @@
+.idea
+.DS_Store
+!/Data/Logs/.gitkeep
+/Data/Cache
+/Data/Logs
+/Data/Temp
+/Data/Template
+.env
+*.lock
+/Test/loginCookie.txt
+/vendor
+/Config/AppClientVersion.php
+/Public/.htaccess
+*.rej

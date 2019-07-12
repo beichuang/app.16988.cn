@@ -1,0 +1,304 @@
+<!doctype html>
+<html lang="zh">
+<head>
+{template public/WxShareJS}
+    <meta charset="UTF-8">
+    <title>邀请好友</title>
+    <meta name="viewport" content="width=device-width,minimum-scale=1.00001,maximum-scale=1.00001,user-scalable=no,minimal-ui">
+    <link rel="stylesheet" href="{$CDN_BASE_URL_RES}/html/css/global.css">
+    <link rel="stylesheet" href="{$CDN_BASE_URL_RES}/html/css/index.css">
+    <script src="https://s28.9956.cn/static/v3_1/js/jquery.min.js"></script>
+    <script src="{$CDN_BASE_URL_RES}/html/js/setfontsize.js"></script>
+    <script type="text/javascript" src="{$CDN_BASE_URL_RES}/html/js/jquery.qrcode.js" ></script>
+    <script type="text/javascript" src="{$CDN_BASE_URL_RES}/html/js/utf.js" ></script>
+    
+    <style>
+        body{background: url({$CDN_BASE_URL_RES}/html/images/sign/bg.jpg);-webkit-background-size: 100%;overflow-x: hidden;	background-size: 100%;}
+        .page{
+            background: #fff;
+            overflow: hidden;
+        }
+        .Invitation .yaoqing ul{
+            margin: 0 2%;
+        }
+        .noneScore{
+            margin-left:65px;
+        }
+        .gift{
+            font-size: 14px;color:#D1A570;margin-bottom:20px;
+        }
+        .gift ul{
+            overflow: hidden;text-align: center;display: flex;
+        }
+        .gift ul li{
+            flex:1
+        }
+        .more{
+            text-align:center;
+            background: #fff;
+            color: #D1A570;
+            font-size:14px;
+            width: 96%;
+            margin: 0 auto;
+            padding-bottom: 10px;
+        }
+        .allScore{
+            font-size: 16px;
+            text-align: center;
+            margin-top: -20px;
+            color: #cea068;
+        }
+    </style>
+</head>
+<body>
+<section class="container Invitation">
+    <img src="{$CDN_BASE_URL_RES}/html/images/sign/banner1.png?171117" style="margin-top: -17%;">
+    <img src="{$CDN_BASE_URL_RES}/html/images/sign/banner2.png?171117">
+    <img src="{$CDN_BASE_URL_RES}/html/images/sign/banner3.png?171117">
+    <img src="{$CDN_BASE_URL_RES}/html/images/sign/banner4.png?171117">
+    <img src="{$CDN_BASE_URL_RES}/html/images/sign/banner5.png?171117">
+    <!-- <img src="{$CDN_BASE_URL_RES}/html/images/sign/ff1.png?171116" class="fangfa"> -->
+    <img src="{$CDN_BASE_URL_RES}/html/images/h5/fenxiang_03.png" alt=""  class="fangfa">
+    <p class="allScore"></p>
+    <div>
+        <img src="{$CDN_BASE_URL_RES}/html/images/h5/gift_02.jpg" alt="">
+        <div class="gift" style="">
+            <ul>
+                <li style="margin-left:10px">500积分</li>
+                <li>1000积分</li>
+                <li style="margin-right:15px">3000积分</li>
+            </ul>
+            <ul>
+                <li style="margin-left:10px;">手工艺彩绘花插</li>
+                <li>太行崖柏手串</li>
+                <li style="margin-right:15px">汝瓷茶具一套</li>
+            </ul>
+        </div>
+    </div>
+    <div class='share-btns' style="width:88%;margin:0 auto;margin-top:10px;margin-bottom:10px;">
+        <input type="hidden" id="share">
+        <img src="{$CDN_BASE_URL_RES}/html/images/h5/share_02.png" >
+    </div>
+    <!-- <div class="share-btn"> 
+        <input type="hidden" id="share">
+        <img src="{$CDN_BASE_URL_RES}/html/images/sign/share-btn.png">
+    </div>
+     
+    <img src="{$CDN_BASE_URL_RES}/html/images/sign/ff2.png?171116" class="fangfa">
+    <div class="ercode"> 
+        <img src="{$CDN_BASE_URL_RES}/html/images/sign/phone.png">
+        <div id="qrcodeCanvas"></div>
+    </div> -->
+    <div class="yaoqing">
+        <img src="{$CDN_BASE_URL_RES}/html/images/sign/line.png">
+        <div class="bgc">
+            <img src="{$CDN_BASE_URL_RES}/html/images/sign/yaoqing.png">
+            <ul class="jilu-li">
+                <li><span>用户</span><span style="margin-left:80px;">邀请情况</span><span class="f-fr">奖励</span></li>
+            </ul>
+        </div>
+        <!-- <ul class="page">
+            <li style="background: #fff;float: left;padding-left: 50px;font-weight:100" class="pre-page">上一页</li>
+            <li style="float: right;padding-right: 65px;" class="next-page">下一页</li>
+        </ul> -->
+        <div class="more more-btn">
+            下拉刷新
+        </div>
+    </div>
+    <p class="txt">“已受邀未注册”表示您的好友已经接受了您的邀请但还未下载注册账号，快去提醒TA吧！</p>
+</section>
+
+<script>
+    //获取用户uid
+    if(typeof(HandPlay)!="undefined"){
+        var UID = HandPlay.getUserId();
+        console.log( UID);
+        //alert(UID);
+    }else{
+        var UID = qiaoxuekui.getUU();
+    } 
+    //获取网页的uid
+    (function ($) {
+            $.getUrlParam = function (name) {
+                var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)");
+                var r = window.location.search.substr(1).match(reg);
+                if (r != null) return unescape(r[2]); return null;
+            }
+        })(jQuery);
+        // alert($.getUrlParam('uid'))
+        console.log($.getUrlParam('uid'));
+        // alert($.getUrlParam('page'));
+ 
+    //二维码
+    $.ajax({
+        type:"POST",
+        url:"/user/invite/invite?uid="+UID,
+        dataType:"json",
+        cache: false,
+        // data:{
+        //     uid:UID,
+        // },
+        error: function(){
+            alert("未知错误");
+        },
+        success: function(msg){
+            if(msg.error_code == 0){
+
+                var Url = msg.data.url;
+                $('#share').val(Url);
+                console.log(Url);
+                //alert(Url);
+                jQuery('#qrcodeCanvas').qrcode({
+                    render: "canvas",
+                    text : Url,
+                    width : "200",               //二维码的宽度
+                    height : "200",              //二维码的高度
+                    background : "#ffffff",       //二维码的后景色
+                    foreground : "#000000",        //二维码的前景色
+                    src: 'https://cdn.16988.cn/res/html/images/sign/zwlogo.jpg'             //二维码中间的图片
+                });
+            }else{
+                alert(msg.error_msg);
+            };
+
+        }
+    });
+
+
+    //邀请记录
+    
+    
+        //--------------上拉加载更多---------------
+        //获取滚动条当前的位置 
+        function getScrollTop() {
+            var scrollTop = 0;
+            if(document.documentElement && document.documentElement.scrollTop) {
+                scrollTop = document.documentElement.scrollTop;
+            } else if(document.body) {
+                scrollTop = document.body.scrollTop;
+            }
+            return scrollTop;
+        }
+
+        //获取当前可视范围的高度 
+        function getClientHeight() {
+            var clientHeight = 0;
+            if(document.body.clientHeight && document.documentElement.clientHeight) {
+                clientHeight = Math.min(document.body.clientHeight, document.documentElement.clientHeight);
+            } else {
+                clientHeight = Math.max(document.body.clientHeight, document.documentElement.clientHeight);
+            }
+            return clientHeight;
+        }
+
+        //获取文档完整的高度 
+        function getScrollHeight() {
+            return Math.max(document.body.scrollHeight, document.documentElement.scrollHeight);
+        }
+        // 页数
+        var page = 1;
+        // 每页展示10个
+        var pageSize = 10;
+        page++;
+        $.ajax({
+                    type:"POST",
+                    // url:"/user/invite/lists?uid="+UID+'&page='+page+++'&pageSize='+pageSize,
+                    url:"/user/invite/lists?uid="+UID+'&page=1',
+                    dataType:"json",
+                    cache: false,
+                    error: function(){
+                        alert("未知错误");
+                    },
+                    success: function(msg){
+                        if(msg.error_code == 0){
+                            var jilu = msg.data.list;
+                            // alert(jilu.length)
+                            // alert(page)
+                            if(jilu.length>0){
+                                console.log(jilu);
+                                $.each( jilu, function(index, content){
+                                    
+                                    if(content.des == '已受邀未注册'){
+                                        var str_getScore = '<span class="getScore f-fr">-</span>'
+                                        // var  uil_phone = '<span class="f-fl phone">'+content.uil_phone+'</span>'    
+                                        str = '<li><span class="f-fl phone">'+content.uil_phone+'</span><span style="margin-left:15px;">'+content.des+'</span>' +str_getScore+ '</li>'                                     
+                                    }else if(content.des == '已受邀已注册'){
+                                        var  str_getScore = '<span class="getScore f-fr">奖励30积分</span>'
+                                        // var  uil_phone = '<span class="f-fl phone">'+content.uil_phone+'</span>'   
+                                        str = '<li><span class="f-fl phone">'+content.uil_phone+'</span><span style="margin-left:15px;">'+content.des+'</span>' +str_getScore+ '</li>'                                      
+                                    }
+    
+                                    $(".yaoqing .jilu-li").append(str);
+                                });
+                                $(".more").html("下拉刷新")
+                            }else{
+                                $(".more").html("没有更多")
+                            }
+                        }
+                    }
+                })
+        //滚动事件触发
+        window.onscroll = function() {
+            // 拼接HTML
+            var str = ''
+            if(getScrollTop() + getClientHeight() == getScrollHeight()) {
+                $.ajax({
+                    type:"POST",
+                    // url:"/user/invite/lists?uid="+UID+'&page='+page+++'&pageSize='+pageSize,
+                    url:"/user/invite/lists?uid="+UID+'&page='+page++,
+                    dataType:"json",
+                    cache: false,
+                    error: function(){
+                        alert("未知错误");
+                    },
+                    success: function(msg){
+                        if(msg.error_code == 0){
+                            var jilu = msg.data.list;
+                            // alert(jilu.length)
+                            // alert(page)
+                            if(jilu.length>0){
+                                console.log(jilu);
+                                $.each( jilu, function(index, content){
+                                    
+                                    if(content.des == '已受邀未注册'){
+                                        var str_getScore = '<span class="getScore f-fr">-</span>'
+                                        // var  uil_phone = '<span class="f-fl phone">'+content.uil_phone+'</span>'    
+                                        str = '<li><span class="f-fl phone">'+content.uil_phone+'</span><span style="margin-left:15px;">'+content.des+'</span>' +str_getScore+ '</li>'                                     
+                                    }else if(content.des == '已受邀已注册'){
+                                        var  str_getScore = '<span class="getScore f-fr">奖励30积分</span>'
+                                        // var  uil_phone = '<span class="f-fl phone">'+content.uil_phone+'</span>'   
+                                        str = '<li><span class="f-fl phone">'+content.uil_phone+'</span><span style="margin-left:15px;">'+content.des+'</span>' +str_getScore+ '</li>'                                      
+                                    }
+    
+                                    $(".yaoqing .jilu-li").append(str);
+                                });
+                                $(".more").html("下拉刷新")
+                            }else{
+                                $(".more").html("没有更多")
+                            }
+                        }
+                    }
+                })
+            }
+
+        }
+        //-----------------结束--------------------
+    
+    
+    $(".share-btns").click(function(){
+        var url = $('#share').val();
+        console.log(url)
+        
+        if(typeof(HandPlay)!="undefined"){
+            var UID = HandPlay.getUserId();
+            console.log( UID);
+            //alert(UID);
+            HandPlay.share('{"title":"新人白送1000元,下单立减,我身边的人都领了","content":"掌玩,一款专业的艺术品APP，识名家，交好友，让你的艺术世界不再孤单","image":"https://s29.9956.cn/tmp/share_img.jpg","url":"'+url+'","channel":"MOMENTS"}');
+        }else{
+            var UID = qiaoxuekui.getUU();
+            qiaoxuekui.shareUU('{"title":"新人白送1000元,下单立减,我身边的人都领了","content":"掌玩,一款专业的艺术品APP，识名家，交好友，让你的艺术世界不再孤单","image":"https://s29.9956.cn/tmp/share_img.jpg","url":"'+url+'","channel":"MOMENTS"}');
+        }
+    });           
+</script>
+</body>
+</html>

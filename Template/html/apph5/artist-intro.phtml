@@ -1,0 +1,385 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+{template public/WxShareJS}
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width,minimum-scale=1.00001,maximum-scale=1.00001,user-scalable=no,minimal-ui">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>匠心18，寻匠之旅</title>
+    <link rel="stylesheet" href="{$CDN_BASE_URL_RES}/html/css/global.css?171116">
+    <script src="https://s28.9956.cn/static/v3_1/js/jquery.min.js"></script>
+    <!-- <script src="http://dev-cdn.zhangwan.shop/res/html/js/setfontsize.js"></script> -->
+</head>
+<style>
+body{
+    overflow-x: hidden;
+    background: #fffefb;
+    font-size: 14px;
+}
+h2{
+    font-size: 17px;
+    margin: 5px 0;
+}
+h3{
+    font-size: 14px;
+    margin: 5px 0;
+    color: #CD9656;
+}
+p{
+    font-size: 13px;
+    text-indent: 20px;
+    line-height: 1.7;
+}
+.about{
+    width:85%;
+    margin:0 auto;
+}
+.ruzhuyoushi{
+    background: rgba(205,150,86,1);
+    margin: 0 1.8rem;
+    padding-top: 10px;
+    width: 85%;
+    margin: 0 auto;
+    color: #fff;
+    margin-top: -1px;
+}
+.join-common-top{
+    width: 80%;
+    margin: 0 auto;
+}
+.common{
+    padding: 15px;
+}
+.line{
+    width:50px;
+    height:1px; 
+    background:rgba(255,241,222,1);
+    margin-left: 15px;
+}
+.join-intro{
+    background-image: url('{$CDN_BASE_URL_RES}/html/images/h5/envelope@2x.png');
+    background-size: cover;
+    height: 350px;
+    color: #666;
+    font-size: 14px;
+}
+.join-intro-title{
+    width: 52%;
+    margin: 0 auto;
+    padding-top: 20px;
+    padding-bottom: 15px;
+}
+.join-intro-content{
+    width: 78%;
+    margin: 0 auto;
+}
+.join-intro-content span{
+    margin-top: 20px;
+    display: inline-block;
+    line-height: 1.7;
+}
+.steps{
+    display: flex;
+    width: 85%;
+    margin: 0 auto;
+}
+.steps-word{
+    width: 90%;
+    display: flex;
+    margin: 0 auto;
+}
+.steps-word span{
+    flex: 1;
+    text-align: center;
+    color: #CD9656;
+    margin-top: 5px;
+}
+.steps .step{
+    /* float: left; */
+}
+.join-require{
+    margin-bottom: 105px;
+}
+.join-require h2{
+    display: inline-block;
+    vertical-align: middle;
+}
+.com-require,.person-require{
+    width: 75%;
+    margin: 0 auto;
+}
+.com-require h2{
+    color:#CD9656;
+}
+.person-require h2{
+    color:#CD9656;
+}
+.person-icon, .com-icon{
+    display: inline-block;
+    width: 25px;
+    vertical-align: middle;
+}
+.arrow{
+    padding-top: 15px;
+}
+.require-wrapper{
+    background: url('{$CDN_BASE_URL_RES}/html/images/h5/6@2x.png');
+    background-size: cover;
+    height: 106px;
+    padding-top: 10px;
+}
+.bottom{
+    display: flex;
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+}
+.bottom span{
+    flex: 1;
+    text-align: center;
+    padding: 15px 0;
+    
+}
+a{
+    color: #F3FAF8;
+}
+.bottom-left{
+    background: rgba(209,165,112,1);
+}
+.bottom-right{
+    background: rgba(205,150,86,1);
+}
+</style>
+<body>
+<div>
+    <img src="{$CDN_BASE_URL_RES}/html/images/h5/head_01@2x.png" >
+    <img src="{$CDN_BASE_URL_RES}/html/images/h5/head_02@2x.png" >
+    <img src="{$CDN_BASE_URL_RES}/html/images/h5/head_03@2x.png" >
+</div>
+<!-- // 关于掌玩 -->
+<div class='about'>
+    <img src="{$CDN_BASE_URL_RES}/html/images/h5/aboutzw@2x.png" alt="">
+</div>
+
+<div class="ruzhuyoushi">
+<!-- //  入驻优势-->
+    <div class="join-common-top">
+        <img src="{$CDN_BASE_URL_RES}/html/images/h5/ruzhuyoushi@2x.png" alt="">
+    </div>
+    
+    <div class="common">
+        <h2>0元入驻</h2>
+        <p>打破地域、时间限制，让您的作品直达用户，解决销售难题。</p>
+    </div>
+    <div class="line"></div>
+    <div class="common">
+        <h2>个人专属品牌打造</h2>
+        <p>个人专访、艺术家主页、优秀作品展、线下交流会、媒体宣传等、全方位打造个人品牌。</p>
+    </div>
+    <div class="line"></div>
+    <div class="common">
+        <h2>专业运营服务</h2>
+        <p>解决您不懂电商的难题，掌玩一对一专属客服服务，随时随地解决您的任何问题任何问题。</p>
+    </div>
+</div>
+<!-- //入驻说明 -->
+<div class="join-intro">
+    <div class="join-intro-title">
+        <img src="{$CDN_BASE_URL_RES}/html/images/h5/title_shuoming@2x.png" alt="">
+    </div>
+    <div class="join-intro-content">
+        <h3>尊敬的艺术匠人：</h3>
+        <p>无论您是手工艺匠人、非遗传承人，还是独立设计师、自主品牌等。我们都诚意邀请您的加入，让我们携手让艺术成为我们身边的美。</p>
+        <span>掌玩针对以下品类开放：<br>瓷器、书画、文玩艺术、印章、漆器、茶器<br>等中国传统艺术文化均可。</span>
+    </div>
+</div>
+<!-- // 入驻流程 -->
+<div class="join-steps">
+    <div class="join-intro-title">
+        <img src="{$CDN_BASE_URL_RES}/html/images/h5/title_liucheng@2x.png" alt="">
+    </div>
+    <div class="steps">
+        <div class="step">
+            <img src="{$CDN_BASE_URL_RES}/html/images/h5/info@2x.png" alt="">
+             
+        </div>
+        <div class="arrow">
+            <img src="{$CDN_BASE_URL_RES}/html/images/h5/arrow_1@2x.png" alt="">
+        </div>
+        <div class="step">
+            <img src="{$CDN_BASE_URL_RES}/html/images/h5/first-trial@2x.png" alt="">
+            
+        </div>
+        <div class="arrow">
+            <img src="{$CDN_BASE_URL_RES}/html/images/h5/arrow_1@2x.png" alt="">
+        </div>
+        <div class="step">
+            <img src="{$CDN_BASE_URL_RES}/html/images/h5/review-trial@2x.png" alt="">
+            
+        </div>
+        <div class="arrow">
+            <img src="{$CDN_BASE_URL_RES}/html/images/h5/arrow_1@2x.png" alt="">
+        </div>
+        <div class="step">
+            <img src="{$CDN_BASE_URL_RES}/html/images/h5/Agreement@2x.png" alt="">
+            
+        </div>
+        <div class="arrow">
+            <img src="{$CDN_BASE_URL_RES}/html/images/h5/arrow_1@2x.png" alt="">
+        </div>
+        <div class="step">
+            <img src="{$CDN_BASE_URL_RES}/html/images/h5/Success@2x.png" alt="">
+            
+        </div>
+    </div>
+    <div class="steps-word">
+        <span>提交信息</span>
+        <span>信息初审</span>
+        <span>信息复审</span> 
+        <span>签订协议</span>
+        <span>成功入驻</span>
+    </div>
+</div>
+<!-- // 入驻资质 -->
+<div class="join-require">
+    <div class="join-intro-title">
+        <img src="{$CDN_BASE_URL_RES}/html/images/h5/title_zizhi@2x.png" alt="">
+    </div>
+    <div class="require-wrapper">
+        <div class="person-require">
+            <div class="person-icon">
+                <img src="{$CDN_BASE_URL_RES}/html/images/h5/personal@2x.png" alt="">
+            </div>
+            <h2>个人认证</h2>
+            <div>
+                <span>具备个人手工艺，原创设计、品牌，认证主体为个人。</span>
+            </div>
+        </div>
+    </div>
+    <div class="require-wrapper">
+        <div class="com-require">
+            <div class="com-icon">
+                <img src="{$CDN_BASE_URL_RES}/html/images/h5/business@2x.png" alt="">
+            </div>
+            <h2>企业认证</h2>
+            <div>
+                <span>具备法人资格的合法经营企业，证件齐全，认证主体为企业。</span>
+            </div>
+        </div>
+    </div>
+    
+</div>
+
+<!-- // 底部按钮 -->
+<div class="bottom">
+    <span class="bottom-left"><a href="/html/apph5/artist-apply-enter.html">我要推荐</a></span>
+    <span class="bottom-right"><a href="/html/apph5/artist-apply-recom.html?sign_from=<?php
+        echo isset($_GET['sign_from'])?
+            substr(preg_replace("/[^a-zA-Z0-9]/",'',strip_tags($_GET['sign_from'])),0,30)
+            :'';
+        ?>">我要入驻
+        </a></span>
+</div>
+<script src="https://res.wx.qq.com/open/js/jweixin-1.2.0.js"></script>
+<script type="text/javascript" src="{$CDN_BASE_URL_RES}/html/js/baidu_stat.js"></script>
+<script>
+(function ($) {
+    var url= "/html/apph5/artist-intro.html";    
+    var content_json = 
+        {
+            "title": "匠心18，寻匠之旅",
+            "content": "掌玩［百业千人计划］，让匠人不再孤独，让匠心得以传承。",
+            "image": "https://s29.9956.cn/tmp/share_img.jpg",
+            "url": url
+        };
+    // console.log(HandPlay)
+    if (typeof (HandPlay) != "undefined") {
+            HandPlay.setShareInfo(JSON.stringify(content_json)); 
+            $(".product .center").on("click","li",function(){
+                // ajax1()
+                var obj={"targetPage":"baby","gid":$(this).val()};
+                HandPlay.execNative(JSON.stringify(obj));
+            })
+        }else{
+            a_href();
+            //外部的点击事件
+            function a_href(){
+                $(".product .center").on("click","li",function(){
+                    window.location.href="/html/apph5/artist-intro.html";
+                })
+            }
+        }
+        var shareUrl = encodeURIComponent(location.href.split('#')[0]);
+        $.ajax({
+            type:"POST",
+                    url:"/wx/wx/share?url="+shareUrl,
+                    dataType:"json",
+                    cache: false,
+                    error: function(){
+                        console.log("未知错误");
+                    },
+                    success: function(msg){
+                        if(msg.error_code == 0){
+                            wx.config({
+                            debug: false,
+                            appId: msg.data.appId, // 和获取Ticke的必须一样------必填，公众号的唯一标识
+                            timestamp: msg.data.timestamp, // 必填，生成签名的时间戳
+                            nonceStr: msg.data.noncestr, // 必填，生成签名的随机串
+                            signature: msg.data.signature, // 必填，签名，见附录1
+                            //需要分享的列表项:发送给朋友，分享到朋友圈
+                            jsApiList: [
+                                'onMenuShareAppMessage',
+                                'onMenuShareTimeline',
+                                'onMenuShareQQ'
+                            ]
+                        });
+                        wx.ready(function(){
+                            // 朋友圈
+                            wx.onMenuShareTimeline({
+                                title: '匠心18，寻匠之旅', // 分享标题
+                                desc: '掌玩［百业千人计划］，让匠人不再孤独，让匠心得以传承。', // 分享描述
+                                link: 'https://app.16988.cn/html/apph5/artist-intro.html', // 分享链接，该链接域名或路径必须与当前页面对应的公众号JS安全域名一致
+                                imgUrl: 'https://s29.9956.cn/tmp/share_img.jpg', // 分享图标
+                                success: function () {
+                                    // 用户确认分享后执行的回调函数
+                                },
+                                cancel: function () {
+                                    // 用户取消分享后执行的回调函数
+                                }
+                            });
+                            // 分享给朋友
+                            wx.onMenuShareAppMessage({
+                                title: '匠心18，寻匠之旅', // 分享标题
+                                desc: '掌玩［百业千人计划］，让匠人不再孤独，让匠心得以传承。', // 分享描述
+                                link: 'https://app.16988.cn/html/apph5/artist-intro.html', // 分享链接，该链接域名或路径必须与当前页面对应的公众号JS安全域名一致
+                                imgUrl: 'https://s29.9956.cn/tmp/share_img.jpg', // 分享图标
+                                success: function () {
+                                // 用户确认分享后执行的回调函数
+                                },
+                                cancel: function () {
+                                // 用户取消分享后执行的回调函数
+                                }
+                            });
+                            // 分享给QQ好友
+                            wx.onMenuShareQQ({
+                                title: '匠心18，寻匠之旅', // 分享标题
+                                desc: '掌玩［百业千人计划］，让匠人不再孤独，让匠心得以传承。', // 分享描述
+                                link: 'https://app.16988.cn/html/apph5/artist-intro.html', // 分享链接
+                                imgUrl: 'https://s29.9956.cn/tmp/share_img.jpg', // 分享图标
+                                success: function () {
+                                // 用户确认分享后执行的回调函数
+                                },
+                                cancel: function () {
+                                // 用户取消分享后执行的回调函数
+                                }
+                            });
+                        });
+                        }
+                    }
+        })
+    
+})(jQuery);
+</script>
+</body>
+</html>

@@ -1,0 +1,307 @@
+<!doctype html>
+<html lang="zh">
+<head>
+	<meta charset="UTF-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=Edge" />
+	<title>首页</title> 
+	<link rel="stylesheet" href="{$CDN_BASE_URL_RES}/html/pc/css/global.css?171201">
+	<script src="{$CDN_BASE_URL_RES}/html/js/jquery.min.js"></script> 
+	<style>
+		.index-tit{margin-top: 0;padding-top: 35px;}
+		.headlines ul li p{height: 44px;}
+		#wrapper .rslides dl{margin-left: 0;}
+		#wrapper .rslides dd{border: 1px solid #f3f3f3;}
+		.quanzi{margin-bottom: 50px;} 
+		.callbacks_container{left: -30px;}
+		.callbacks_nav.next{right: -65px;}
+		#wrapper .rslides dd a:hover{background-color: #D1A570;color: #fff;}
+		#wrapper .rslides dd p{color: #999;}
+	</style>
+</head>
+<body class="tk2">
+	<!-- nav -->
+	<div class="header bgc">
+		<div class="container nav">
+			<a href="/" class="f-fl logo"><img src="{$CDN_BASE_URL_RES}/html/pc/images/logo.png"></a>
+            <ul>
+                <li class="on"><a href="/">首页</a></li> 
+                <li><a href="/Index/headlines.html">头条</a></li>
+                <li><a href="/Index/circle.html">圈子</a></li>
+                <li><a href="/Index/treasure.html">寻宝</a></li>
+                <li><a href="/Index/download.html">APP下载</a></li>
+                <li><a href="/Index/about.html">关于我们</a></li>
+            </ul>
+			<div class="clearfix f-fr search-box">
+				<input type="text" placeholder="请输入关键词" class="search f-fl">
+				<button class="f-fr icon submit" type="button"></button>
+			</div>								
+		</div>
+	</div>
+	<!-- banner -->
+	<div class="banner">
+		<div class="container">
+			<img src="{$CDN_BASE_URL_RES}/html/pc/images/banner-iphone.png?171128" class="f-fl banner-iphone">
+			<div class="f-fl tit">
+				<img src="{$CDN_BASE_URL_RES}/html/pc/images/tit.png">
+				<ul>
+					<li><a href="javascript:void(0);" class="download-btn"><i class="icon ios"></i>iPhone</a></li>
+					<li><a href="javascript:void(0);" class="download-btn"><i class="icon android"></i>Android</a></li>
+				</ul>
+			</div>
+		</div>
+	</div>
+		
+	<!-- 头条 -->
+	<div class="bgc">
+		<!-- 标题 -->
+		<div class="container">
+			<div class="titlebar clearfix index-tit">
+				<h2 class="f-fl"><i>头条</i><small>/ HEADLINE NEWS</small></h2>
+				<a href="/Index/headlines.html" class="more f-fr">更多 ></a>
+			</div>		
+		</div>	
+		<div class="container headlines">
+			<ul></ul>
+		</div>
+	</div>
+
+	<!-- 名家 -->
+	<!-- 标题 -->
+	<div class="container">
+		<div class="titlebar clearfix index-tit">
+			<h2 class="f-fl"><i>名家</i><small>/ FAMOUS ARTISTS</small></h2>
+		</div>		
+	</div>	
+	<div id="wrapper" class="container clearfix">
+		<div class="callbacks_container">
+			<ul class="rslides" id="slider4">
+				<li class="mingjia01"><dl></dl></li>
+				<li class="mingjia02"><dl></dl></li>
+			</ul>
+		</div>
+	</div>		
+	<!-- 标题 -->
+	<!-- 寻宝 -->
+	<div class="bgc f-oh" style="margin-top: 35px;">
+		<div class="container">
+			<div class="titlebar clearfix index-tit">
+				<h2 class="f-fl"><i>寻宝</i><small>/ TREASURE</small></h2>
+				<a href="/Index/treasure.html" class="more f-fr">更多 ></a>
+			</div>	
+			<ul class="xunbao">
+			</ul>	
+		</div>	
+	</div>
+	<!-- 圈子 -->
+	
+	<!-- 标题 -->
+	<div class="container">
+		<div class="titlebar clearfix index-tit">
+			<h2 class="f-fl"><i>圈子</i><small>/ ART SCENE</small></h2>
+			<a href="/Index/circle.html" class="more f-fr">更多 ></a>
+		</div>		
+	</div>	
+	<div class="container quanzi clearfix">
+	</div>
+	<script src="{$CDN_BASE_URL_RES}/html/pc/js/zhangwan.js?180105"></script>
+	<script type="text/javascript" src="{$CDN_BASE_URL_RES}/html/pc/js/responsiveslides.min.js"></script>
+	<script type="text/javascript">
+		// You can also use "$(window).load(function() {"
+		  // Slideshow 4
+		var lunBo = function(){
+			$("#slider4").responsiveSlides({
+				auto: false,
+				pager: false,
+				nav: true,
+				speed: 500,
+				namespace: "callbacks",
+				
+			  });
+		}
+
+		//头条内容
+		$.ajax({
+		    type: "POST",
+		    url: "/home/home/homeAll",
+		    dataType: "json",
+		    cache: false,
+		    error: function () {
+		        alert("未知错误");
+		    },
+		    success: function(msg){
+		        if(msg.error_code == 0){
+		            var headlines = msg.data.news_list;
+		            if(headlines.length > 0){
+		            	console.log(headlines);
+		                $.each( headlines, function(index, content)
+		                {
+		                	if(index<3){
+		                		var Txt = 
+								'<li>'+
+									'<a href="/Index/headlinesinfo.html?id=' + content.n_id + ' ">'+
+										'<span><img src="' + content.img[0].ni_img + '"></span>'+
+										'<h3>' + content.n_title  + '</h3>'+
+										'<p>' + content.n_subtitle + '</p>'+
+										'<font class="time">' + content.displayTime + '</font>'+
+									'</a>'+
+								'</li>';                		
+			                    console.log(content.n_title,content.u_avatar);
+			                	$(".headlines ul").append(Txt);
+		                	}
+		                });
+		            }
+		        }else{
+		            alert(msg.error_msg);
+		        };
+		    }
+		});
+
+		//名家
+		$.ajax({
+		    type: "POST",
+		    url: "/home/home/homeAll",
+		    dataType: "json",
+		    cache: false,
+		    error: function () {
+		        alert("未知错误");
+		    },
+		    success: function(msg){
+		        if(msg.error_code == 0){
+		            var mingjia = msg.data.artist_list;
+		            if(mingjia.length > 0){
+		            	console.log(mingjia);
+		                $.each( mingjia, function(index, content)
+		                {
+		                	if(index<8){
+		                		var Txt = 
+									'<dd>'+
+										'<span>'+
+											'<pre><img src="'+content.u_avatar+'"></pre><i class="icon"></i>'+
+										'</span>'+
+										'<h3>'+content.uce_realName+'</h3>'+
+										'<p>'+content.goodsNum+' 幅作品</p>'+
+										'<a href="javascript:void(0);" class="popup-btn ljmore">了解更多</a>'+
+									'</dd>';
+			                	$(".mingjia01 dl").append(Txt);
+			                	$(".mingjia01 dl dd:gt(3)").insertAfter(".mingjia02 dl");
+			                	$(".mingjia02 dd:first-child").css("marginLeft","0");
+			                	more();
+			                	lunBo();
+		                	}
+		                });
+		            }
+		        }else{
+		            alert(msg.error_msg);
+		        };
+		    }
+		});
+
+		//寻宝
+		$.ajax({
+			type:"POST",
+			url:"/mall/goods/item/query",
+			dataType:"json",
+			cache: false,
+			error: function(){
+				alert("未知错误");
+			},
+			success: function(msg){
+				if(msg.error_code == 0){
+		            var xunbao = msg.data.list;
+		            if(xunbao.length > 0){
+		            	console.log(xunbao);
+		                $.each( xunbao, function(index, content)
+		                {
+		                	if(index<4){
+		                		var Txt = '' 
+									Txt += '<li>';
+										Txt += '<a href="/Index/treasureinfo.html?id='+content.g_id+'">';
+											Txt += '<span><img src=" ' + content.image[0].gi_img + ' "></span>';
+											Txt += '<h3> '+ content.gu_realname +'  '+content.g_name+' </h3>';
+											if(content.g_width==0||content.g_high==0){
+												Txt += '<p> '+content.categoryName+' '+ content.itemAttr[0].ga_key +' '+ content.itemAttr[0].ga_value +'</p>';
+											}else{
+												Txt += '<p> '+content.categoryName+' '+ content.g_width +'x'+ content.g_high +'cm</p>';
+											}
+											Txt += '<font>¥ '+ content.g_price +'</font>';
+										Txt += '</a>';
+									Txt += '</li>'; 
+			                	$(".xunbao").append(Txt);
+		                	}
+		                });
+		            }
+		        }else{
+		            alert(msg.error_msg);
+		        };
+			}
+		});
+
+		//圈子
+
+		$.ajax({
+			type:"POST",
+			url:"/treasure/treasure/lists?type=4",
+			dataType:"json",
+			cache: false,
+			error: function(){
+				alert("未知错误");
+			},
+			success: function(msg){
+				if(msg.error_code == 0){
+		            var quanzi = msg.data;
+		            if(quanzi.length > 0){
+		            	//console.log(quanzi);
+		                $.each( quanzi, function(index, content)
+		                {
+		                	if(index<3){
+		                		var Txt = ''
+								Txt+='<div class="list bdc">';
+									Txt+='<div class="suspend clearfix">';
+										Txt+='<div class="photo-box f-fl"><a href="javasrcipt:vodi(0);" class="photo">';
+										if((content.t_avatar=='')){
+                                        	Txt+='<img src="{$CDN_BASE_URL_RES}/html/pc/images/morentouxiang.png">';
+	                                    }else{
+	                                        Txt+='<img src="'+content.t_avatar+'">';
+	                                    }
+										Txt+='</a></div>';
+										Txt+='<div class="suspend-info">';
+											Txt+='<h3>'+content.t_nickname+'</h3>';
+											Txt+='<p>'+content.displayTime+'</p>';
+										Txt+='</div>';
+									Txt+='</div>';
+									Txt+='<p class="txt">'+ content.t_desc +'</p>';
+									Txt+='<div class="quanzi-pic">';
+									
+									if((content.t_pictures=='')){
+                                        	Txt+='<img src="{$CDN_BASE_URL_RES}/html/pc/images/morentouxiang.png">';
+	                                    }else{
+	                                        Txt+='<img src="'+content.t_pictures[0].ti_img+'">';
+	                                    }
+									Txt+='</div>';
+									Txt+='<ul class="foot">';
+										Txt+='<li>';
+											Txt+='<div class="praise1 praiseb">';
+												Txt+='<span class="praise"><img src="//cdn.16988.cn/res/html/pc/images/zan.png" class="praise-img animation"><i>点赞</i></span>';
+												Txt+='<span class="add-num" style="display: inline;"><em class="add-animation hover"></em></span>';
+											Txt+='</div>';
+										Txt+='</li>';
+										Txt+='<li class="popup-btn pl-btn"><i class="icon pl"></i>评论</li>';
+										Txt+='<li class="popup-btn cang-btn"><i class="icon cang"></i>收藏</li>';
+									Txt+='</ul>';
+								Txt+='</div>';
+
+			                	$(".quanzi").append(Txt);
+			                	$(".quanzi .list").eq(0).addClass("first");
+			                	
+		                	}
+		                });
+		                onQuanziClick && onQuanziClick();
+		            }
+		        }else{
+		            alert(msg.error_msg);
+		        };
+			}
+		});
+	</script>
+</body>
+</html>

@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+{template public/WxShareJS}
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1,user-scalable=no">
+    <script src="{$CDN_BASE_URL_RES}/html/js/work/fontSize.min.js"></script>
+    <title>宝贝详情</title>
+    <link rel="stylesheet" href="{$CDN_BASE_URL_RES}/html/css/public.min.css">
+    <link rel="stylesheet" href="{$CDN_BASE_URL_RES}/html/css/swiper.min.css">
+    <!-- Core CSS file -->
+    <link rel="stylesheet" href="{$CDN_BASE_URL_RES}/html/css/photoswipe.min.css">
+    <link rel="stylesheet" href="{$CDN_BASE_URL_RES}/html/css/default-skin/default-skin.min.css">
+    <link rel="stylesheet" href="{$CDN_BASE_URL_RES}/html/css/goodDeatail.min.css">
+    <script src="{$CDN_BASE_URL_RES}/html/js/lib/require.js" data-main="{$CDN_BASE_URL_RES}/html/js/work/goodsAjax.min.js"></script>
+</head>
+<body>
+    <!-- Swiper -->
+    <div class="swiper-container" >
+        <div class="swiper-wrapper my-gallery" itemscope></div>
+        <!-- Add Pagination -->
+        <div class="swiper-pagination"></div>
+    </div>
+    <div class="padding content good-desc clearfix">
+        <div class="clearfix goodsname">
+            <div class="fl">《子不语》骷髅吹起-恐怖与渴望并存</div>
+            <div class="fr">收藏</div>
+        </div>
+        <div class="goods-username">
+            <span class="username">陈伟玲</span>
+            <span class="time">24天前</span>
+        </div>
+        <div class="style">其他类别 / 29x29cm / 2017</div>
+        <div class="price">价格<span class="red">￥80,058</span></div>
+        <div class="love"></div>
+        <ul class="cleaefix">
+            <li class="fl" id="count"></li>
+        </ul>
+    </div>
+    <ul class="create clearfix padding">
+        <li>
+            <p class="l-black">创作手记</p>
+            <h3 class="d-black" id="made-feel">《子不语》骷髅吹起-恐怖与渴望并存</h3>
+        </li>
+        <li class="clearfix">
+            <div class="fl">
+               <div class="fl">
+                   <img src="{$CDN_BASE_URL_RES}/html/images/goodsDetail-icon-userD.png" alt="作者"><i></i>
+               </div>
+                <div class="fr">
+                    <div>
+                        <span class="d-black" id="username-mes">陈伟玲</span>
+                        <i class="bg-img"></i>
+                    </div>
+                    <p class="l-black" id="team-friend">120件作品   130位粉丝</p>
+                </div>
+            </div>
+            <div class="fr">＋关注</div>
+        </li>
+    </ul>
+    <div class="give_reward padding clearfix">
+        <div class="top">
+            <div class="reward-btn">打赏</div>
+            <p>共收到<i>6</i>人打赏</p>
+        </div>
+        <ul class="reward-list clearfix"></ul>
+        <div class="textarea padding">
+            <p class="l-black">我也来说两句...</p>
+            <textarea id="textarea" class="black" placeholder="请输入输入内容:"></textarea>
+            <div class="textarea-btn"><button>评论</button></div>
+        </div>
+        <dl class="message">
+            <dt class="l-black">查看更多</dt>
+        </dl>
+    </div>
+    <div class="user-love padding">
+        <div class="top">
+            <div class="line"></div>
+            <span>可能你会喜欢</span>
+        </div>
+        <ul class="clearfix" id="user-love">
+            
+        </ul>
+    </div>
+    <div class="buy-btn fixed1 padding">
+        <button class="fl">立即购买</button>
+        <button class="fr"></button>
+    </div>
+
+</body>
+</html>
